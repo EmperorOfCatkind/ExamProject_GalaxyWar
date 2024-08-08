@@ -22,6 +22,18 @@ public class MapGridView : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        InitializeGridView();
+        HideAll();
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        
+    }
+
+    public void InitializeGridView()
+    {
         int x = MapGrid.Instance.GetWidth();
         int z = MapGrid.Instance.GetHeight();
         mapGridViewSingleArray = new MapGridViewSingle[x, z];
@@ -36,9 +48,33 @@ public class MapGridView : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
-    void Update()
+    public void HideAll()
     {
-        
+        int x = MapGrid.Instance.GetWidth();
+        int z = MapGrid.Instance.GetHeight();
+        for(int i = 0; i < x; i++)
+        {
+            for (int j = 0; j < z; j++){
+                mapGridViewSingleArray[i,j].Hide();
+            }
+        }
+    }
+
+    public GridPosition GetGridPosition(Vector3 worldPosition) => MapGrid.Instance.GetGridPosition(worldPosition);
+    public GridPosition GetHexGridposition(Vector3 worldPosition) => MapGrid.Instance.GetHexGridPosition(worldPosition);
+    public int GetWidth() => MapGrid.Instance.GetWidth();
+    public int GetHeight() => MapGrid.Instance.GetHeight();
+    public bool IsInBounds(GridPosition gridPosition) => MapGrid.Instance.IsInBounds(gridPosition);
+
+
+    public MapGridViewSingle GetMapGridViewSingle(GridPosition gridPosition)
+    {
+        int width = GetWidth();
+        int height = GetHeight();
+        if(IsInBounds(gridPosition))
+        {
+            return mapGridViewSingleArray[gridPosition.x, gridPosition.z];
+        }
+        return null;
     }
 }

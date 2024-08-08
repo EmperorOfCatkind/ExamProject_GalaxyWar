@@ -13,7 +13,7 @@ public class MapGrid : MonoBehaviour
 
     void Awake()
     {
-        gridSystem = new GridSystem(10, 10, 2f);
+        gridSystem = new GridSystem(8, 6, 4f);
         gridSystem.DisplayCoordinates(coordinatesPrefab);
 
         if(Instance != null)
@@ -36,8 +36,12 @@ public class MapGrid : MonoBehaviour
     {
         
     }
+
     public Vector3 GetWorldPosition(GridPosition gridPosition) => gridSystem.GetWorldPosition(gridPosition);
     public GridPosition GetGridPosition(Vector3 worldPosition) => gridSystem.GetGridPosition(worldPosition);
     public int GetWidth() => gridSystem.GetWidth();
     public int GetHeight() => gridSystem.GetHeight();
+    public bool IsInBounds(GridPosition gridPosition) => gridSystem.IsInBounds(gridPosition);
+
+    public GridPosition GetHexGridPosition(Vector3 worldPosition) => gridSystem.GetHexGridPosition(worldPosition);
 }

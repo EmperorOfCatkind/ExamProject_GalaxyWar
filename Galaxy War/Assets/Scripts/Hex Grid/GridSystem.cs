@@ -1,11 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.Tracing;
+using System.IO.Compression;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 using UnityEngine;
 
 public class GridSystem
 {
-
+    private const float HEX_X_OFFSET_MULTIPLIER = .5f;
+    private const float HEX_Z_OFFSET_MULTIPLIER = .75f;
     private int width;
     private int height;
     private float tileSize;
@@ -31,12 +35,17 @@ public class GridSystem
 
     public Vector3 GetWorldPosition(GridPosition gridPosition)
     {
-        return new Vector3(gridPosition.x, 0, gridPosition.z) * tileSize;
+        return
+            new Vector3(gridPosition.x, 0, 0) * tileSize +
+            new Vector3(0, 0, gridPosition.z) * tileSize * HEX_Z_OFFSET_MULTIPLIER +
+            ((gridPosition.z % 2) == 1 ? new Vector3(1, 0, 0) * tileSize * HEX_X_OFFSET_MULTIPLIER : Vector3.zero);
     }
 
-    public GridPosition GetGridPosition(Vector3 worldPosition)
+    public GridPosition GetGridPosition(Vector3 worldPosition)  //TODO - remove after updating to GetHexGridPosition
     {
-        return new GridPosition(Mathf.RoundToInt(worldPosition.x / tileSize), Mathf.RoundToInt(worldPosition.z / tileSize));
+        int x = Mathf.RoundToInt(worldPosition.x / tileSize);
+        int z = Mathf.RoundToInt(worldPosition.z / tileSize);
+        return new GridPosition(x, z);
     }
 
     public GridObject GetGridObject(GridPosition gridPosition)
@@ -63,6 +72,56 @@ public class GridSystem
                 MapGridCoordinates mapGridCoordinates = coordinates.GetComponent<MapGridCoordinates>();
                 mapGridCoordinates.SetCoordinates(GetGridObject(gridPosition));
             }
+        }
+    }
+
+    public GridPosition GetHexGridPosition(Vector3 worldPosition)
+    {
+        int roughX = Mathf.RoundToInt(worldPosition.x / tileSize);
+        int roughZ = Mathf.RoundToInt(worldPosition.z / tileSize / HEX_Z_OFFSET_MULTIPLIER);
+
+        Vector3Int roughXZ = new Vector3Int(roughX, 0, roughZ);
+
+
+        bool isOddRow = roughZ % 2 == 1;
+        List<Vector3Int> neighbourHexesList = new List<Vector3Int>
+        {
+            roughXZ + new Vector3Int(-1, 0, 0),
+            roughXZ + new Vector3Int(+1, 0, 0),
+
+            roughXZ + new Vector3Int(isOddRow ? +1 : -1, 0, +1),
+            roughXZ + new Vector3Int(+0, 0, +1),
+
+            roughXZ + new Vector3Int(isOddRow ? +1 : -1, 0, -1),
+            roughXZ + new Vector3Int(+0, 0, -1),    
+        };
+
+        Debug.Log("XXXXXXXXX");
+        Debug.Log(roughXZ);
+
+        Vector3Int closestGridPosition = roughXZ;
+
+        foreach (Vector3Int neighbourHex in neighbourHexesList)
+        {
+            Debug.Log(neighbourHex);
+            if(Vector3.Distance(worldPosition, GetWorldPosition(new GridPosition(neighbourHex.x, neighbourHex.z))) < 
+               Vector3.Distance(worldPosition, GetWorldPosition(new GridPosition(closestGridPosition.x, closestGridPosition.z))))
+               {
+                    closestGridPosition = neighbourHex;
+               }
+        }
+        return new GridPosition(closestGridPosition.x, closestGridPosition.z);
+    }
+
+    public bool IsInBounds(GridPosition gridPosition)
+    {
+        if(gridPosition.x >= 0 && gridPosition.x < width && gridPosition.z >= 0 && gridPosition.z < height)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
         }
     }
 }

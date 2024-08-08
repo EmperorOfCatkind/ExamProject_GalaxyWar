@@ -362,6 +362,7 @@
 "Assets/Scripts/Hex Grid/MapGridCoordinates.cs"
 "Assets/Scripts/Hex Grid/MapGridView.cs"
 "Assets/Scripts/Hex Grid/MapGridViewSingle.cs"
+"Assets/Scripts/MouseWorld.cs"
 "Assets/TextMesh Pro/Examples & Extras/Scripts/Benchmark01.cs"
 "Assets/TextMesh Pro/Examples & Extras/Scripts/Benchmark01_UGUI.cs"
 "Assets/TextMesh Pro/Examples & Extras/Scripts/Benchmark02.cs"
