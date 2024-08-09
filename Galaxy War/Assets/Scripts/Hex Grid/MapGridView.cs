@@ -61,7 +61,7 @@ public class MapGridView : MonoBehaviour
     }
 
     public GridPosition GetGridPosition(Vector3 worldPosition) => MapGrid.Instance.GetGridPosition(worldPosition);
-    public GridPosition GetHexGridposition(Vector3 worldPosition) => MapGrid.Instance.GetHexGridPosition(worldPosition);
+    public GridPosition GetHexGridPosition(Vector3 worldPosition) => MapGrid.Instance.GetHexGridPosition(worldPosition);
     public int GetWidth() => MapGrid.Instance.GetWidth();
     public int GetHeight() => MapGrid.Instance.GetHeight();
     public bool IsInBounds(GridPosition gridPosition) => MapGrid.Instance.IsInBounds(gridPosition);
@@ -69,8 +69,6 @@ public class MapGridView : MonoBehaviour
 
     public MapGridViewSingle GetMapGridViewSingle(GridPosition gridPosition)
     {
-        int width = GetWidth();
-        int height = GetHeight();
         if(IsInBounds(gridPosition))
         {
             return mapGridViewSingleArray[gridPosition.x, gridPosition.z];
