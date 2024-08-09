@@ -13,6 +13,7 @@ public class GridSystem
     private int width;
     private int height;
     private float hexSize;
+    private List<Vector3Int> neighbourHexesList;
 
     private GridObject[,] gridObjectArray;
 
@@ -61,6 +62,10 @@ public class GridSystem
     {
         return height;
     }
+    public List<Vector3Int> GetNeighbourHexesList()
+    {
+        return neighbourHexesList;
+    }
     
     public void DisplayCoordinates(Transform coordinatesPrefab)
     {
@@ -84,7 +89,7 @@ public class GridSystem
 
 
         bool isOddRow = roughZ % 2 == 1;
-        List<Vector3Int> neighbourHexesList = new List<Vector3Int>
+        neighbourHexesList = new List<Vector3Int>
         {
             roughXZ + new Vector3Int(-1, 0, 0),
             roughXZ + new Vector3Int(+1, 0, 0),
@@ -96,14 +101,14 @@ public class GridSystem
             roughXZ + new Vector3Int(+0, 0, -1),    
         };
 
-        Debug.Log("XXXXXXXXX");
-        Debug.Log(roughXZ);
+        //Debug.Log("XXXXXXXXX");
+        //Debug.Log(roughXZ);
 
         Vector3Int closestGridPosition = roughXZ;
 
         foreach (Vector3Int neighbourHex in neighbourHexesList)
         {
-            Debug.Log(neighbourHex);
+            //Debug.Log(neighbourHex);
             if(Vector3.Distance(worldPosition, GetWorldPosition(new GridPosition(neighbourHex.x, neighbourHex.z))) < 
                Vector3.Distance(worldPosition, GetWorldPosition(new GridPosition(closestGridPosition.x, closestGridPosition.z))))
                {

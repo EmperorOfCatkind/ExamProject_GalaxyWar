@@ -59,7 +59,11 @@ public class MouseWorld : MonoBehaviour
             }
             visual.SetActive(false);
         }
-        
+
+        if(Input.GetKeyDown(KeyCode.Mouse0))
+        {
+            SelectHex();
+        }
     }
 
     public static Vector3 GetMouseWorldPosition()
@@ -67,5 +71,28 @@ public class MouseWorld : MonoBehaviour
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         Physics.Raycast(ray, out RaycastHit raycastHit, float.MaxValue, Instance.hexGridLayerMask);
         return raycastHit.point;
+    }
+
+    public void SelectHex()
+    {    
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        bool isOnGrid = Physics.Raycast(ray, out RaycastHit raycastHit, float.MaxValue, hexGridLayerMask);
+
+        if(isOnGrid)
+        {
+            GridPosition currentGridPosition = gridSystem.GetHexGridPosition(raycastHit.point);
+            lastMapGridViewSingle = mapController.GetMapGridViewSingle(currentGridPosition);
+
+            if(lastMapGridViewSingle != null)
+            {
+                lastMapGridViewSingle.OnClicked();
+                Debug.Log("----------");
+                Debug.Log(currentGridPosition);
+                foreach(var neighbourHex in gridSystem.GetNeighbourHexesList())
+                {
+                    Debug.Log(neighbourHex);
+                }
+            }
+        }
     }
 }

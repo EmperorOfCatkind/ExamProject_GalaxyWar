@@ -836,7 +836,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   coordinatesPrefab: {fileID: 8410430384697363148, guid: 3524de39077d68245b284999e1a7b0f3, type: 3}
-  hexTilePrefab: {fileID: 1548783555087396100, guid: e1fba3be45e9e964985c756911199056, type: 3}
+  hexTilePrefab: {fileID: 382636109382298812, guid: 2443edac1a4ac2c409dcfc4a30e6fee6, type: 3}
 --- !u!4 &2041101406
 Transform:
   m_ObjectHideFlags: 0

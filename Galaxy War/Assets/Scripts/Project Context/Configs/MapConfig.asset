@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: MapConfig
   m_EditorClassIdentifier: 
   MapData:
-    width: 20
-    height: 20
-    hexSize: 4
+    width: 8
+    height: 6
+    hexSize: 8
