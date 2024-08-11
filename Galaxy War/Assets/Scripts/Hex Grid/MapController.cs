@@ -23,14 +23,17 @@ public class MapController : MonoBehaviour
         gridSystem = mapFunctionalService.GridSystem;
         gridPositions = mapVisualService.GridPositions;
 
+        gridSystem.DisplayCoordinates(coordinatesPrefab);
+        InitializeGridView();
+        HideAll();
 
     }
     // Start is called before the first frame update
     void Start()
     {
-        gridSystem.DisplayCoordinates(coordinatesPrefab);
+        /*gridSystem.DisplayCoordinates(coordinatesPrefab);
         InitializeGridView();
-        HideAll();
+        HideAll();*/
     }
 
     // Update is called once per frame
