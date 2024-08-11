@@ -364,6 +364,7 @@
 "Assets/Scripts/Hex Grid/MapGridView.cs"
 "Assets/Scripts/Hex Grid/MapGridViewSingle.cs"
 "Assets/Scripts/MouseWorld.cs"
+"Assets/Scripts/Planet/Planet.cs"
 "Assets/Scripts/Project Context/Boot.cs"
 "Assets/Scripts/Project Context/Configs/MapConfig.cs"
 "Assets/Scripts/Project Context/ConfigService.cs"

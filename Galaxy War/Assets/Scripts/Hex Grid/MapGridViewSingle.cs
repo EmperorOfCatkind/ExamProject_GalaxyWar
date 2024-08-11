@@ -21,13 +21,12 @@ public class MapGridViewSingle : MonoBehaviour
     public void OnClicked() //TODO - make material change work
     {
         meshRenderer.material = materialOnClick;
-        StartCoroutine(Wait());
-        Hide();
-        meshRenderer.material = materialOnHover;
+        Invoke(nameof(OnClickedAfter), 0.5f);
     }
 
-    private IEnumerator Wait()
+    private void OnClickedAfter()
     {
-        yield return new WaitForSeconds(2f);
+        Hide();
+        meshRenderer.material = materialOnHover;
     }
 }
