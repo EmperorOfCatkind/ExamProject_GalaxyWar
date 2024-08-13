@@ -7,6 +7,11 @@ public class PrototypeShip : MonoBehaviour, IShip
     public GridPosition gridPosition { get; set; }
     public string Name { get; set; }
 
+    public string GetName()
+    {
+        return Name;
+    }
+
     // Start is called before the first frame update
     void Start()
     {

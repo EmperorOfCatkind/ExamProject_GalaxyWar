@@ -47,18 +47,32 @@ public class UnitController : MonoBehaviour
 
     public bool TrySelectShip()
     {
+        /*if(selectedShip != null)
+        {
+            selectedShip.GetComponent<SelectedVisual>().Hide();
+        }*/
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         bool OnShip = Physics.Raycast(ray, out RaycastHit raycastHit, float.MaxValue, shipLayerMask);
 
         if(OnShip)
         {
-            /*if(raycastHit.transform.TryGetComponent<IShip>(out IShip ship))
+            if(raycastHit.transform.TryGetComponent<IShip>(out IShip ship))
             {
                 SetSelectedShip(ship);
-                Debug.Log(selectedShip.Name);
+                Debug.Log(selectedShip.GetName());
+                raycastHit.transform.GetComponent<SelectedVisual>().Show();
+                return true;
+            }
+            /*GameObject selectedObject = raycastHit.collider.gameObject;
+
+            IShip ship = selectedObject.GetComponent<IShip>();
+
+            if(ship != null)
+            {
+                Debug.Log("this is " + selectedObject.name);
+                ship.DisplayName();
                 return true;
             }*/
-            GameObject selectedObject = raycastHit.collider.gameObject;
         }
 
         return false;
