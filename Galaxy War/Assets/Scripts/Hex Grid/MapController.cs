@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class MapController : MonoBehaviour
 {
+    public static MapController Instance;
+
     private IMapFunctionalService mapFunctionalService;
     private IMapVisualService mapVisualService;
     private GridSystem gridSystem;
@@ -17,20 +19,30 @@ public class MapController : MonoBehaviour
 
     void Awake()
     {
+        if(Instance != null)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        Instance = this;
+
         mapFunctionalService = ProjectContext.Instance.MapFunctionalService;
         mapVisualService = ProjectContext.Instance.MapVisualService;
 
         gridSystem = mapFunctionalService.GridSystem;
         gridPositions = mapVisualService.GridPositions;
 
-
+        //gridSystem.DisplayCoordinates(coordinatesPrefab);   //debug purposes
+        InitializeGridView();
+        HideAll();
     }
+
     // Start is called before the first frame update
     void Start()
     {
-        gridSystem.DisplayCoordinates(coordinatesPrefab);
+        /*gridSystem.DisplayCoordinates(coordinatesPrefab);
         InitializeGridView();
-        HideAll();
+        HideAll();*/
     }
 
     // Update is called once per frame
@@ -51,6 +63,7 @@ public class MapController : MonoBehaviour
 
                 Transform mapGridViewTransform = Instantiate(hexTilePrefab, gridSystem.GetWorldPosition(gridPosition), Quaternion.identity);
                 mapGridViewSingleArray[x,z] = mapGridViewTransform.GetComponent<MapGridViewSingle>();
+                mapGridViewSingleArray[x,z].SetGridObject(gridSystem.GetGridObject(gridPosition));
             }
         }
     }
@@ -74,4 +87,8 @@ public class MapController : MonoBehaviour
         }
         return null;
     }
+
+
+
+    public GridPosition GetHexGridPosition(Vector3 worldPosition) => gridSystem.GetHexGridPosition(worldPosition);
 }
