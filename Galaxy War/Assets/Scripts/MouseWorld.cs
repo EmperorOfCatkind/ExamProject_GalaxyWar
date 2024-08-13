@@ -6,9 +6,11 @@ public class MouseWorld : MonoBehaviour
 {
     private static MouseWorld Instance;
     [SerializeField] private LayerMask hexGridLayerMask;
+    [SerializeField] private MapController mapController;
 
     private MapGridViewSingle lastMapGridViewSingle;
-    private MapGridView mapGridView;
+    //private MapGridView mapGridView;
+    private GridSystem gridSystem;
     [SerializeField] GameObject visual;
 
     void Awake()
@@ -18,7 +20,7 @@ public class MouseWorld : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        mapGridView = MapGridView.Instance;
+        gridSystem = ProjectContext.Instance.MapFunctionalService.GridSystem;
     }
 
     // Update is called once per frame
@@ -31,21 +33,21 @@ public class MouseWorld : MonoBehaviour
         {
             visual.SetActive(true);
             transform.position = raycastHit.point;
-            GridPosition currentGridPosition = mapGridView.GetHexGridposition(raycastHit.point);
-            if(mapGridView.IsInBounds(currentGridPosition))
+            GridPosition currentGridPosition = gridSystem.GetHexGridPosition(raycastHit.point);
+            if(gridSystem.IsInBounds(currentGridPosition))
             {
                 if(lastMapGridViewSingle != null)
                 {
                     lastMapGridViewSingle.Hide();
                 }
-                lastMapGridViewSingle = mapGridView.GetMapGridViewSingle(currentGridPosition);
+                lastMapGridViewSingle = mapController.GetMapGridViewSingle(currentGridPosition);
 
                 if(lastMapGridViewSingle != null)
                 {
                     lastMapGridViewSingle.Show();
                 }
             
-                mapGridView.GetHexGridposition(raycastHit.point);
+                gridSystem.GetHexGridPosition(raycastHit.point);
             }
             
         }
@@ -57,7 +59,11 @@ public class MouseWorld : MonoBehaviour
             }
             visual.SetActive(false);
         }
-        
+
+        if(Input.GetKeyDown(KeyCode.Mouse0))
+        {
+            SelectHex();
+        }
     }
 
     public static Vector3 GetMouseWorldPosition()
@@ -65,5 +71,28 @@ public class MouseWorld : MonoBehaviour
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         Physics.Raycast(ray, out RaycastHit raycastHit, float.MaxValue, Instance.hexGridLayerMask);
         return raycastHit.point;
+    }
+
+    public void SelectHex()
+    {    
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        bool isOnGrid = Physics.Raycast(ray, out RaycastHit raycastHit, float.MaxValue, hexGridLayerMask);
+
+        if(isOnGrid)
+        {
+            GridPosition currentGridPosition = gridSystem.GetHexGridPosition(raycastHit.point);
+            lastMapGridViewSingle = mapController.GetMapGridViewSingle(currentGridPosition);
+
+            if(lastMapGridViewSingle != null)
+            {
+                lastMapGridViewSingle.OnClicked();
+                Debug.Log("----------");
+                Debug.Log(currentGridPosition);
+                foreach(var neighbourHex in gridSystem.GetNeighbourHexesList())
+                {
+                    Debug.Log(neighbourHex);
+                }
+            }
+        }
     }
 }
