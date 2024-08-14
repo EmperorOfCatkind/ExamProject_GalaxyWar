@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PrototypeShip : MonoBehaviour, IShip
 {
+    [SerializeField] public SelectedVisual selectedVisual;
+
     public GridPosition gridPosition { get; set; }
     public string Name { get; set; }
 
@@ -23,5 +25,10 @@ public class PrototypeShip : MonoBehaviour, IShip
     void Update()
     {
         
+    }
+
+    public void HideSelectedVisual()
+    {
+        selectedVisual.Hide();
     }
 }

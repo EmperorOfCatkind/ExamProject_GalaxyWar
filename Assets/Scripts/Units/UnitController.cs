@@ -8,6 +8,8 @@ public class UnitController : MonoBehaviour
     [SerializeField] private LayerMask shipLayerMask;
     private Vector3 shipYOffset;
     private IShip selectedShip;
+    
+
     // Start is called before the first frame update
     void Start()
     {
@@ -47,10 +49,10 @@ public class UnitController : MonoBehaviour
 
     public bool TrySelectShip()
     {
-        /*if(selectedShip != null)
+        if(selectedShip != null)
         {
-            selectedShip.GetComponent<SelectedVisual>().Hide();
-        }*/
+            selectedShip.HideSelectedVisual();
+        }
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         bool OnShip = Physics.Raycast(ray, out RaycastHit raycastHit, float.MaxValue, shipLayerMask);
 
@@ -82,4 +84,5 @@ public class UnitController : MonoBehaviour
     {
         selectedShip = ship;
     }
+    
 }
