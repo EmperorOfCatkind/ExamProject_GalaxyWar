@@ -4,32 +4,32 @@ using UnityEngine;
 
 public class UnitController : MonoBehaviour
 {
+    public static UnitController Instance;
+
     [SerializeField] private GameObject shipPrefab;
     [SerializeField] private LayerMask shipLayerMask;
-    
 
-    [SerializeField] private float stoppingDistance;
-    [SerializeField] private float speed;
-
+    private Ship selectedShip;
     private Vector3 shipYOffset;
-    private IShip selectedShip;
-    private bool move;
-    
 
+    void Awake()
+    {
+        if(Instance != null)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        Instance = this;
+    }
     // Start is called before the first frame update
     void Start()
     {
         shipYOffset = new Vector3(0, 3, 0);
-        stoppingDistance = .5f;
-        speed = 5f;
-        move = false;
 
-        SpawnShip(shipPrefab, new GridPosition(0, 0));  //debug purposes
-        SpawnShip(shipPrefab, new GridPosition(0, 0));  //debug purposes
-        SpawnShip(shipPrefab, new GridPosition(0, 0));  //debug purposes
-        SpawnShip(shipPrefab, new GridPosition(0, 0));  //debug purposes
-        SpawnShip(shipPrefab, new GridPosition(0, 0));  //debug purposes
-        SpawnShip(shipPrefab, new GridPosition(0, 0));  //debug purposes
+        SpawnShip(new GridPosition(0,1));
+        SpawnShip(new GridPosition(1,2));
+        SpawnShip(new GridPosition(3,1));
+        SpawnShip(new GridPosition(0,0));
     }
 
     // Update is called once per frame
@@ -37,47 +37,36 @@ public class UnitController : MonoBehaviour
     {
         if(Input.GetMouseButtonDown(0))
         {
-            if(TrySelectShip()) return;
-            while(move == false)
-            {
-                MoveShip();
-                move = MoveShip();
-            }
+            if( TrySelectShip()) return;
+            MoveShip();
         }
     }
 
-    public void SpawnShip(GameObject prefab, GridPosition gridPosition)
+    public void SpawnShip(GridPosition gridPosition)
     {
-        MapGridViewSingle hexToSpawn = MapController.Instance.GetMapGridViewSingle(gridPosition);
-
-        SpaceWaypoint availableWaypoint = hexToSpawn.GetAvailableWaypoint();
-
-        if(availableWaypoint == null)
+        if(!MapController.Instance.IsInBounds(gridPosition))
         {
             return;
         }
 
-        Instantiate(prefab, availableWaypoint.transform.position + shipYOffset, Quaternion.identity);
-        availableWaypoint.GotOccupiedByShip();
-        prefab.GetComponent<IShip>().SetCurrentWaypoint(availableWaypoint);
+        Instantiate(shipPrefab, MapController.Instance.GetWorldPosition(gridPosition) + shipYOffset, Quaternion.identity);
     }
 
     public bool TrySelectShip()
     {
-        if(selectedShip != null)
-        {
-            selectedShip.HideSelectedVisual();
-        }
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        bool OnShip = Physics.Raycast(ray, out RaycastHit raycastHit, float.MaxValue, shipLayerMask);
 
-        if(OnShip)
+        if(Physics.Raycast(ray, out RaycastHit raycastHit, float.MaxValue, shipLayerMask))
         {
-            if(raycastHit.transform.TryGetComponent<IShip>(out IShip ship))
+            if(selectedShip != null)
+            {
+                selectedShip.Deselected();
+            }
+            
+            if(raycastHit.transform.TryGetComponent<Ship>(out Ship ship))
             {
                 SetSelectedShip(ship);
-                Debug.Log(selectedShip.GetName());
-                raycastHit.transform.GetComponent<SelectedVisual>().Show();
+                ship.Selected();
                 return true;
             }
         }
@@ -85,52 +74,18 @@ public class UnitController : MonoBehaviour
         return false;
     }
 
-    public void SetSelectedShip(IShip ship)
-    {
-        selectedShip = ship;
-    }
-    
-    public bool MoveShip()
+    public void MoveShip()
     {
         if(selectedShip == null)
         {
-            return true;
+            return;
         }
+        GridPosition mouseGridPosition = MapController.Instance.GetHexGridPosition(MouseWorld.GetMouseWorldPosition());
+        selectedShip.GetMoveAction().Move(mouseGridPosition);
+    }
 
-        GridPosition gridPosition = MapController.Instance.GetHexGridPosition(MouseWorld.GetMouseWorldPosition());
-
-        if(selectedShip.gridPosition == gridPosition)
-        {
-            return true;
-        }
-
-        MapGridViewSingle targetHex = MapController.Instance.GetMapGridViewSingle(gridPosition);
-        SpaceWaypoint availableWaypoint = targetHex.GetAvailableWaypoint();
-
-        if(availableWaypoint == null)
-        {
-            return true;
-        }
-
-        SpaceWaypoint previousWaypoint = selectedShip.GetCurrentWaypoint();
-        Vector3 start = selectedShip.GetCurrentWorldPosition();
-        Vector3 end = availableWaypoint.transform.position;
-
-        Vector3 moveDirection = (end - start).normalized;
-
-        if(Vector3.Distance(start, end) > stoppingDistance)
-        {
-            selectedShip.SetCurrentWorldPosition(moveDirection, speed);
-            return false;
-        }
-
-        else
-        {
-            selectedShip.SetCurrentWorldPosition(selectedShip.GetCurrentWorldPosition() + shipYOffset, speed);
-            previousWaypoint.GotFree();
-            availableWaypoint.GotOccupiedByShip();
-            selectedShip.SetCurrentWaypoint(availableWaypoint);
-            return true;
-        }
+    public void SetSelectedShip(Ship ship)
+    {
+        selectedShip = ship;
     }
 }

@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class SelectedVisual : MonoBehaviour
-{
-    
-    [SerializeField] MeshRenderer selectedVisual;
+{   
+    [SerializeField] private MeshRenderer meshRenderer;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -17,13 +17,12 @@ public class SelectedVisual : MonoBehaviour
     {
         
     }
-
     public void Show()
     {
-        selectedVisual.enabled = true;
+        meshRenderer.enabled = true;
     }
     public void Hide()
     {
-        selectedVisual.enabled = false;
+        meshRenderer.enabled = false;
     }
 }

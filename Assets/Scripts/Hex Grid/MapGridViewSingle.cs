@@ -11,7 +11,6 @@ public class MapGridViewSingle : MonoBehaviour
 
     private GridObject gridObject;  //not sure if I need this one
 
-    [SerializeField] public SpaceWaypoint[] spaceWaypoints;
     void Start()
     {
         
@@ -44,19 +43,5 @@ public class MapGridViewSingle : MonoBehaviour
     public GridObject GetGridObject()
     {
         return gridObject;
-    }
-
-    public SpaceWaypoint GetAvailableWaypoint()
-    {
-        for(int i = 0; i < spaceWaypoints.Length; i++)
-        {
-            if (spaceWaypoints[i].GetHasUnit() == false)
-            {
-                return spaceWaypoints[i];
-            }
-        }
-        
-        Debug.Log("All waypoints occupied");
-        return null;
     }
 }

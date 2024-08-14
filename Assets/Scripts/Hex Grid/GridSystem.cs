@@ -67,7 +67,7 @@ public class GridSystem
         return neighbourHexesList;
     }
     
-    public void DisplayCoordinates(Transform coordinatesPrefab)
+    public void DisplayCoordinates(Transform coordinatesPrefab)     //Debug Purposes
     {
         for (int x = 0; x < width; x++){
             for (int z = 0; z < height; z++){
@@ -128,5 +128,10 @@ public class GridSystem
         {
             return false;
         }
+    }
+
+    public GridObject[,] GetGridObjectArray()
+    {
+        return gridObjectArray;
     }
 }

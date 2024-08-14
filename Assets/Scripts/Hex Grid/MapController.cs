@@ -11,6 +11,7 @@ public class MapController : MonoBehaviour
     private IMapVisualService mapVisualService;
     private GridSystem gridSystem;
     private GridPosition[,] gridPositions;
+    private GridObject[,] gridObjects;
 
     private MapGridViewSingle[,] mapGridViewSingleArray;
 
@@ -31,6 +32,7 @@ public class MapController : MonoBehaviour
 
         gridSystem = mapFunctionalService.GridSystem;
         gridPositions = mapVisualService.GridPositions;
+        gridObjects = gridSystem.GetGridObjectArray();
 
         //gridSystem.DisplayCoordinates(coordinatesPrefab);   //debug purposes
         InitializeGridView();
@@ -55,11 +57,11 @@ public class MapController : MonoBehaviour
     {
         mapGridViewSingleArray = new MapGridViewSingle[gridPositions.GetLength(0), gridPositions.GetLength(1)];
 
-        for (int x = 0; x < gridPositions.GetLength(0); x++)
+        for (int x = 0; x < gridObjects.GetLength(0); x++)
         {
-            for (int z = 0; z < gridPositions.GetLength(1); z++)
+            for (int z = 0; z < gridObjects.GetLength(1); z++)
             {
-                GridPosition gridPosition = gridPositions[x,z];
+                GridPosition gridPosition = gridObjects[x,z].GetGridPosition();
 
                 Transform mapGridViewTransform = Instantiate(hexTilePrefab, gridSystem.GetWorldPosition(gridPosition), Quaternion.identity);
                 mapGridViewSingleArray[x,z] = mapGridViewTransform.GetComponent<MapGridViewSingle>();
@@ -67,7 +69,6 @@ public class MapController : MonoBehaviour
             }
         }
     }
-
     public void HideAll()
     {
         for(int x = 0; x < mapGridViewSingleArray.GetLength(0); x++)
@@ -78,7 +79,6 @@ public class MapController : MonoBehaviour
             }
         }
     }
-
     public MapGridViewSingle GetMapGridViewSingle(GridPosition gridPosition)
     {
         if(gridSystem.IsInBounds(gridPosition))
@@ -87,8 +87,13 @@ public class MapController : MonoBehaviour
         }
         return null;
     }
+    public void AddShipAtGridPosition(GridPosition gridPosition, Ship ship)
+    {
+        GridObject gridObject = gridSystem.GetGridObject(gridPosition);
+        gridObject.AddShip(ship);
+    }
 
-
-
+    public Vector3 GetWorldPosition(GridPosition gridPosition) => gridSystem.GetWorldPosition(gridPosition);
     public GridPosition GetHexGridPosition(Vector3 worldPosition) => gridSystem.GetHexGridPosition(worldPosition);
+    public bool IsInBounds(GridPosition gridPosition) => gridSystem.IsInBounds(gridPosition);
 }
