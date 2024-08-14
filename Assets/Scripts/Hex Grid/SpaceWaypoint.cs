@@ -22,8 +22,14 @@ public class SpaceWaypoint : MonoBehaviour
     {
         return hasUnit;
     }
-    public void SetHasUnit(bool value)
+
+
+    public void GotOccupiedByShip()
     {
-        hasUnit = value;
+        hasUnit = true;
+    }
+    public void GotFree()
+    {
+        hasUnit = false;
     }
 }

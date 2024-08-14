@@ -8,6 +8,7 @@ public class PrototypeShip : MonoBehaviour, IShip
 
     public GridPosition gridPosition { get; set; }
     public string Name { get; set; }
+    public SpaceWaypoint currentWaypoint { get; set; }
 
     public string GetName()
     {
@@ -30,5 +31,23 @@ public class PrototypeShip : MonoBehaviour, IShip
     public void HideSelectedVisual()
     {
         selectedVisual.Hide();
+    }
+
+    public void SetCurrentWaypoint(SpaceWaypoint currentWaypoint)
+    {
+        this.currentWaypoint = currentWaypoint;
+    }
+    public SpaceWaypoint GetCurrentWaypoint()
+    {
+        return currentWaypoint;
+    }
+    public Vector3 GetCurrentWorldPosition()
+    {
+        return transform.position;
+    }
+    public void SetCurrentWorldPosition(Vector3 position, float speed)
+    {
+        transform.forward = Vector3.Lerp(transform.forward, position, Time.deltaTime * speed);
+        transform.position += position * speed * Time.deltaTime;
     }
 }

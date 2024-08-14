@@ -11,10 +11,10 @@ public class MapGridViewSingle : MonoBehaviour
 
     private GridObject gridObject;  //not sure if I need this one
 
-    [SerializeField] private SpaceWaypoint[] spaceWaypoints;
+    [SerializeField] public SpaceWaypoint[] spaceWaypoints;
     void Start()
     {
-        spaceWaypoints = new SpaceWaypoint[5];
+        
     }
     public void Show()
     {

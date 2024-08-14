@@ -60,15 +60,18 @@ public class MouseWorld : MonoBehaviour
                 {
                     Debug.Log(neighbourHex);
                 }*/
+                /*foreach(var waypoint in lastMapGridViewSingle.spaceWaypoints)
+                {
+                    if(waypoint.GetHasUnit() == true)
+                    {
+                        Debug.Log(waypoint.GetHasUnit());
+                    }
+                }*/
             }
         }
     }
     public void HighlightOnHover()
     {
-        /*if(HoverOnShip())
-        {
-            return;
-        }*/
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         bool isOnGrid = Physics.Raycast(ray, out RaycastHit raycastHit, float.MaxValue, hexGridLayerMask);
         //Debug.Log(isOnGrid);
@@ -103,13 +106,4 @@ public class MouseWorld : MonoBehaviour
             visual.SetActive(false);
         }
     }
-
-    /*public bool HoverOnShip()
-    {
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        if(Physics.Raycast(ray, out RaycastHit raycastHit, float.MaxValue, shipLayerMask))
-            return true;
-        else
-            return false;
-    }*/
 }
