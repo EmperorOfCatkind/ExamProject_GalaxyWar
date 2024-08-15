@@ -51,7 +51,14 @@ public class GridSystem
 
     public GridObject GetGridObject(GridPosition gridPosition)
     {
-        return gridObjectArray[gridPosition.x, gridPosition.z];
+        if(IsInBounds(gridPosition))
+        {
+            return gridObjectArray[gridPosition.x, gridPosition.z];
+        }
+        else
+        {
+            return null;
+        }
     }
 
     public int GetWidth()

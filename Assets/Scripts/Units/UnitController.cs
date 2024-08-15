@@ -26,10 +26,17 @@ public class UnitController : MonoBehaviour
     {
         shipYOffset = new Vector3(0, 3, 0);
 
-        SpawnShip(new GridPosition(0,1));
-        SpawnShip(new GridPosition(1,2));
-        SpawnShip(new GridPosition(3,1));
-        SpawnShip(new GridPosition(0,0));
+        SpawnShip(new GridPosition(0,1));       //debug purposes
+        SpawnShip(new GridPosition(0,1));       //debug purposes
+
+        SpawnShip(new GridPosition(1,2));       //debug purposes
+        SpawnShip(new GridPosition(1,2));       //debug purposes
+
+        SpawnShip(new GridPosition(3,1));       //debug purposes
+        SpawnShip(new GridPosition(3,1));       //debug purposes
+
+        SpawnShip(new GridPosition(0,0));       //debug purposes
+        SpawnShip(new GridPosition(0,0));       //debug purposes
     }
 
     // Update is called once per frame
@@ -49,7 +56,19 @@ public class UnitController : MonoBehaviour
             return;
         }
 
-        Instantiate(shipPrefab, MapController.Instance.GetWorldPosition(gridPosition) + shipYOffset, Quaternion.identity);
+        GridObject gridObject = MapController.Instance.GetGridObject(gridPosition);
+
+        /*if(gridObject == null)
+        {
+            return;
+        }*/
+
+        SpaceWaypoint availableWaypoint = gridObject.GetAvailableSpaceWaypoint();
+
+        //Instantiate(shipPrefab, MapController.Instance.GetWorldPosition(gridPosition) + shipYOffset, Quaternion.identity);
+        Instantiate(shipPrefab, availableWaypoint.transform.position + shipYOffset, Quaternion.identity);
+        availableWaypoint.hasShip = true;
+        //shipPrefab.GetComponent<Ship>().SetCurrentWaypoint(availableWaypoint);      //this line is useless
     }
 
     public bool TrySelectShip()
@@ -67,6 +86,7 @@ public class UnitController : MonoBehaviour
             {
                 SetSelectedShip(ship);
                 ship.Selected();
+                //Debug.Log(ship.GetCurrentWaypoint());
                 return true;
             }
         }
@@ -80,6 +100,7 @@ public class UnitController : MonoBehaviour
         {
             return;
         }
+
         GridPosition mouseGridPosition = MapController.Instance.GetHexGridPosition(MouseWorld.GetMouseWorldPosition());
         selectedShip.GetMoveAction().Move(mouseGridPosition);
     }

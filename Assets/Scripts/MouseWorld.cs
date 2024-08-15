@@ -67,6 +67,10 @@ public class MouseWorld : MonoBehaviour
                         Debug.Log(waypoint.GetHasUnit());
                     }
                 }*/
+                /*foreach(var SpaceWaypoint in lastMapGridViewSingle.GetGridObject().GetSpaceWaypointsList())
+                {
+                    Debug.Log(SpaceWaypoint.hasShip);
+                }*/
             }
         }
     }

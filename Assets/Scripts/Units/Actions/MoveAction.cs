@@ -47,7 +47,20 @@ public class MoveAction : BaseAction
 
     public void Move(GridPosition gridPosition)
     {
-        destination = MapController.Instance.GetWorldPosition(gridPosition) + shipYOffset;
+        //destination = MapController.Instance.GetWorldPosition(gridPosition) + shipYOffset;
+        SpaceWaypoint newWaypoint = MapController.Instance.GetGridObject(gridPosition).GetAvailableSpaceWaypoint();
+
+        if(newWaypoint == null)
+        {
+            return;
+        }
+
+        destination = newWaypoint.transform.position + shipYOffset;
+
+        GetComponent<Ship>().GetCurrentWaypoint().hasShip = false;
+        GetComponent<Ship>().SetCurrentWaypoint(newWaypoint);
+        newWaypoint.hasShip = true;
+
         isActive = true;
     }
 }

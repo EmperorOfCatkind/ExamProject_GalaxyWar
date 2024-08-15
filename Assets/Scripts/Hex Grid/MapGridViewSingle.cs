@@ -9,11 +9,16 @@ public class MapGridViewSingle : MonoBehaviour
     [SerializeField] private Material materialOnHover;  
     [SerializeField] private Material materialOnClick;
 
-    private GridObject gridObject;  //not sure if I need this one
+    [SerializeField] private SpaceWaypoint[] spaceWaypoints; 
+
+    private GridObject gridObject;  
 
     void Start()
     {
-        
+        foreach(var spaceWaypoint in spaceWaypoints)
+        {
+            spaceWaypoint.SetGridObject(gridObject);
+        }
     }
     public void Show()
     {
@@ -43,5 +48,10 @@ public class MapGridViewSingle : MonoBehaviour
     public GridObject GetGridObject()
     {
         return gridObject;
+    }
+
+    public SpaceWaypoint[] GetSpaceWaypoints()
+    {
+        return spaceWaypoints;
     }
 }

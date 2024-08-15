@@ -42,9 +42,7 @@ public class MapController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        /*gridSystem.DisplayCoordinates(coordinatesPrefab);
-        InitializeGridView();
-        HideAll();*/
+        
     }
 
     // Update is called once per frame
@@ -64,8 +62,18 @@ public class MapController : MonoBehaviour
                 GridPosition gridPosition = gridObjects[x,z].GetGridPosition();
 
                 Transform mapGridViewTransform = Instantiate(hexTilePrefab, gridSystem.GetWorldPosition(gridPosition), Quaternion.identity);
-                mapGridViewSingleArray[x,z] = mapGridViewTransform.GetComponent<MapGridViewSingle>();
-                mapGridViewSingleArray[x,z].SetGridObject(gridSystem.GetGridObject(gridPosition));
+
+                MapGridViewSingle mapGridViewSingle = mapGridViewTransform.GetComponent<MapGridViewSingle>();
+                mapGridViewSingleArray[x,z] = mapGridViewSingle;
+
+                GridObject gridObject = gridSystem.GetGridObject(gridPosition);
+                mapGridViewSingleArray[x,z].SetGridObject(gridObject);
+
+                foreach(var spaceWaypoint in mapGridViewSingle.GetSpaceWaypoints())
+                {
+                    gridObject.AddSpaceWaypoint(spaceWaypoint);
+                }
+
             }
         }
     }
@@ -96,4 +104,5 @@ public class MapController : MonoBehaviour
     public Vector3 GetWorldPosition(GridPosition gridPosition) => gridSystem.GetWorldPosition(gridPosition);
     public GridPosition GetHexGridPosition(Vector3 worldPosition) => gridSystem.GetHexGridPosition(worldPosition);
     public bool IsInBounds(GridPosition gridPosition) => gridSystem.IsInBounds(gridPosition);
+    public GridObject GetGridObject(GridPosition gridPosition) => gridSystem.GetGridObject(gridPosition);
 }
