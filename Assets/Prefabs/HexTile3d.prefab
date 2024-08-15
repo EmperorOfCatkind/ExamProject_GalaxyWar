@@ -34,6 +34,7 @@ Transform:
   m_Children:
   - {fileID: 709770900209410721}
   - {fileID: 5259853185759476340}
+  - {fileID: 4643016624607189547}
   m_Father: {fileID: 382636109382298812}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &8820325858436532827
@@ -102,6 +103,7 @@ MonoBehaviour:
   fuelValue: 4
   oreText: {fileID: 3244727004188277770}
   fuelText: {fileID: 3281829434198440001}
+  spaceDockWaypoint: {fileID: 7698291151860612767}
 --- !u!1 &4812278770476859046
 GameObject:
   m_ObjectHideFlags: 0
@@ -159,6 +161,8 @@ MonoBehaviour:
   - {fileID: 8937135223467379147}
   - {fileID: 220859059352193215}
   - {fileID: 1148093010673631376}
+  planets:
+  - {fileID: 2030635438342152516}
 --- !u!1 &5005898760395925446
 GameObject:
   m_ObjectHideFlags: 0
@@ -1170,6 +1174,79 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3797473041669964654, guid: 1b0a5978e934c4e4bb44ec8c1da3298c, type: 3}
   m_PrefabInstance: {fileID: 4846346382991349196}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &5224044883946425594
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 4074508846903402596}
+    m_Modifications:
+    - target: {fileID: 581182201222338257, guid: 34552f93a32f845489f096127ce0a494, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 581182201222338257, guid: 34552f93a32f845489f096127ce0a494, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 581182201222338257, guid: 34552f93a32f845489f096127ce0a494, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 581182201222338257, guid: 34552f93a32f845489f096127ce0a494, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 581182201222338257, guid: 34552f93a32f845489f096127ce0a494, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 581182201222338257, guid: 34552f93a32f845489f096127ce0a494, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 581182201222338257, guid: 34552f93a32f845489f096127ce0a494, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 581182201222338257, guid: 34552f93a32f845489f096127ce0a494, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 581182201222338257, guid: 34552f93a32f845489f096127ce0a494, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 581182201222338257, guid: 34552f93a32f845489f096127ce0a494, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7119193369711972785, guid: 34552f93a32f845489f096127ce0a494, type: 3}
+      propertyPath: m_Name
+      value: SpaceDockWaypoint
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 34552f93a32f845489f096127ce0a494, type: 3}
+--- !u!4 &4643016624607189547 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 581182201222338257, guid: 34552f93a32f845489f096127ce0a494, type: 3}
+  m_PrefabInstance: {fileID: 5224044883946425594}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &7698291151860612767 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2497908067459265125, guid: 34552f93a32f845489f096127ce0a494, type: 3}
+  m_PrefabInstance: {fileID: 5224044883946425594}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca822161d6b220347ae50afb5cff8aae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &5746541438567456227
 PrefabInstance:
   m_ObjectHideFlags: 0

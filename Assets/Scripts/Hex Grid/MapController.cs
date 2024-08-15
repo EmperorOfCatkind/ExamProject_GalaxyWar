@@ -74,6 +74,11 @@ public class MapController : MonoBehaviour
                     gridObject.AddSpaceWaypoint(spaceWaypoint);
                 }
 
+                foreach(var planet in mapGridViewSingle.GetPlanets())
+                {
+                    gridObject.AddPlanet(planet);
+                    gridObject.AddSpaceDockWaypoint(planet);
+                }
             }
         }
     }

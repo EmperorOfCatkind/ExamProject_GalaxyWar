@@ -10,6 +10,7 @@ public class MapGridViewSingle : MonoBehaviour
     [SerializeField] private Material materialOnClick;
 
     [SerializeField] private SpaceWaypoint[] spaceWaypoints; 
+    [SerializeField] private Planet[] planets;
 
     private GridObject gridObject;  
 
@@ -18,6 +19,10 @@ public class MapGridViewSingle : MonoBehaviour
         foreach(var spaceWaypoint in spaceWaypoints)
         {
             spaceWaypoint.SetGridObject(gridObject);
+        }
+        foreach(var planet in planets)
+        {
+            planet.SetGridObject(gridObject);
         }
     }
     public void Show()
@@ -53,5 +58,10 @@ public class MapGridViewSingle : MonoBehaviour
     public SpaceWaypoint[] GetSpaceWaypoints()
     {
         return spaceWaypoints;
+    }
+
+    public Planet[] GetPlanets()
+    {
+        return planets;
     }
 }

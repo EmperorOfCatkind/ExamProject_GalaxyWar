@@ -329,9 +329,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shipPrefab: {fileID: 1909258143715327506, guid: 10e879463fa822b48b0e0a36f05f5f5e, type: 3}
+  dockPrefab: {fileID: 2726220770705831172, guid: 5b3d19d7e5744e44cb68cfa960ea3897, type: 3}
   shipLayerMask:
     serializedVersion: 2
     m_Bits: 128
+  dockLayerMask:
+    serializedVersion: 2
+    m_Bits: 256
 --- !u!4 &957270091
 Transform:
   m_ObjectHideFlags: 0

@@ -7,9 +7,12 @@ public class UnitController : MonoBehaviour
     public static UnitController Instance;
 
     [SerializeField] private GameObject shipPrefab;
+    [SerializeField] private GameObject dockPrefab;
     [SerializeField] private LayerMask shipLayerMask;
+    [SerializeField] private LayerMask dockLayerMask;
 
     private Ship selectedShip;
+    private SpaceDock selectedDock;
     private Vector3 shipYOffset;
 
     void Awake()
@@ -37,6 +40,10 @@ public class UnitController : MonoBehaviour
 
         SpawnShip(new GridPosition(0,0));       //debug purposes
         SpawnShip(new GridPosition(0,0));       //debug purposes
+
+        SpawnDock(new GridPosition(0,0));       //debug purposes
+
+        SpawnDock(new GridPosition(2,2));       //debug purposes
     }
 
     // Update is called once per frame
@@ -44,7 +51,8 @@ public class UnitController : MonoBehaviour
     {
         if(Input.GetMouseButtonDown(0))
         {
-            if( TrySelectShip()) return;
+            if(TrySelectShip()) return;
+            if(TrySelectDock()) return;
             MoveShip();
         }
     }
@@ -58,17 +66,15 @@ public class UnitController : MonoBehaviour
 
         GridObject gridObject = MapController.Instance.GetGridObject(gridPosition);
 
-        /*if(gridObject == null)
-        {
-            return;
-        }*/
-
         SpaceWaypoint availableWaypoint = gridObject.GetAvailableSpaceWaypoint();
 
-        //Instantiate(shipPrefab, MapController.Instance.GetWorldPosition(gridPosition) + shipYOffset, Quaternion.identity);
+        if(availableWaypoint == null)
+        {
+            return;
+        }
+
         Instantiate(shipPrefab, availableWaypoint.transform.position + shipYOffset, Quaternion.identity);
         availableWaypoint.hasShip = true;
-        //shipPrefab.GetComponent<Ship>().SetCurrentWaypoint(availableWaypoint);      //this line is useless
     }
 
     public bool TrySelectShip()
@@ -81,6 +87,11 @@ public class UnitController : MonoBehaviour
             {
                 selectedShip.Deselected();
             }
+            if(selectedDock != null)
+            {
+                selectedDock.Deselected();
+                selectedDock = null;
+            }
             
             if(raycastHit.transform.TryGetComponent<Ship>(out Ship ship))
             {
@@ -91,6 +102,31 @@ public class UnitController : MonoBehaviour
             }
         }
 
+        return false;
+    }
+    public bool TrySelectDock()
+    {
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+        if(Physics.Raycast(ray, out RaycastHit raycastHit, float.MaxValue, dockLayerMask))
+        {
+            if(selectedShip != null)
+            {
+                selectedShip.Deselected();
+                selectedShip = null;
+            }
+            if(selectedDock != null)
+            {
+                selectedDock.Deselected();
+            }
+
+            if(raycastHit.transform.TryGetComponent<SpaceDock>(out SpaceDock spaceDock))
+            {
+                SetSelectedSpaceDock(spaceDock);
+                spaceDock.Selected();
+                return true;
+            }
+        }
         return false;
     }
 
@@ -108,5 +144,29 @@ public class UnitController : MonoBehaviour
     public void SetSelectedShip(Ship ship)
     {
         selectedShip = ship;
+    }
+    public void SetSelectedSpaceDock(SpaceDock spaceDock)
+    {
+        selectedDock = spaceDock;
+    }
+
+    public void SpawnDock(GridPosition gridPosition)
+    {
+        if(!MapController.Instance.IsInBounds(gridPosition))
+        {
+            return;
+        }
+
+        GridObject gridObject = MapController.Instance.GetGridObject(gridPosition);
+
+        SpaceDockWaypoint availableDockPoint = gridObject.GetAvailableSpaceDockWaypoint();
+
+        if(availableDockPoint == null)
+        {
+            return;
+        }
+
+        Instantiate(dockPrefab, availableDockPoint.transform.position + shipYOffset, Quaternion.identity);
+        availableDockPoint.hasDock = true;
     }
 }
