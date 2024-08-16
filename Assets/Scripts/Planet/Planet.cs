@@ -13,7 +13,15 @@ public class Planet : MonoBehaviour
     [SerializeField] private TextMeshPro oreText;
     [SerializeField] private TextMeshPro fuelText;
 
+    [SerializeField] private PlayerType playerType;
+
     [SerializeField] private SpaceDockWaypoint spaceDockWaypoint;
+    
+    void Awake()
+    {
+        playerType = PlayerType.Neutral;
+    }
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -41,5 +49,9 @@ public class Planet : MonoBehaviour
     public void SetGridObject(GridObject gridObject)
     {
         this.gridObject = gridObject;
+    }
+    public void SetOwner(PlayerType playerType)
+    {
+        this.playerType = playerType;
     }
 }

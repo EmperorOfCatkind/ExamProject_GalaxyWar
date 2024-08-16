@@ -11,7 +11,6 @@ public class MapConfig : ScriptableObject
 }
 
 [Serializable]
-
 public struct MapData
 {
     public int width;

@@ -7,11 +7,12 @@ public class Boot : MonoBehaviour
 {
     //TODO - Add Configs
     [SerializeField] private MapConfig MapConfig;
+    [SerializeField] private PlayerConfig PlayerConfig;
     //TODO - Add Configs
 
     void Awake()
     {
-        ProjectContext.Instance.Initialize(MapConfig);
+        ProjectContext.Instance.Initialize(MapConfig, PlayerConfig);
     }
 
     private IEnumerator Start()

@@ -5,14 +5,12 @@ using UnityEngine;
 public interface IMapVisualService
 {
     Transform HexPrefab {get;}
-    //MapGridViewSingle[,] MapGridViewSingles {get; set;}
     GridPosition[,] GridPositions {get; set;}
     void SetGridPositions();
 }
 public class MapVisualService : IMapVisualService
 {
     public Transform HexPrefab {get;}
-    //public MapGridViewSingle[,] MapGridViewSingles {get; set;}
     public GridPosition[,] GridPositions { get; set; }
 
     private IMapFunctionalService MapFunctionalService;
@@ -29,7 +27,7 @@ public class MapVisualService : IMapVisualService
     {
         int x = GridSystem.GetWidth();
         int z = GridSystem.GetHeight();
-        //MapGridViewSingles= new MapGridViewSingle[x,z];
+        
         GridPositions = new GridPosition[x,z];
 
         for(int i = 0; i < x; i++)

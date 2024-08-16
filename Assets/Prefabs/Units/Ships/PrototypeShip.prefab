@@ -73,6 +73,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selectedVisual: {fileID: 7517156437113793616}
+  currentWaypoint: {fileID: 0}
+  playerType: 1
 --- !u!114 &7517156437113793616
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -86,6 +88,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   meshRenderer: {fileID: 7504537558094189925}
+  selectedMaterial: {fileID: 2100000, guid: 01f6054e8fd6e5440b2bb21001686f09, type: 2}
 --- !u!114 &-5828230205103822411
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -113,6 +116,7 @@ MonoBehaviour:
   movingSpeed: 0
   stoppingDistance: 0
   rotatingSpeed: 0
+  shipYOffset: {x: 0, y: 0, z: 0}
 --- !u!1 &3727277454129464553
 GameObject:
   m_ObjectHideFlags: 0
@@ -207,7 +211,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 06833426c26125c4fad8c8a853ed95d4, type: 2}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -312,7 +316,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 06833426c26125c4fad8c8a853ed95d4, type: 2}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -417,7 +421,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 01f6054e8fd6e5440b2bb21001686f09, type: 2}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

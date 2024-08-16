@@ -53,7 +53,7 @@ public class MapController : MonoBehaviour
 
     public void InitializeGridView()
     {
-        mapGridViewSingleArray = new MapGridViewSingle[gridPositions.GetLength(0), gridPositions.GetLength(1)];
+        mapGridViewSingleArray = new MapGridViewSingle[gridObjects.GetLength(0), gridObjects.GetLength(1)];
 
         for (int x = 0; x < gridObjects.GetLength(0); x++)
         {

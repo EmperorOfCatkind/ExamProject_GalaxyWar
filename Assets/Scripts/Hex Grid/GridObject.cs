@@ -47,6 +47,11 @@ public class GridObject : MonoBehaviour
         return spaceWaypointsList;
     }
 
+
+    public List<Planet> GetPlanets()
+    {
+        return planets;
+    }
     public void AddPlanet(Planet planet)
     {
         planets.Add(planet);
@@ -73,13 +78,13 @@ public class GridObject : MonoBehaviour
         return null;
     }
 
-    public SpaceDockWaypoint GetAvailableSpaceDockWaypoint()
+    public Planet GetAvailablePlanetForSpaceDock()
     {
         foreach(var key in spaceDockWaypoints)  //check all planets to see if any of them has free dock point
         {
             if (key.Key.GetSpaceDockWaypoint().hasDock == false)
             {
-                return key.Value;
+                return key.Key;
             }
         }
 

@@ -9,8 +9,11 @@ public class Ship : MonoBehaviour
 
     private GridPosition gridPosition;
     [SerializeField] private SpaceWaypoint currentWaypoint;
+    [SerializeField] private PlayerType playerType;
 
     private MoveAction moveAction;
+
+
 
     void Awake()
     {
@@ -21,7 +24,7 @@ public class Ship : MonoBehaviour
     {
         gridPosition = MapController.Instance.GetHexGridPosition(transform.position);
         MapController.Instance.AddShipAtGridPosition(gridPosition, this);
-        getInitialWaypoint();     
+        //getInitialWaypoint();     
     }
 
     // Update is called once per frame
@@ -51,6 +54,11 @@ public class Ship : MonoBehaviour
     public SpaceWaypoint GetCurrentWaypoint()
     {
         return currentWaypoint;
+    }
+
+    public void SetPlayerType(PlayerType playerType)
+    {
+        this.playerType = playerType;
     }
 
     public void getInitialWaypoint()

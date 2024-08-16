@@ -6,10 +6,13 @@ public class UnitController : MonoBehaviour
 {
     public static UnitController Instance;
 
-    [SerializeField] private GameObject shipPrefab;
+    //[SerializeField] private GameObject shipPrefab;
     [SerializeField] private GameObject dockPrefab;
     [SerializeField] private LayerMask shipLayerMask;
     [SerializeField] private LayerMask dockLayerMask;
+
+    [SerializeField] private Material playerOneMaterial;
+    [SerializeField] private Material playerTwoMaterial;
 
     private Ship selectedShip;
     private SpaceDock selectedDock;
@@ -29,7 +32,7 @@ public class UnitController : MonoBehaviour
     {
         shipYOffset = new Vector3(0, 3, 0);
 
-        SpawnShip(new GridPosition(0,1));       //debug purposes
+        /*SpawnShip(new GridPosition(0,1));       //debug purposes
         SpawnShip(new GridPosition(0,1));       //debug purposes
 
         SpawnShip(new GridPosition(1,2));       //debug purposes
@@ -41,9 +44,9 @@ public class UnitController : MonoBehaviour
         SpawnShip(new GridPosition(0,0));       //debug purposes
         SpawnShip(new GridPosition(0,0));       //debug purposes
 
-        SpawnDock(new GridPosition(0,0));       //debug purposes
+        SpawnDock(new GridPosition(0,0));*/       //debug purposes
 
-        SpawnDock(new GridPosition(2,2));       //debug purposes
+        //SpawnDock(new GridPosition(2,2));       //debug purposes
     }
 
     // Update is called once per frame
@@ -57,7 +60,7 @@ public class UnitController : MonoBehaviour
         }
     }
 
-    public void SpawnShip(GridPosition gridPosition)
+    public void SpawnShip(GameObject ship, GridPosition gridPosition, PlayerType playerType)        //add player type
     {
         if(!MapController.Instance.IsInBounds(gridPosition))
         {
@@ -73,7 +76,12 @@ public class UnitController : MonoBehaviour
             return;
         }
 
-        Instantiate(shipPrefab, availableWaypoint.transform.position + shipYOffset, Quaternion.identity);
+        ship.GetComponent<Ship>().SetCurrentWaypoint(availableWaypoint);
+        ship.GetComponent<Ship>().SetPlayerType(playerType);
+
+        SetMaterialForSpawn(playerType, ship);
+
+        Instantiate(ship, availableWaypoint.transform.position + shipYOffset, Quaternion.identity);
         availableWaypoint.hasShip = true;
     }
 
@@ -97,7 +105,7 @@ public class UnitController : MonoBehaviour
             {
                 SetSelectedShip(ship);
                 ship.Selected();
-                //Debug.Log(ship.GetCurrentWaypoint());
+                Debug.Log(ship.GetCurrentWaypoint());
                 return true;
             }
         }
@@ -124,6 +132,7 @@ public class UnitController : MonoBehaviour
             {
                 SetSelectedSpaceDock(spaceDock);
                 spaceDock.Selected();
+                Debug.Log(spaceDock.GetPlanet() + " " + spaceDock.GetPlanet().GetSpaceDockWaypoint().hasDock);
                 return true;
             }
         }
@@ -150,7 +159,7 @@ public class UnitController : MonoBehaviour
         selectedDock = spaceDock;
     }
 
-    public void SpawnDock(GridPosition gridPosition)
+    public void SpawnDock(GridPosition gridPosition, PlayerType playerType)
     {
         if(!MapController.Instance.IsInBounds(gridPosition))
         {
@@ -159,14 +168,42 @@ public class UnitController : MonoBehaviour
 
         GridObject gridObject = MapController.Instance.GetGridObject(gridPosition);
 
-        SpaceDockWaypoint availableDockPoint = gridObject.GetAvailableSpaceDockWaypoint();
+        //SpaceDockWaypoint availableDockPoint = gridObject.GetAvailableSpaceDockWaypoint().GetSpaceDockWaypoint();
+        Planet availablePlanet = gridObject.GetAvailablePlanetForSpaceDock();
 
-        if(availableDockPoint == null)
+        if(availablePlanet == null)
         {
             return;
         }
 
-        Instantiate(dockPrefab, availableDockPoint.transform.position + shipYOffset, Quaternion.identity);
-        availableDockPoint.hasDock = true;
+        dockPrefab.GetComponent<SpaceDock>().SetPlanet(availablePlanet);
+        dockPrefab.GetComponent<SpaceDock>().SetPlayerType(playerType);
+        
+        SetMaterialForSpawn(playerType, dockPrefab);
+
+        SpaceDockWaypoint spaceDockWaypoint = availablePlanet.GetSpaceDockWaypoint();
+
+        Instantiate(dockPrefab, spaceDockWaypoint.transform.position + shipYOffset, Quaternion.identity);
+        spaceDockWaypoint.hasDock = true;
+    }
+
+    public void SetMaterialForSpawn(PlayerType playerType, GameObject prefab)
+    {
+        Renderer[] childRenderers = prefab.GetComponentsInChildren<Renderer>();
+
+        Material materialToSpawn = null;
+        if(playerType == PlayerType.PlayerOne)
+        {
+            materialToSpawn = playerOneMaterial;
+        }
+        else if(playerType == PlayerType.PlayerTwo)
+        {
+            materialToSpawn = playerTwoMaterial;
+        }
+
+        foreach (Renderer renderer in childRenderers)
+        {
+            renderer.material = materialToSpawn;
+        }
     }
 }

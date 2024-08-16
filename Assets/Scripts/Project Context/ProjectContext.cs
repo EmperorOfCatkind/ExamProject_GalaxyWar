@@ -18,18 +18,22 @@ public class ProjectContext
 
     public IMapFunctionalService MapFunctionalService {get; private set;}
     public IMapVisualService MapVisualService {get; private set;}
+    
+    public IPlayerService PlayerService {get; private set;}
 
     private ProjectContext()
     {
 
     }
 
-    public void Initialize(MapConfig mapConfig)    //TODO - pass the configs through here
+    public void Initialize(MapConfig mapConfig, PlayerConfig playerConfig)    //TODO - pass the configs through here
     {
-        ConfigService = new ConfigService(mapConfig);
+        ConfigService = new ConfigService(mapConfig, playerConfig);
 
         MapFunctionalService = new MapFunctionalService(ConfigService);
         MapVisualService = new MapVisualService(MapFunctionalService);
+
+        PlayerService = new PlayerService(ConfigService);
     }
 }
 
