@@ -78,6 +78,7 @@ public class MapController : MonoBehaviour
                 {
                     gridObject.AddPlanet(planet);
                     gridObject.AddSpaceDockWaypoint(planet);
+                    gridObject.AddGroundForceWaypoints(planet);
                 }
             }
         }

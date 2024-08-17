@@ -567,12 +567,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dockPrefab: {fileID: 2726220770705831172, guid: 5b3d19d7e5744e44cb68cfa960ea3897, type: 3}
+  groundForcePrefab: {fileID: 4951829331103478802, guid: 9a5e4bce35c73bb43af8560b5238870c, type: 3}
   shipLayerMask:
     serializedVersion: 2
     m_Bits: 128
   dockLayerMask:
     serializedVersion: 2
     m_Bits: 256
+  groundForceLayerMask:
+    serializedVersion: 2
+    m_Bits: 512
   playerOneMaterial: {fileID: 2100000, guid: 06833426c26125c4fad8c8a853ed95d4, type: 2}
   playerTwoMaterial: {fileID: 2100000, guid: 2319a1e5500249648a68ec62f12cc3d5, type: 2}
 --- !u!4 &957270091

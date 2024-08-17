@@ -21,6 +21,7 @@ MonoBehaviour:
     - {fileID: 1909258143715327506, guid: 10e879463fa822b48b0e0a36f05f5f5e, type: 3}
     - {fileID: 1909258143715327506, guid: 10e879463fa822b48b0e0a36f05f5f5e, type: 3}
     - {fileID: 1909258143715327506, guid: 10e879463fa822b48b0e0a36f05f5f5e, type: 3}
+    startingGroundForces: 4
     oreAmount: 10
     fuelAmount: 11
   - Name: Arkturus Mengsk
@@ -31,5 +32,6 @@ MonoBehaviour:
     - {fileID: 1909258143715327506, guid: 10e879463fa822b48b0e0a36f05f5f5e, type: 3}
     - {fileID: 1909258143715327506, guid: 10e879463fa822b48b0e0a36f05f5f5e, type: 3}
     - {fileID: 1909258143715327506, guid: 10e879463fa822b48b0e0a36f05f5f5e, type: 3}
+    startingGroundForces: 4
     oreAmount: 2
     fuelAmount: 2

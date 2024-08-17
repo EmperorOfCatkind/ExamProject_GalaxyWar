@@ -8,15 +8,19 @@ public class UnitController : MonoBehaviour
 
     //[SerializeField] private GameObject shipPrefab;
     [SerializeField] private GameObject dockPrefab;
+    [SerializeField] private GameObject groundForcePrefab;
     [SerializeField] private LayerMask shipLayerMask;
     [SerializeField] private LayerMask dockLayerMask;
+    [SerializeField] private LayerMask groundForceLayerMask;
 
     [SerializeField] private Material playerOneMaterial;
     [SerializeField] private Material playerTwoMaterial;
 
     private Ship selectedShip;
     private SpaceDock selectedDock;
+    private GroundForce selectedGroundForce;
     private Vector3 shipYOffset;
+    private Vector3 groundForceYOffset;
 
     void Awake()
     {
@@ -31,6 +35,7 @@ public class UnitController : MonoBehaviour
     void Start()
     {
         shipYOffset = new Vector3(0, 3, 0);
+        groundForceYOffset = new Vector3(0, .3f, 0);
 
         /*SpawnShip(new GridPosition(0,1));       //debug purposes
         SpawnShip(new GridPosition(0,1));       //debug purposes
@@ -56,6 +61,7 @@ public class UnitController : MonoBehaviour
         {
             if(TrySelectShip()) return;
             if(TrySelectDock()) return;
+            if(TrySelectGroundForce()) return;
             MoveShip();
         }
     }
@@ -85,6 +91,67 @@ public class UnitController : MonoBehaviour
         availableWaypoint.hasShip = true;
     }
 
+    public void SpawnDock(GridPosition gridPosition, PlayerType playerType)
+    {
+        if(!MapController.Instance.IsInBounds(gridPosition))
+        {
+            return;
+        }
+
+        GridObject gridObject = MapController.Instance.GetGridObject(gridPosition);
+
+        //SpaceDockWaypoint availableDockPoint = gridObject.GetAvailableSpaceDockWaypoint().GetSpaceDockWaypoint();
+        Planet availablePlanet = gridObject.GetAvailablePlanetForSpaceDock();
+
+        if(availablePlanet == null)
+        {
+            return;
+        }
+
+        dockPrefab.GetComponent<SpaceDock>().SetPlanet(availablePlanet);
+        dockPrefab.GetComponent<SpaceDock>().SetPlayerType(playerType);
+        
+        SetMaterialForSpawn(playerType, dockPrefab);
+
+        SpaceDockWaypoint spaceDockWaypoint = availablePlanet.GetSpaceDockWaypoint();
+
+        Instantiate(dockPrefab, spaceDockWaypoint.transform.position + shipYOffset, Quaternion.identity);
+        spaceDockWaypoint.hasDock = true;
+    }
+
+    public void SpawnGroundForce(GridPosition gridPosition, PlayerType playerType)
+    {
+        if(!MapController.Instance.IsInBounds(gridPosition))
+        {
+            return;
+        }
+
+        GridObject gridObject = MapController.Instance.GetGridObject(gridPosition);
+
+        Planet availablePlanet = gridObject.GetAvailablePlanetForGroundForce();
+
+        if(availablePlanet == null)
+        {
+            return;
+        }
+
+        GroundForceWaypoint availableWaypoint = availablePlanet.GetAvailableGroundForceWaypoint();
+        
+        if(availableWaypoint == null)
+        {
+            return;
+        }
+
+        groundForcePrefab.GetComponent<GroundForce>().SetPlanet(availablePlanet);
+        groundForcePrefab.GetComponent<GroundForce>().SetPlayerType(playerType);
+
+        SetMaterialForSpawn(playerType, groundForcePrefab);
+
+        Instantiate(groundForcePrefab, availableWaypoint.transform.position + groundForceYOffset, Quaternion.identity);
+        availableWaypoint.hasGroundForce = true;
+
+    }
+
     public bool TrySelectShip()
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -99,6 +166,11 @@ public class UnitController : MonoBehaviour
             {
                 selectedDock.Deselected();
                 selectedDock = null;
+            }
+            if(selectedGroundForce != null)
+            {
+                selectedGroundForce.Deselected();
+                selectedGroundForce = null;
             }
             
             if(raycastHit.transform.TryGetComponent<Ship>(out Ship ship))
@@ -127,12 +199,48 @@ public class UnitController : MonoBehaviour
             {
                 selectedDock.Deselected();
             }
+            if(selectedGroundForce != null)
+            {
+                selectedGroundForce.Deselected();
+                selectedGroundForce = null;
+            }
 
             if(raycastHit.transform.TryGetComponent<SpaceDock>(out SpaceDock spaceDock))
             {
                 SetSelectedSpaceDock(spaceDock);
                 spaceDock.Selected();
                 Debug.Log(spaceDock.GetPlanet() + " " + spaceDock.GetPlanet().GetSpaceDockWaypoint().hasDock);
+                return true;
+            }
+        }
+        return false;
+    }
+    public bool TrySelectGroundForce()
+    {
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+        if(Physics.Raycast(ray, out RaycastHit raycastHit, float.MaxValue, groundForceLayerMask))
+        {
+            if(selectedShip != null)
+            {
+                selectedShip.Deselected();
+                selectedShip = null;
+            }
+            if(selectedDock != null)
+            {
+                selectedDock.Deselected();
+                selectedDock = null;
+            }
+            if(selectedGroundForce != null)
+            {
+                selectedGroundForce.Deselected();
+            }
+
+            if(raycastHit.transform.TryGetComponent<GroundForce>(out GroundForce groundForce))
+            {
+                SetSelectedGroundForce(groundForce);
+                groundForce.Selected();
+                Debug.Log(groundForce.GetPlanet());
                 return true;
             }
         }
@@ -158,34 +266,12 @@ public class UnitController : MonoBehaviour
     {
         selectedDock = spaceDock;
     }
-
-    public void SpawnDock(GridPosition gridPosition, PlayerType playerType)
+    public void SetSelectedGroundForce(GroundForce groundForce)
     {
-        if(!MapController.Instance.IsInBounds(gridPosition))
-        {
-            return;
-        }
-
-        GridObject gridObject = MapController.Instance.GetGridObject(gridPosition);
-
-        //SpaceDockWaypoint availableDockPoint = gridObject.GetAvailableSpaceDockWaypoint().GetSpaceDockWaypoint();
-        Planet availablePlanet = gridObject.GetAvailablePlanetForSpaceDock();
-
-        if(availablePlanet == null)
-        {
-            return;
-        }
-
-        dockPrefab.GetComponent<SpaceDock>().SetPlanet(availablePlanet);
-        dockPrefab.GetComponent<SpaceDock>().SetPlayerType(playerType);
-        
-        SetMaterialForSpawn(playerType, dockPrefab);
-
-        SpaceDockWaypoint spaceDockWaypoint = availablePlanet.GetSpaceDockWaypoint();
-
-        Instantiate(dockPrefab, spaceDockWaypoint.transform.position + shipYOffset, Quaternion.identity);
-        spaceDockWaypoint.hasDock = true;
+        selectedGroundForce = groundForce;
     }
+
+    
 
     public void SetMaterialForSpawn(PlayerType playerType, GameObject prefab)
     {

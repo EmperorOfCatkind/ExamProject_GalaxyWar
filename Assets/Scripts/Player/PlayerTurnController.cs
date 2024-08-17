@@ -150,7 +150,10 @@ public class PlayerTurnController : MonoBehaviour
                 UnitController.Instance.SpawnShip(ship, gridPosition, playerDatas[i].playerType);
             }
 
-
+            for(int j = 0; j < playerDatas[i].startingGroundForces; j++)
+            {
+                UnitController.Instance.SpawnGroundForce(gridPosition, playerDatas[i].playerType);
+            }
 
 
             

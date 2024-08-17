@@ -13,6 +13,7 @@ public class GridObject : MonoBehaviour
     private List<SpaceWaypoint> spaceWaypointsList;
     private List<Planet> planets;
     private Dictionary<Planet, SpaceDockWaypoint> spaceDockWaypoints;
+    private Dictionary<Planet, GroundForceWaypoint[]> groundForceWaypoints;
 
     public GridObject(GridSystem gridSystem, GridPosition gridPosition)
     {
@@ -25,6 +26,7 @@ public class GridObject : MonoBehaviour
         spaceWaypointsList = new List<SpaceWaypoint>();
         planets = new List<Planet>();
         spaceDockWaypoints = new Dictionary<Planet, SpaceDockWaypoint>();
+        groundForceWaypoints = new Dictionary<Planet, GroundForceWaypoint[]>();
 
     }
 
@@ -64,6 +66,10 @@ public class GridObject : MonoBehaviour
     {
         return spaceDockWaypoints;
     }
+    public void AddGroundForceWaypoints(Planet planet)
+    {
+        groundForceWaypoints.Add(planet, planet.GetGroundForceWaypoints());
+    }
 
     public SpaceWaypoint GetAvailableSpaceWaypoint()
     {
@@ -89,6 +95,22 @@ public class GridObject : MonoBehaviour
         }
 
         Debug.LogAssertion("No free planet on this hex " + gridPosition.ToString());
+        return null;
+    }
+
+    public Planet GetAvailablePlanetForGroundForce()
+    {
+        foreach(var planet in groundForceWaypoints)
+        {
+            foreach(var waypoint in planet.Key.GetGroundForceWaypoints())  //check all planets to see if any of them has place for more ground force
+            {
+                if(waypoint.hasGroundForce == false)
+                {
+                    return planet.Key;
+                }
+            }
+        }
+        Debug.LogAssertion("No place for additional ground force on this hex " + gridPosition.ToString());
         return null;
     }
 

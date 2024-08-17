@@ -21,6 +21,8 @@ public struct PlayerData
 
     public GameObject[] startingFleet;
 
+    public int startingGroundForces;
+
     public int oreAmount;
     public int fuelAmount;
 }

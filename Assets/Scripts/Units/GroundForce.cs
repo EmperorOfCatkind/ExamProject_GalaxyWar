@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SpaceDock : MonoBehaviour
+public class GroundForce : MonoBehaviour
 {
     [SerializeField] private SelectedVisual selectedVisual;
 
@@ -11,14 +11,10 @@ public class SpaceDock : MonoBehaviour
     [SerializeField] private PlayerType playerType;
 
     [SerializeField] private Planet planet;
-
-    //Planet
     // Start is called before the first frame update
     void Start()
     {
         gridPosition = MapController.Instance.GetHexGridPosition(transform.position);
-        
-
         
     }
 

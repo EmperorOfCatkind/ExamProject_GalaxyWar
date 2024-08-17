@@ -16,6 +16,7 @@ public class Planet : MonoBehaviour
     [SerializeField] private PlayerType playerType;
 
     [SerializeField] private SpaceDockWaypoint spaceDockWaypoint;
+    [SerializeField] private GroundForceWaypoint[] groundForceWaypoints;
     
     void Awake()
     {
@@ -44,6 +45,23 @@ public class Planet : MonoBehaviour
     public SpaceDockWaypoint GetSpaceDockWaypoint()
     {
         return spaceDockWaypoint;
+    }
+
+    public GroundForceWaypoint[] GetGroundForceWaypoints()
+    {
+        return groundForceWaypoints;
+    }
+    public GroundForceWaypoint GetAvailableGroundForceWaypoint()
+    {
+        foreach(var waypoint in groundForceWaypoints)
+        {
+            if(waypoint.hasGroundForce == false)
+            {
+                return waypoint;
+            }
+            
+        }
+        return null;
     }
 
     public void SetGridObject(GridObject gridObject)
