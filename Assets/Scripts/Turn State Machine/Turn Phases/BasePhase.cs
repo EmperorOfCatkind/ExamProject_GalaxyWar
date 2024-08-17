@@ -1,17 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
-public class BaseAction : MonoBehaviour
+public class BasePhase : MonoBehaviour
 {
-    protected Ship ship;
+    protected Player player;
     protected bool isActive;
-
+    public string phaseName;
+    protected string debugString;
 
     protected virtual void Awake()
     {
-        ship = GetComponent<Ship>();
+        player = GetComponent<Player>();
     }
     // Start is called before the first frame update
     void Start()

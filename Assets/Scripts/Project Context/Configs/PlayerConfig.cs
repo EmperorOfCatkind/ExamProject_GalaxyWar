@@ -20,4 +20,7 @@ public struct PlayerData
     public int gridZ;
 
     public GameObject[] startingFleet;
+
+    public int oreAmount;
+    public int fuelAmount;
 }

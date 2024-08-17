@@ -19,7 +19,7 @@ public class ProjectContext
     public IMapFunctionalService MapFunctionalService {get; private set;}
     public IMapVisualService MapVisualService {get; private set;}
     
-    public IPlayerService PlayerService {get; private set;}
+    public IPlayerTurnService PlayerTurnService {get; private set;}
 
     private ProjectContext()
     {
@@ -33,7 +33,7 @@ public class ProjectContext
         MapFunctionalService = new MapFunctionalService(ConfigService);
         MapVisualService = new MapVisualService(MapFunctionalService);
 
-        PlayerService = new PlayerService(ConfigService);
+        PlayerTurnService = new PlayerTurnService(ConfigService);
     }
 }
 
