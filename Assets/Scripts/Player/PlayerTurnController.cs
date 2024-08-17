@@ -43,10 +43,14 @@ public class PlayerTurnController : MonoBehaviour
         {
             Debug.Log(player.GetHomeSystem().ToString());
         }*/
-        InitializeFirstPlayer();        //don't work correctly
         turnStateMachine.OnPhaseChanged += OnPhaseChanged;
+        InitializeFirstPlayer();        //don't work correctly
+        
 
-
+        /*for(int i = 0; i < playersArray.Length; i++)
+        {
+            Debug.Log(playersArray[i].GetName() + " " + i);
+        }*/
     }
 
     // Update is called once per frame
@@ -60,13 +64,14 @@ public class PlayerTurnController : MonoBehaviour
         switch(phaseTransitionData.NextPhase)
         {
             case Phase.Start:   //if Start is the next phase, change the active player
-                
+                //Debug.Log(activePlayerIndex);
+                //Debug.Log(playersArray.Length);
                 if(activePlayer != null)
                 {
                     activePlayer.playerUI.Hide();
                 }
 
-                if(activePlayerIndex == playersArray.Length)        //index out of bounds
+                if(activePlayerIndex == playersArray.Length - 1)        //index out of bounds
                 {
                     activePlayerIndex = 0;
                 }
@@ -157,6 +162,8 @@ public class PlayerTurnController : MonoBehaviour
         activePlayerIndex = 0;
         activePlayer = playersArray[activePlayerIndex];
         activePlayer.playerUI.Show();
+        turnInfoUI.UpdateValues();
+        //Debug.Log(activePlayerIndex);
     }
 
     public Player GetActivePlayer()

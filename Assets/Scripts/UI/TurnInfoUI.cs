@@ -12,17 +12,18 @@ public class TurnInfoUI : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        playerTurnController = GetComponent<PlayerTurnController>();
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     public void UpdateValues()
     {
+        playerTurnController = GetComponent<PlayerTurnController>();
         CurrentPlayer.text = playerTurnController.GetActivePlayer().GetName();
         CurrentPhase.text = playerTurnController.GetCurrentPhase().ToString();
     }
