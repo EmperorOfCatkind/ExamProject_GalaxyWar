@@ -11,6 +11,7 @@ public class Player : MonoBehaviour
     
     private int oreAmount = 0;
     private int fuelAmount = 0;
+    private List<Planet> playersPlanets;
 
     public PlayerUI playerUI;
 
@@ -33,6 +34,8 @@ public class Player : MonoBehaviour
         spaceCombatPhase = GetComponent<SpaceCombatPhase>();
         groundCombatPhase = GetComponent<GroundCombatPhase>();
         buildingPhase = GetComponent<BuildingPhase>();
+
+        playersPlanets = new List<Planet>();
 
         playerUI.Hide();
     }
@@ -60,6 +63,11 @@ public class Player : MonoBehaviour
     {
         this.playerType = playerType;
     }
+    public PlayerType GetPlayerType()
+    {
+        return playerType;
+    }
+
     public void SetHomeSystem(GridObject gridObject)
     {
         homeSystem = gridObject;
@@ -76,6 +84,15 @@ public class Player : MonoBehaviour
     public int GetFuel()
     {
         return fuelAmount;
+    }
+    public void AddPlanet(Planet planet)
+    {
+        playersPlanets.Add(planet);
+        planet.SetOwner(playerType);
+    }
+    public List<Planet> GetPlayerPlanets()
+    {
+        return playersPlanets;
     }
 
     public void AddOre(int amount)

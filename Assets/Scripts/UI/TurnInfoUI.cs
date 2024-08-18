@@ -5,8 +5,9 @@ using UnityEngine;
 
 public class TurnInfoUI : MonoBehaviour
 {
-    [SerializeField] private TextMeshProUGUI CurrentPlayer;
-    [SerializeField] private TextMeshProUGUI CurrentPhase;
+    [SerializeField] private TextMeshProUGUI currentPlayer;
+    [SerializeField] private TextMeshProUGUI currentPhase;
+    [SerializeField] private TextMeshProUGUI turnCounter;
 
     private PlayerTurnController playerTurnController;
     // Start is called before the first frame update
@@ -24,7 +25,10 @@ public class TurnInfoUI : MonoBehaviour
     public void UpdateValues()
     {
         playerTurnController = GetComponent<PlayerTurnController>();
-        CurrentPlayer.text = playerTurnController.GetActivePlayer().GetName();
-        CurrentPhase.text = playerTurnController.GetCurrentPhase().ToString();
+
+        currentPlayer.text = playerTurnController.GetActivePlayer().GetName();
+        currentPhase.text = playerTurnController.GetCurrentPhase().ToString();
+
+        turnCounter.text = "Turn: " + ProjectContext.Instance.PlayerTurnService.GetTurnCounter(playerTurnController.GetActivePlayer().GetPlayerType()).ToString();
     }
 }

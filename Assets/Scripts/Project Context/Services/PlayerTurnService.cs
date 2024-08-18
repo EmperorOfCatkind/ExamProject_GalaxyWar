@@ -9,10 +9,15 @@ public interface IPlayerTurnService
     PlayerData[] players {get;}
 
     TurnStateMachine<Phase, Trigger> turnStateMachine {get;}
+
+    public void IncrementTurnCounter(PlayerType playerType);
+
+    public int GetTurnCounter(PlayerType playerType);
 }
 public class PlayerTurnService : IPlayerTurnService
 {
     public PlayerData[] players {get; private set;}
+    public Dictionary<PlayerType, int> turnCounter;
 
     public TurnStateMachine<Phase, Trigger> turnStateMachine {get;}
 
@@ -35,6 +40,22 @@ public class PlayerTurnService : IPlayerTurnService
         turnStateMachine.AddTransition(Phase.GroundCombat, Trigger.ToBuilding, Phase.Building);
 
         turnStateMachine.AddTransition(Phase.Building, Trigger.EndTurn, Phase.Start);
+
+        turnCounter = new Dictionary<PlayerType, int>();
+        foreach(var playerData in players)
+        {
+            turnCounter.Add(playerData.playerType, 0);
+        }
+    }
+
+    public void IncrementTurnCounter(PlayerType playerType)
+    {
+        turnCounter[playerType]++;
+    }
+
+    public int GetTurnCounter(PlayerType playerType)
+    {
+        return turnCounter[playerType];
     }
 }
 

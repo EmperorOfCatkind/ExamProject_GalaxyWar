@@ -22,8 +22,8 @@ MonoBehaviour:
     - {fileID: 1909258143715327506, guid: 10e879463fa822b48b0e0a36f05f5f5e, type: 3}
     - {fileID: 1909258143715327506, guid: 10e879463fa822b48b0e0a36f05f5f5e, type: 3}
     startingGroundForces: 4
-    oreAmount: 10
-    fuelAmount: 11
+    oreAmount: 0
+    fuelAmount: 0
   - Name: Arkturus Mengsk
     playerType: 1
     gridX: 3
@@ -33,5 +33,5 @@ MonoBehaviour:
     - {fileID: 1909258143715327506, guid: 10e879463fa822b48b0e0a36f05f5f5e, type: 3}
     - {fileID: 1909258143715327506, guid: 10e879463fa822b48b0e0a36f05f5f5e, type: 3}
     startingGroundForces: 4
-    oreAmount: 2
-    fuelAmount: 2
+    oreAmount: 0
+    fuelAmount: 0

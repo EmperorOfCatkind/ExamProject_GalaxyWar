@@ -8,7 +8,7 @@ public class PlayerTurnController : MonoBehaviour
 {
     public static PlayerTurnController Instance;
 
-    private IPlayerTurnService playerService;
+    private IPlayerTurnService playerTurnService;
     private PlayerData[] playerDatas;
     public TurnStateMachine<Phase, Trigger> turnStateMachine;
 
@@ -30,9 +30,9 @@ public class PlayerTurnController : MonoBehaviour
         }
         Instance = this;
 
-        playerService = ProjectContext.Instance.PlayerTurnService;
-        playerDatas = playerService.players;
-        turnStateMachine = playerService.turnStateMachine;
+        playerTurnService = ProjectContext.Instance.PlayerTurnService;
+        playerDatas = playerTurnService.players;
+        turnStateMachine = playerTurnService.turnStateMachine;
         turnInfoUI = GetComponent<TurnInfoUI>();
     }
     // Start is called before the first frame update
@@ -64,57 +64,44 @@ public class PlayerTurnController : MonoBehaviour
         switch(phaseTransitionData.NextPhase)
         {
             case Phase.Start:   //if Start is the next phase, change the active player
-                //Debug.Log(activePlayerIndex);
-                //Debug.Log(playersArray.Length);
-                if(activePlayer != null)
-                {
-                    activePlayer.playerUI.Hide();
-                }
-
-                if(activePlayerIndex == playersArray.Length - 1)        //index out of bounds
-                {
-                    activePlayerIndex = 0;
-                }
-                else
-                {
-                    activePlayerIndex++;
-                }
-                
-
-                activePlayer = playersArray[activePlayerIndex];
-                activePlayer.playerUI.Show();
-
-                activePlayer.GetStartPhase().DoStartPhase();
-
+                StartPhase();
                 turnInfoUI.UpdateValues();
                 break;
 
             case Phase.TurnCount:
-                activePlayer.GetTurnCountPhase().DoTurnCountPhase();
+                TurnCountPhase();
                 turnInfoUI.UpdateValues();
                 break;
 
             case Phase.Replenish:
-                activePlayer.GetResourcePhase().DoResourcePhase();
+                ReplenishPhase();
                 turnInfoUI.UpdateValues();
                 break;
 
             case Phase.Move:
+                //get ships move only once per turn and no further than their Move stat
+                //get ground forces to embark and disembark
+                //by the end if there is a Hex (gridObject) ships belonging to both players add it to the List for the next phase to use
+                //if there is a planet with ground forces of both players add it to the list for the next next phase to use
                 activePlayer.GetMovePhase().DoMovePhase();
                 turnInfoUI.UpdateValues();
                 break;
 
             case Phase.SpaceCombat:
+                //create a combat feature
                 activePlayer.GetSpaceCombatPhase().DoSpaceCombatPhase();
                 turnInfoUI.UpdateValues();
                 break;
                 
             case Phase.GroundCombat:
+                //create a combat feature
                 activePlayer.GetGroundCombatPhase().DoGroundCombatPhase();
                 turnInfoUI.UpdateValues();
                 break;
 
             case Phase.Building:
+                //Space Dock UI where player can choose a ship or ground force to build
+                //button to build a new dock (one per turn)
                 activePlayer.GetBuildingPhase().DoBuildingPhase();
                 turnInfoUI.UpdateValues();
                 break;
@@ -141,7 +128,7 @@ public class PlayerTurnController : MonoBehaviour
 
             foreach(var planet in homeSystem.GetPlanets())
             {
-                planet.SetOwner(playerDatas[i].playerType);
+                newPlayer.GetComponent<Player>().AddPlanet(planet);
                 UnitController.Instance.SpawnDock(gridPosition, playerDatas[i].playerType);
             }
 
@@ -177,5 +164,39 @@ public class PlayerTurnController : MonoBehaviour
     public Phase GetCurrentPhase()
     {
         return turnStateMachine.currentPhase;
+    }
+
+    public void StartPhase()
+    {
+        if(activePlayer != null)
+        {
+            activePlayer.playerUI.Hide();
+        }
+
+        if(activePlayerIndex == playersArray.Length - 1)        
+        {
+            activePlayerIndex = 0;
+        }
+        else
+        {
+            activePlayerIndex++;
+        }
+                
+
+        activePlayer = playersArray[activePlayerIndex];
+        activePlayer.playerUI.Show();
+
+        activePlayer.GetStartPhase().DoStartPhase();
+    }
+
+    public void TurnCountPhase()
+    {
+        playerTurnService.IncrementTurnCounter(activePlayer.GetPlayerType());
+        activePlayer.GetTurnCountPhase().DoTurnCountPhase();
+    }
+
+    public void ReplenishPhase()
+    {
+        activePlayer.GetResourcePhase().DoResourcePhase();
     }
 }

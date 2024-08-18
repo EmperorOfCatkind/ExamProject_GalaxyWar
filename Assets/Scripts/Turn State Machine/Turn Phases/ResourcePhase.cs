@@ -5,6 +5,7 @@ using UnityEngine;
 public class ResourcePhase : BasePhase
 {
     int count = 0;
+    private List<Planet> playerPlanets;
     protected override void Awake()
     {
         base.Awake();
@@ -18,25 +19,25 @@ public class ResourcePhase : BasePhase
     // Update is called once per frame
     void Update()
     {
-        while(isActive)
+        if(!isActive)
         {
-            if(count < 3)
-            {
-                DoResourcePhase();
-                count++;
-                Debug.Log(debugString);   
-            }
-            else{
-                count = 0;
-                isActive = false;
-            }
+            return;
         }
+
+        playerPlanets = player.GetPlayerPlanets();
+        foreach(var planet in playerPlanets)
+        {
+            player.AddOre(planet.GetOreAmount());
+            player.AddFuel(planet.GetFuelAmount());
+            //add ore value to SpaceDok building capacity
+        }
+        isActive = false;
     }
 
     //void Trigger from state machine - isActive = true
     public void DoResourcePhase()
     {
-        debugString = "This is " + phaseName + " of player " + player.GetName();
+        //debugString = "This is " + phaseName + " of player " + player.GetName();
         isActive = true;
     }
 }

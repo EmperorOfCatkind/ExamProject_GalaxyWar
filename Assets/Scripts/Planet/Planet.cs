@@ -72,4 +72,13 @@ public class Planet : MonoBehaviour
     {
         this.playerType = playerType;
     }
+
+    public int GetOreAmount()
+    {
+        return oreValue;
+    }
+    public int GetFuelAmount()
+    {
+        return fuelValue;
+    }
 }
