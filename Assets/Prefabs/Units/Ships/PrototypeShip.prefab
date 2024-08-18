@@ -75,6 +75,10 @@ MonoBehaviour:
   selectedVisual: {fileID: 7517156437113793616}
   currentWaypoint: {fileID: 0}
   playerType: 1
+  cost: 0
+  move: 0
+  combat: 0
+  capacity: 0
 --- !u!114 &7517156437113793616
 MonoBehaviour:
   m_ObjectHideFlags: 0

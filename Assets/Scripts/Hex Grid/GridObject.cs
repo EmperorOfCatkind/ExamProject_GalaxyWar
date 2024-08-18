@@ -7,7 +7,8 @@ public class GridObject : MonoBehaviour
     private GridSystem gridSystem;
     private GridPosition gridPosition;
 
-    private List<Ship> shipList;
+    //private List<Ship> shipList;
+    private Dictionary<PlayerType, List<Ship>> shipListByPlayerType;
     private List<SpaceDock> spaceDocks;
 
     private List<SpaceWaypoint> spaceWaypointsList;
@@ -20,7 +21,7 @@ public class GridObject : MonoBehaviour
         this.gridSystem = gridSystem;
         this.gridPosition = gridPosition;
 
-        shipList = new List<Ship>();
+        shipListByPlayerType = new Dictionary<PlayerType, List<Ship>>();
         spaceDocks = new List<SpaceDock>();
 
         spaceWaypointsList = new List<SpaceWaypoint>();
@@ -34,9 +35,37 @@ public class GridObject : MonoBehaviour
     {
         return gridPosition;
     }
+    public Dictionary<PlayerType, List<Ship>> GetShipListByPlayerType()
+    {
+        return shipListByPlayerType;
+    }
     public void AddShip(Ship ship)
     {
-        shipList.Add(ship);
+        if(!shipListByPlayerType.ContainsKey(ship.GetPlayerType()))
+        {
+            List<Ship> shipList = new List<Ship>();
+            shipList.Add(ship);
+            shipListByPlayerType.Add(ship.GetPlayerType(), shipList);
+            return;
+        }
+
+        if(shipListByPlayerType[ship.GetPlayerType()].Count < 3)
+        {
+            shipListByPlayerType[ship.GetPlayerType()].Add(ship);
+        }
+        else
+        {
+            Debug.LogAssertion("Max 3 ship per player on Hex!");
+        }
+        
+    }
+    public void RemoveShip(Ship ship)
+    {
+        shipListByPlayerType[ship.GetPlayerType()].Remove(ship);
+        if(shipListByPlayerType[ship.GetPlayerType()].Count == 0)
+        {
+            shipListByPlayerType.Remove(ship.GetPlayerType());
+        }
     }
 
     public void AddSpaceWaypoint(SpaceWaypoint spaceWaypoint)
@@ -71,6 +100,16 @@ public class GridObject : MonoBehaviour
         groundForceWaypoints.Add(planet, planet.GetGroundForceWaypoints());
     }
 
+    public bool GridObjectIsAvailable(PlayerType playerType)
+    {
+        if(!shipListByPlayerType.ContainsKey(playerType) || shipListByPlayerType[playerType].Count < 3)
+        {
+            return true;
+        }
+        
+        Debug.LogAssertion("Max 3 ship per player on Hex!");
+        return false;
+    }
     public SpaceWaypoint GetAvailableSpaceWaypoint()
     {
         foreach(var spaceWaypoint in spaceWaypointsList)

@@ -8,8 +8,16 @@ public class Ship : MonoBehaviour
     [SerializeField] private SelectedVisual selectedVisual;
 
     private GridPosition gridPosition;
+    private GridObject gridObject;
     [SerializeField] private SpaceWaypoint currentWaypoint;
     [SerializeField] private PlayerType playerType;
+
+    //Stats//
+    [SerializeField] public int cost;
+    [SerializeField] public int move;
+    [SerializeField] public int combat;
+    [SerializeField] public int capacity;
+    //Stats//
 
     private MoveAction moveAction;
 
@@ -23,8 +31,8 @@ public class Ship : MonoBehaviour
     void Start()
     {
         gridPosition = MapController.Instance.GetHexGridPosition(transform.position);
-        MapController.Instance.AddShipAtGridPosition(gridPosition, this);
-        //getInitialWaypoint();     
+        MapController.Instance.AddShipToGridObject(gridPosition, this);
+        gridObject = MapController.Instance.GetGridObject(gridPosition);
     }
 
     // Update is called once per frame
@@ -39,6 +47,15 @@ public class Ship : MonoBehaviour
     public void Deselected()
     {
         selectedVisual.Hide();
+    }
+
+    public GridObject GetGridObject()
+    {
+        return gridObject;
+    }
+    public void SetGridObject(GridObject gridObject)
+    {
+        this.gridObject = gridObject;
     }
 
     public MoveAction GetMoveAction()
@@ -56,24 +73,13 @@ public class Ship : MonoBehaviour
         return currentWaypoint;
     }
 
+    public PlayerType GetPlayerType()
+    {
+        return playerType;
+    }
     public void SetPlayerType(PlayerType playerType)
     {
         this.playerType = playerType;
     }
 
-    public void getInitialWaypoint()
-    {
-        GridObject gridObject = MapController.Instance.GetGridObject(gridPosition);
-
-        SpaceWaypoint nearestWaypoint = gridObject.GetSpaceWaypointsList()[0];
-
-        foreach(var spaceWaypoint in gridObject.GetSpaceWaypointsList())
-        {
-            if(Vector3.Distance(transform.position, nearestWaypoint.transform.position) > Vector3.Distance(transform.position, spaceWaypoint.transform.position))
-            {
-                nearestWaypoint = spaceWaypoint;
-            }
-        }
-        SetCurrentWaypoint(nearestWaypoint);
-    }
 }

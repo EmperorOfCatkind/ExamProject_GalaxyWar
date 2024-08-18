@@ -101,7 +101,7 @@ public class MapController : MonoBehaviour
         }
         return null;
     }
-    public void AddShipAtGridPosition(GridPosition gridPosition, Ship ship)
+    public void AddShipToGridObject(GridPosition gridPosition, Ship ship)
     {
         GridObject gridObject = gridSystem.GetGridObject(gridPosition);
         gridObject.AddShip(ship);

@@ -566,6 +566,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 055c5e407f516d94db2b72d253b195ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  shipPrefab: {fileID: 1909258143715327506, guid: 10e879463fa822b48b0e0a36f05f5f5e, type: 3}
   dockPrefab: {fileID: 2726220770705831172, guid: 5b3d19d7e5744e44cb68cfa960ea3897, type: 3}
   groundForcePrefab: {fileID: 4951829331103478802, guid: 9a5e4bce35c73bb43af8560b5238870c, type: 3}
   shipLayerMask:

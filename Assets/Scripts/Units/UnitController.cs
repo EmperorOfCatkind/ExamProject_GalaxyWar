@@ -6,7 +6,7 @@ public class UnitController : MonoBehaviour
 {
     public static UnitController Instance;
 
-    //[SerializeField] private GameObject shipPrefab;
+    [SerializeField] private GameObject shipPrefab; //debug purposes
     [SerializeField] private GameObject dockPrefab;
     [SerializeField] private GameObject groundForcePrefab;
     [SerializeField] private LayerMask shipLayerMask;
@@ -37,21 +37,13 @@ public class UnitController : MonoBehaviour
         shipYOffset = new Vector3(0, 3, 0);
         groundForceYOffset = new Vector3(0, .3f, 0);
 
-        /*SpawnShip(new GridPosition(0,1));       //debug purposes
-        SpawnShip(new GridPosition(0,1));       //debug purposes
+        SpawnShip(shipPrefab, new GridPosition(0,1), PlayerType.PlayerOne); //debug purposes
+        SpawnShip(shipPrefab, new GridPosition(0,1), PlayerType.PlayerOne); //debug purposes
+        SpawnShip(shipPrefab, new GridPosition(0,1), PlayerType.PlayerOne); //debug purposes
 
-        SpawnShip(new GridPosition(1,2));       //debug purposes
-        SpawnShip(new GridPosition(1,2));       //debug purposes
-
-        SpawnShip(new GridPosition(3,1));       //debug purposes
-        SpawnShip(new GridPosition(3,1));       //debug purposes
-
-        SpawnShip(new GridPosition(0,0));       //debug purposes
-        SpawnShip(new GridPosition(0,0));       //debug purposes
-
-        SpawnDock(new GridPosition(0,0));*/       //debug purposes
-
-        //SpawnDock(new GridPosition(2,2));       //debug purposes
+        SpawnShip(shipPrefab, new GridPosition(0,1), PlayerType.PlayerTwo); //debug purposes
+        SpawnShip(shipPrefab, new GridPosition(0,1), PlayerType.PlayerTwo); //debug purposes
+        SpawnShip(shipPrefab, new GridPosition(0,1), PlayerType.PlayerTwo); //debug purposes
     }
 
     // Update is called once per frame
@@ -177,7 +169,7 @@ public class UnitController : MonoBehaviour
             {
                 SetSelectedShip(ship);
                 ship.Selected();
-                Debug.Log(ship.GetCurrentWaypoint());
+                //Debug.Log(ship.GetCurrentWaypoint());
                 return true;
             }
         }
@@ -209,7 +201,7 @@ public class UnitController : MonoBehaviour
             {
                 SetSelectedSpaceDock(spaceDock);
                 spaceDock.Selected();
-                Debug.Log(spaceDock.GetPlanet() + " " + spaceDock.GetPlanet().GetSpaceDockWaypoint().hasDock);
+                //Debug.Log(spaceDock.GetPlanet() + " " + spaceDock.GetPlanet().GetSpaceDockWaypoint().hasDock);
                 return true;
             }
         }
@@ -240,7 +232,7 @@ public class UnitController : MonoBehaviour
             {
                 SetSelectedGroundForce(groundForce);
                 groundForce.Selected();
-                Debug.Log(groundForce.GetPlanet());
+                //Debug.Log(groundForce.GetPlanet());
                 return true;
             }
         }

@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq.Expressions;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class MoveAction : BaseAction
@@ -47,19 +49,54 @@ public class MoveAction : BaseAction
 
     public void Move(GridPosition gridPosition)
     {
-        //destination = MapController.Instance.GetWorldPosition(gridPosition) + shipYOffset;
-        SpaceWaypoint newWaypoint = MapController.Instance.GetGridObject(gridPosition).GetAvailableSpaceWaypoint();
+        GridObject previousGridObject = ship.GetGridObject();
+        
+        
+        GridObject newGridObject = MapController.Instance.GetGridObject(gridPosition);
+
+        if(!newGridObject.GridObjectIsAvailable(ship.GetPlayerType()))
+        {
+            return;
+        }
+
+        SpaceWaypoint newWaypoint = newGridObject.GetAvailableSpaceWaypoint();
 
         if(newWaypoint == null)
         {
             return;
         }
 
-        destination = newWaypoint.transform.position + shipYOffset;
+        previousGridObject.RemoveShip(ship);
+        newGridObject.AddShip(ship);
+        ship.SetGridObject(newGridObject);
 
         GetComponent<Ship>().GetCurrentWaypoint().hasShip = false;
         GetComponent<Ship>().SetCurrentWaypoint(newWaypoint);
         newWaypoint.hasShip = true;
+
+
+        //Debugging
+        Debug.Log("Previous");
+        foreach(KeyValuePair<PlayerType, List<Ship>> kvp in previousGridObject.GetShipListByPlayerType())
+        {
+            Debug.Log(kvp.Key);
+            foreach(var ship in kvp.Value)
+            {
+                Debug.Log(ship);
+            }
+        }
+        Debug.Log("New");
+        foreach(KeyValuePair<PlayerType, List<Ship>> kvp in newGridObject.GetShipListByPlayerType())
+        {
+            Debug.Log(kvp.Key);
+            foreach(var ship in kvp.Value)
+            {
+                Debug.Log(ship);
+            }
+        }
+        //Debugging
+
+        destination = newWaypoint.transform.position + shipYOffset;
 
         isActive = true;
     }
