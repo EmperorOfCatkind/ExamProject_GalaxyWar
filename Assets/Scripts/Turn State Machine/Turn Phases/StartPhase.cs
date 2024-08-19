@@ -24,7 +24,7 @@ public class StartPhase : BasePhase
             {
                 DoStartPhase();
                 count++;
-                Debug.Log(debugString);   
+                //Debug.Log(debugString);   
             }
             else{
                 count = 0;

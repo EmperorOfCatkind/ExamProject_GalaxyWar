@@ -11,6 +11,7 @@ public class PlayerTurnController : MonoBehaviour
     private IPlayerTurnService playerTurnService;
     private PlayerData[] playerDatas;
     public TurnStateMachine<Phase, Trigger> turnStateMachine;
+    public PhaseTransitionData<Phase, Trigger> phaseTransitionData;
 
 
     [SerializeField] private Transform player;
@@ -44,7 +45,7 @@ public class PlayerTurnController : MonoBehaviour
             Debug.Log(player.GetHomeSystem().ToString());
         }*/
         turnStateMachine.OnPhaseChanged += OnPhaseChanged;
-        InitializeFirstPlayer();        //don't work correctly
+        InitializeFirstPlayer();       
         
 
         /*for(int i = 0; i < playersArray.Length; i++)
@@ -61,6 +62,7 @@ public class PlayerTurnController : MonoBehaviour
 
     private void OnPhaseChanged(PhaseTransitionData<Phase, Trigger> phaseTransitionData)        //Get a phase class from an active player, activate it and go through it.
     {
+        this.phaseTransitionData = phaseTransitionData;
         switch(phaseTransitionData.NextPhase)
         {
             case Phase.Start:   //if Start is the next phase, change the active player

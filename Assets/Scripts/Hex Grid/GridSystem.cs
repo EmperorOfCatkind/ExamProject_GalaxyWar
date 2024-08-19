@@ -30,6 +30,8 @@ public class GridSystem
             {
                 GridPosition gridPosition = new GridPosition(x, z);
                 gridObjectArray[x,z] = new GridObject(this, gridPosition);
+                gridPosition.SetGridSystem(this);
+                gridPosition.neighbours = gridPosition.GetNeighbours();
             }
         }
     }

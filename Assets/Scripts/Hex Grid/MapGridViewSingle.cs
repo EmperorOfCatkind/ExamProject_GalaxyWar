@@ -46,6 +46,17 @@ public class MapGridViewSingle : MonoBehaviour
         meshRenderer.material = materialOnHover;
     }
 
+    public void ShowAsAvailable()
+    {
+        meshRenderer.material = materialOnClick;
+        Show();
+    }
+    public void HideAsAvailable()
+    {
+        Hide();
+        meshRenderer.material = materialOnHover;
+    }
+
     public void SetGridObject(GridObject gridObject)
     {
         this.gridObject = gridObject;

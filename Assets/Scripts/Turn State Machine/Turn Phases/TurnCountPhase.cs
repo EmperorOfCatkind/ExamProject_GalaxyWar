@@ -24,7 +24,7 @@ public class TurnCountPhase : BasePhase //display player name and what turn coun
             {
                 DoTurnCountPhase();
                 count++;
-                Debug.Log(debugString);   
+                //Debug.Log(debugString);   
             }
             else{
                 count = 0;

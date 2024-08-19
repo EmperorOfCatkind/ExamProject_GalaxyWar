@@ -45,34 +45,20 @@ public class MouseWorld : MonoBehaviour
     {    
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         bool isOnGrid = Physics.Raycast(ray, out RaycastHit raycastHit, float.MaxValue, hexGridLayerMask);
-
-        if(isOnGrid)
+        
+        if(!isOnGrid)
         {
-            GridPosition currentGridPosition = gridSystem.GetHexGridPosition(raycastHit.point);
-            lastMapGridViewSingle = mapController.GetMapGridViewSingle(currentGridPosition);
-
-            if(lastMapGridViewSingle != null)
-            {
-                lastMapGridViewSingle.OnClicked();
-                /*Debug.Log("----------");
-                Debug.Log(currentGridPosition);
-                foreach(var neighbourHex in gridSystem.GetNeighbourHexesList())
-                {
-                    Debug.Log(neighbourHex);
-                }*/
-                /*foreach(var waypoint in lastMapGridViewSingle.spaceWaypoints)
-                {
-                    if(waypoint.GetHasUnit() == true)
-                    {
-                        Debug.Log(waypoint.GetHasUnit());
-                    }
-                }*/
-                /*foreach(var SpaceWaypoint in lastMapGridViewSingle.GetGridObject().GetSpaceWaypointsList())
-                {
-                    Debug.Log(SpaceWaypoint.hasShip);
-                }*/
-            }
+            return;
         }
+
+        GridPosition currentGridPosition = gridSystem.GetHexGridPosition(raycastHit.point);
+        lastMapGridViewSingle = mapController.GetMapGridViewSingle(currentGridPosition);
+
+        if(lastMapGridViewSingle != null)
+        {
+            lastMapGridViewSingle.OnClicked();
+        }
+        
     }
     public void HighlightOnHover()
     {

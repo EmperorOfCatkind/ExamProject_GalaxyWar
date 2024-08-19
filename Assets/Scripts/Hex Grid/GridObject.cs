@@ -107,7 +107,7 @@ public class GridObject : MonoBehaviour
             return true;
         }
         
-        Debug.LogAssertion("Max 3 ship per player on Hex!");
+        //Debug.LogAssertion("Max 3 ship per player on Hex!");
         return false;
     }
     public SpaceWaypoint GetAvailableSpaceWaypoint()

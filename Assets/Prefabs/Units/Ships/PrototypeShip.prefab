@@ -76,7 +76,7 @@ MonoBehaviour:
   currentWaypoint: {fileID: 0}
   playerType: 1
   cost: 0
-  move: 0
+  move: 1
   combat: 0
   capacity: 0
 --- !u!114 &7517156437113793616
@@ -121,6 +121,7 @@ MonoBehaviour:
   stoppingDistance: 0
   rotatingSpeed: 0
   shipYOffset: {x: 0, y: 0, z: 0}
+  shipMove: 0
 --- !u!1 &3727277454129464553
 GameObject:
   m_ObjectHideFlags: 0

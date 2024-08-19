@@ -30,12 +30,13 @@ public class UnitController : MonoBehaviour
             return;
         }
         Instance = this;
+
+        shipYOffset = new Vector3(0, 3, 0);
+        groundForceYOffset = new Vector3(0, .3f, 0);
     }
     // Start is called before the first frame update
     void Start()
     {
-        shipYOffset = new Vector3(0, 3, 0);
-        groundForceYOffset = new Vector3(0, .3f, 0);
 
         SpawnShip(shipPrefab, new GridPosition(0,1), PlayerType.PlayerOne); //debug purposes
         SpawnShip(shipPrefab, new GridPosition(0,1), PlayerType.PlayerOne); //debug purposes
@@ -49,6 +50,9 @@ public class UnitController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        /*CheckCurrentTurnPhase(PlayerTurnController.Instance.GetCurrentPhase());
+        return;*/
+        
         if(Input.GetMouseButtonDown(0))
         {
             if(TrySelectShip()) return;
@@ -58,7 +62,35 @@ public class UnitController : MonoBehaviour
         }
     }
 
-    public void SpawnShip(GameObject ship, GridPosition gridPosition, PlayerType playerType)        //add player type
+    /*public void CheckCurrentTurnPhase(Phase phase)
+    {
+        switch(phase)
+        {
+            case Phase.Start:
+            Debug.Log("Start");
+            break;
+            case Phase.TurnCount:
+            Debug.Log("TurnCount");
+            break;
+            case Phase.Replenish:
+            Debug.Log("Replenish");
+            break;
+            case Phase.Move:
+            Debug.Log("Move");
+            break;
+            case Phase.SpaceCombat:
+            Debug.Log("SpaceCombat");
+            break;
+            case Phase.GroundCombat:
+            Debug.Log("GroundCombat");
+            break;
+            case Phase.Building:
+            Debug.Log("Building");
+            break;
+        }  
+    }*/
+
+    public void SpawnShip(GameObject ship, GridPosition gridPosition, PlayerType playerType) 
     {
         if(!MapController.Instance.IsInBounds(gridPosition))
         {
@@ -167,6 +199,12 @@ public class UnitController : MonoBehaviour
             
             if(raycastHit.transform.TryGetComponent<Ship>(out Ship ship))
             {
+                if(ship == selectedShip)
+                {
+                    selectedShip.Deselected();
+                    selectedShip = null;
+                    return true;
+                }
                 SetSelectedShip(ship);
                 ship.Selected();
                 //Debug.Log(ship.GetCurrentWaypoint());
@@ -199,6 +237,12 @@ public class UnitController : MonoBehaviour
 
             if(raycastHit.transform.TryGetComponent<SpaceDock>(out SpaceDock spaceDock))
             {
+                if(spaceDock == selectedDock)
+                {
+                    selectedDock.Deselected();
+                    selectedDock = null;
+                    return true;
+                }
                 SetSelectedSpaceDock(spaceDock);
                 spaceDock.Selected();
                 //Debug.Log(spaceDock.GetPlanet() + " " + spaceDock.GetPlanet().GetSpaceDockWaypoint().hasDock);
@@ -230,6 +274,12 @@ public class UnitController : MonoBehaviour
 
             if(raycastHit.transform.TryGetComponent<GroundForce>(out GroundForce groundForce))
             {
+                if(groundForce == selectedGroundForce)
+                {
+                    selectedGroundForce.Deselected();
+                    selectedGroundForce = null;
+                    return true;
+                }
                 SetSelectedGroundForce(groundForce);
                 groundForce.Selected();
                 //Debug.Log(groundForce.GetPlanet());
@@ -247,7 +297,12 @@ public class UnitController : MonoBehaviour
         }
 
         GridPosition mouseGridPosition = MapController.Instance.GetHexGridPosition(MouseWorld.GetMouseWorldPosition());
-        selectedShip.GetMoveAction().Move(mouseGridPosition);
+
+        if(selectedShip.GetMoveAction().IsValidGridPosition(mouseGridPosition))
+        {
+            selectedShip.GetMoveAction().Move(mouseGridPosition);
+        }
+        
     }
 
     public void SetSelectedShip(Ship ship)

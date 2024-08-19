@@ -20,7 +20,7 @@ public class Ship : MonoBehaviour
     //Stats//
 
     private MoveAction moveAction;
-
+    private List<GridPosition> availablePostionsToMove;
 
 
     void Awake()
@@ -33,6 +33,8 @@ public class Ship : MonoBehaviour
         gridPosition = MapController.Instance.GetHexGridPosition(transform.position);
         MapController.Instance.AddShipToGridObject(gridPosition, this);
         gridObject = MapController.Instance.GetGridObject(gridPosition);
+
+        availablePostionsToMove = new List<GridPosition>();
     }
 
     // Update is called once per frame
@@ -43,10 +45,12 @@ public class Ship : MonoBehaviour
     public void Selected()
     {
         selectedVisual.Show();
+        ShowHexesForMove();
     }
     public void Deselected()
     {
         selectedVisual.Hide();
+        HideHexesForMove();
     }
 
     public GridObject GetGridObject()
@@ -56,6 +60,14 @@ public class Ship : MonoBehaviour
     public void SetGridObject(GridObject gridObject)
     {
         this.gridObject = gridObject;
+    }
+    public GridPosition GetGridPosition()
+    {
+        return gridPosition;
+    }
+    public void SetGridPosition(GridPosition gridPosition)
+    {
+        this.gridPosition = gridPosition;
     }
 
     public MoveAction GetMoveAction()
@@ -82,4 +94,25 @@ public class Ship : MonoBehaviour
         this.playerType = playerType;
     }
 
+
+    public void ShowHexesForMove()
+    {
+        availablePostionsToMove = moveAction.GetValidGridPositionList();
+        
+        foreach(var gridPosition in availablePostionsToMove)
+        {
+            MapController.Instance.GetMapGridViewSingle(gridPosition).ShowAsAvailable();
+            Debug.Log(gridPosition.ToString());
+        }
+    }
+
+    public void HideHexesForMove()
+    {
+        foreach(var gridPosition in availablePostionsToMove)
+        {
+            MapController.Instance.GetMapGridViewSingle(gridPosition).HideAsAvailable();
+        }
+        availablePostionsToMove.Clear();
+        Debug.Log(availablePostionsToMove);
+    }
 }

@@ -24,7 +24,7 @@ public class MovePhase : BasePhase
             {
                 DoMovePhase();
                 count++;
-                Debug.Log(debugString);   
+                //Debug.Log(debugString);   
             }
             else{
                 count = 0;
