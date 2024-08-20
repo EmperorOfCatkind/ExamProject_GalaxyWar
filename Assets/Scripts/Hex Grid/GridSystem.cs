@@ -16,6 +16,8 @@ public class GridSystem
     private List<Vector3Int> neighbourHexesList;
 
     private GridObject[,] gridObjectArray;
+    private List<GridPosition> gridPositionsList;
+    
 
     public GridSystem(int width, int height, float hexSize)
     {
@@ -24,14 +26,17 @@ public class GridSystem
         this.hexSize = hexSize;
 
         gridObjectArray = new GridObject[width, height];
+        gridPositionsList = new List<GridPosition>();
+
         for(int x = 0; x < width; x++)
         {
             for (int z = 0; z < height; z++)
             {
                 GridPosition gridPosition = new GridPosition(x, z);
                 gridObjectArray[x,z] = new GridObject(this, gridPosition);
-                gridPosition.SetGridSystem(this);
-                gridPosition.neighbours = gridPosition.GetNeighbours();
+                gridPositionsList.Add(gridPosition);
+                //gridPosition.SetGridSystem(this);
+                //gridPosition.neighbours = gridPosition.GetNeighbours();
             }
         }
     }
@@ -126,6 +131,43 @@ public class GridSystem
         }
         return new GridPosition(closestGridPosition.x, closestGridPosition.z);
     }
+    public List<GridPosition> GetNeighboursOfGridPosition(GridPosition gridPosition)
+    {
+        List<GridPosition> neighbours = new List<GridPosition>();
+
+        bool isOddRow = gridPosition.z % 2 == 1;
+        Vector3Int center = new Vector3Int(gridPosition.x, 0, gridPosition.z);
+
+        List<Vector3Int> checkVector3 = new List<Vector3Int>()
+        {
+            //left
+            center + new Vector3Int(-1, 0, 0),
+            //right
+            center + new Vector3Int(+1, 0, 0),
+            //top left
+            center + new Vector3Int(isOddRow ? 0 : -1, 0, +1),
+            //bottom left
+            center + new Vector3Int(isOddRow ? 0 : -1, 0, -1),
+            //top right
+            center + new Vector3Int(isOddRow ? +1 : 0, 0, +1),
+            //bottom right
+            center + new Vector3Int(isOddRow ? +1 : 0, 0, -1),
+        };
+
+        foreach(var vectorToCheck in checkVector3)
+        {
+            foreach(var position in gridPositionsList)
+            {
+                GridPosition toTest = new GridPosition(vectorToCheck.x, vectorToCheck.z);
+                if(position == toTest)
+                {
+                    neighbours.Add(position);
+                }
+            }
+            
+        }
+        return neighbours;
+    }
 
     public bool IsInBounds(GridPosition gridPosition)
     {
@@ -142,5 +184,9 @@ public class GridSystem
     public GridObject[,] GetGridObjectArray()
     {
         return gridObjectArray;
+    }
+    public List<GridPosition> GetGridPositionsList()
+    {
+        return gridPositionsList;
     }
 }

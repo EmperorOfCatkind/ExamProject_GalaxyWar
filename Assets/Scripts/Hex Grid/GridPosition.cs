@@ -8,16 +8,16 @@ public struct GridPosition : IEquatable<GridPosition>
 {
     public int x;
     public int z;
-    private GridSystem gridSystem;
-    public List<GridPosition> neighbours;
+    //private GridSystem gridSystem;
+    //public List<GridPosition> neighbours;
 
     public GridPosition(int x, int z)
     {
 
         this.x = x;
         this.z = z;
-        gridSystem = null;
-        neighbours = new List<GridPosition>();
+        //gridSystem = null;
+        //neighbours = new List<GridPosition>();
         //neighbours = GetNeighbours();
     }
 
@@ -62,12 +62,13 @@ public struct GridPosition : IEquatable<GridPosition>
     {
         return new GridPosition(a.x - b.x, a.z - b.z);
     }
-    public void SetGridSystem(GridSystem gridSystem)
+    /*public void SetGridSystem(GridSystem gridSystem)
     {
         this.gridSystem = gridSystem;
-    }
-    public List<GridPosition> GetNeighbours()
+    }*/
+    /*public List<GridPosition> GetNeighbours(GridSystem gridSystem)
     {
+        List<GridPosition> gridPositionsInSystem = gridSystem.GetGridPositionsList();
         List<GridPosition> neighbours = new List<GridPosition>();
 
         bool isOddRow = z % 2 == 1;
@@ -75,7 +76,7 @@ public struct GridPosition : IEquatable<GridPosition>
         if(isOddRow)
         {
             //left
-            if(gridSystem.IsInBounds(new GridPosition(x - 1, z)))
+            if(gridPositionsInSystem.Contains())
             {
                 neighbours.Add(new GridPosition(x - 1, z));
             }
@@ -140,5 +141,5 @@ public struct GridPosition : IEquatable<GridPosition>
         }
 
         return neighbours;
-    }
+    }*/
 }

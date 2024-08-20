@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data.SqlTypes;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using UnityEngine;
@@ -81,45 +82,42 @@ public class MoveAction : BaseAction
         GetComponent<Ship>().SetCurrentWaypoint(newWaypoint);
         newWaypoint.hasShip = true;
 
+        //GetComponent<Ship>().DecreaseMove();
+        GetComponent<Ship>().HideHexesForMove();
+
         destination = newWaypoint.transform.position + shipYOffset;
 
         isActive = true;
     }
 
-    public List<GridPosition> GetValidGridPositionList()        //update with getting neighbours list of gridposition
+    public List<GridPosition> GetValidGridPositionList()        
     {
         List<GridPosition> validGridPositions = new List<GridPosition>();
 
         GridPosition currentPosition = ship.GetGridPosition();
-
-        for(int x = -shipMove; x <= shipMove; x++)
+        
+        foreach (var testGridPosition in MapController.Instance.GetNeighboursOfGridPosition(currentPosition))
         {
-            for(int z = -shipMove; z <= shipMove; z++)
+            if(!MapController.Instance.IsInBounds(testGridPosition))        //probably unnecessary, since neighbours List will only contain positions within gridSystem
             {
-                GridPosition offsetGridPosition = new GridPosition(x,z);
-                GridPosition testGridPosition = currentPosition + offsetGridPosition;
-
-                if(!MapController.Instance.IsInBounds(testGridPosition))
-                {
-                    //gridPosition is not in grid system
-                    continue;
-                }
-
-                if(currentPosition == testGridPosition)
-                {
-                    //it is the current position of the unit
-                    continue;
-                }
-
-                if(!MapController.Instance.GetGridObject(testGridPosition).GridObjectIsAvailable(ship.GetPlayerType()))
-                {
-                    //no free space for ship of this player
-                    continue;
-                }
-
-                validGridPositions.Add(testGridPosition);
+                //gridPosition is not in grid system
+                continue;
             }
+
+            if(currentPosition == testGridPosition)     //probably unnecessary - list of neighbours of position will not include itself
+            {
+                //it is the current position of the unit
+                continue;
+            }
+            if(!MapController.Instance.GetGridObject(testGridPosition).GridObjectIsAvailable(ship.GetPlayerType()))
+            {
+                //no free space for ship of this player
+                continue;
+            }
+            validGridPositions.Add(testGridPosition);
         }
+
+        
         return validGridPositions;
     }
 

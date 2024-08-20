@@ -6,6 +6,7 @@ public class ResourcePhase : BasePhase
 {
     int count = 0;
     private List<Planet> playerPlanets;
+    private List<GameObject> playerShips;
     protected override void Awake()
     {
         base.Awake();
@@ -23,21 +24,28 @@ public class ResourcePhase : BasePhase
         {
             return;
         }
-
-        playerPlanets = player.GetPlayerPlanets();
-        foreach(var planet in playerPlanets)
-        {
-            player.AddOre(planet.GetOreAmount());
-            player.AddFuel(planet.GetFuelAmount());
-            //add ore value to SpaceDok building capacity
-        }
+    
         isActive = false;
     }
 
     //void Trigger from state machine - isActive = true
     public void DoResourcePhase()
     {
-        //debugString = "This is " + phaseName + " of player " + player.GetName();
-        isActive = true;
+        playerPlanets = player.GetPlayerPlanets();
+
+        foreach(var planet in playerPlanets)
+        {
+            player.AddOre(planet.GetOreAmount());
+            player.AddFuel(planet.GetFuelAmount());
+            //add ore value to SpaceDok building capacity
+        }
+
+        playerShips = player.GetPlayersShips();
+
+        /*foreach(var ship in playerShips)
+        {
+            ship.GetComponent<Ship>().hasMoved = false;
+        }*/
+        //isActive = true;
     }
 }

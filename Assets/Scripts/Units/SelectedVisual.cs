@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class SelectedVisual : MonoBehaviour
 {   
-    [SerializeField] private MeshRenderer meshRenderer;
-    [SerializeField] private Material selectedMaterial;
+    [SerializeField] public MeshRenderer meshRenderer;
+    [SerializeField] public Material selectedMaterial;
 
     // Start is called before the first frame update
     void Start()

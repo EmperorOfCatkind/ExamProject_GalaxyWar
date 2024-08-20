@@ -34,7 +34,6 @@ public class MapController : MonoBehaviour
         gridPositions = mapVisualService.GridPositions;
         gridObjects = gridSystem.GetGridObjectArray();
 
-        //gridSystem.DisplayCoordinates(coordinatesPrefab);   //debug purposes
         InitializeGridView();
         HideAll();
     }
@@ -111,4 +110,5 @@ public class MapController : MonoBehaviour
     public GridPosition GetHexGridPosition(Vector3 worldPosition) => gridSystem.GetHexGridPosition(worldPosition);
     public bool IsInBounds(GridPosition gridPosition) => gridSystem.IsInBounds(gridPosition);
     public GridObject GetGridObject(GridPosition gridPosition) => gridSystem.GetGridObject(gridPosition);
+    public List<GridPosition> GetNeighboursOfGridPosition(GridPosition gridPosition) =>gridSystem.GetNeighboursOfGridPosition(gridPosition);
 }

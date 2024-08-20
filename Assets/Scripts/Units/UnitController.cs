@@ -6,7 +6,7 @@ public class UnitController : MonoBehaviour
 {
     public static UnitController Instance;
 
-    [SerializeField] private GameObject shipPrefab; //debug purposes
+    [SerializeField] public GameObject shipPrefab; //debug purposes
     [SerializeField] private GameObject dockPrefab;
     [SerializeField] private GameObject groundForcePrefab;
     [SerializeField] private LayerMask shipLayerMask;
@@ -38,57 +38,40 @@ public class UnitController : MonoBehaviour
     void Start()
     {
 
-        SpawnShip(shipPrefab, new GridPosition(0,1), PlayerType.PlayerOne); //debug purposes
+        /*SpawnShip(shipPrefab, new GridPosition(0,1), PlayerType.PlayerOne); //debug purposes
         SpawnShip(shipPrefab, new GridPosition(0,1), PlayerType.PlayerOne); //debug purposes
         SpawnShip(shipPrefab, new GridPosition(0,1), PlayerType.PlayerOne); //debug purposes
 
         SpawnShip(shipPrefab, new GridPosition(0,1), PlayerType.PlayerTwo); //debug purposes
         SpawnShip(shipPrefab, new GridPosition(0,1), PlayerType.PlayerTwo); //debug purposes
-        SpawnShip(shipPrefab, new GridPosition(0,1), PlayerType.PlayerTwo); //debug purposes
+        SpawnShip(shipPrefab, new GridPosition(0,1), PlayerType.PlayerTwo); //debug purposes*/
     }
 
     // Update is called once per frame
     void Update()
     {
-        /*CheckCurrentTurnPhase(PlayerTurnController.Instance.GetCurrentPhase());
-        return;*/
-        
-        if(Input.GetMouseButtonDown(0))
+        switch(PlayerTurnController.Instance.GetCurrentPhase())
         {
-            if(TrySelectShip()) return;
-            if(TrySelectDock()) return;
-            if(TrySelectGroundForce()) return;
-            MoveShip();
-        }
-    }
-
-    /*public void CheckCurrentTurnPhase(Phase phase)
-    {
-        switch(phase)
-        {
-            case Phase.Start:
-            Debug.Log("Start");
-            break;
-            case Phase.TurnCount:
-            Debug.Log("TurnCount");
-            break;
-            case Phase.Replenish:
-            Debug.Log("Replenish");
-            break;
             case Phase.Move:
-            Debug.Log("Move");
+            if(Input.GetMouseButtonDown(0))
+            {
+                if(TrySelectShip()) return;
+                if(TrySelectDock()) return;
+                if(TrySelectGroundForce()) return;
+                MoveShip();
+            }
+            if(Input.GetMouseButtonDown(1) && selectedShip != null)
+            {
+                if(TrySelectGroundForce())
+                {
+                    Embark();
+                }
+            }
             break;
-            case Phase.SpaceCombat:
-            Debug.Log("SpaceCombat");
-            break;
-            case Phase.GroundCombat:
-            Debug.Log("GroundCombat");
-            break;
-            case Phase.Building:
-            Debug.Log("Building");
-            break;
-        }  
-    }*/
+        }
+        
+        
+    }
 
     public void SpawnShip(GameObject ship, GridPosition gridPosition, PlayerType playerType) 
     {
@@ -113,6 +96,7 @@ public class UnitController : MonoBehaviour
 
         Instantiate(ship, availableWaypoint.transform.position + shipYOffset, Quaternion.identity);
         availableWaypoint.hasShip = true;
+        PlayerTurnController.Instance.GetSpecificPlayer(playerType).AddShip(ship);
     }
 
     public void SpawnDock(GridPosition gridPosition, PlayerType playerType)
@@ -257,11 +241,11 @@ public class UnitController : MonoBehaviour
 
         if(Physics.Raycast(ray, out RaycastHit raycastHit, float.MaxValue, groundForceLayerMask))
         {
-            if(selectedShip != null)
+            /*if(selectedShip != null)
             {
                 selectedShip.Deselected();
                 selectedShip = null;
-            }
+            }*/
             if(selectedDock != null)
             {
                 selectedDock.Deselected();
@@ -291,7 +275,7 @@ public class UnitController : MonoBehaviour
 
     public void MoveShip()
     {
-        if(selectedShip == null)
+        if(selectedShip == null /*|| selectedShip.hasMoved*/)
         {
             return;
         }
@@ -302,7 +286,33 @@ public class UnitController : MonoBehaviour
         {
             selectedShip.GetMoveAction().Move(mouseGridPosition);
         }
-        
+    }
+
+    public void Embark()
+    {
+        if(selectedShip != null)
+        {
+            selectedShip.GetEmbarkAction().Embark(selectedGroundForce);
+        }
+    }
+
+    public void DropAllSelections()
+    {
+        if(selectedShip != null)
+        {
+            selectedShip.Deselected();
+            selectedShip = null;
+        }
+        if(selectedDock != null)
+        {
+            selectedDock.Deselected();
+            selectedDock = null;
+        }
+        if(selectedGroundForce != null)
+        {
+            selectedGroundForce.Deselected();
+            selectedGroundForce = null;
+        }
     }
 
     public void SetSelectedShip(Ship ship)
@@ -316,6 +326,10 @@ public class UnitController : MonoBehaviour
     public void SetSelectedGroundForce(GroundForce groundForce)
     {
         selectedGroundForce = groundForce;
+    }
+    public GroundForce GetSelectedGroundForce()
+    {
+        return selectedGroundForce;
     }
 
     

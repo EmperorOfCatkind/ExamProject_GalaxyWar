@@ -35,23 +35,14 @@ public class PlayerTurnController : MonoBehaviour
         playerDatas = playerTurnService.players;
         turnStateMachine = playerTurnService.turnStateMachine;
         turnInfoUI = GetComponent<TurnInfoUI>();
+
     }
     // Start is called before the first frame update
     void Start()
     {
-        InitializePlayers();
-        /*foreach(var player in playersArray)
-        {
-            Debug.Log(player.GetHomeSystem().ToString());
-        }*/
+        /*InitializePlayers();
         turnStateMachine.OnPhaseChanged += OnPhaseChanged;
-        InitializeFirstPlayer();       
-        
-
-        /*for(int i = 0; i < playersArray.Length; i++)
-        {
-            Debug.Log(playersArray[i].GetName() + " " + i);
-        }*/
+        InitializeFirstPlayer();*/     
     }
 
     // Update is called once per frame
@@ -60,7 +51,7 @@ public class PlayerTurnController : MonoBehaviour
         
     }
 
-    private void OnPhaseChanged(PhaseTransitionData<Phase, Trigger> phaseTransitionData)        //Get a phase class from an active player, activate it and go through it.
+    public void OnPhaseChanged(PhaseTransitionData<Phase, Trigger> phaseTransitionData)        //Get a phase class from an active player, activate it and go through it.
     {
         this.phaseTransitionData = phaseTransitionData;
         switch(phaseTransitionData.NextPhase)
@@ -81,7 +72,7 @@ public class PlayerTurnController : MonoBehaviour
                 break;
 
             case Phase.Move:
-                //get ships move only once per turn and no further than their Move stat
+                //get ships move only once per turn
                 //get ground forces to embark and disembark
                 //by the end if there is a Hex (gridObject) ships belonging to both players add it to the List for the next phase to use
                 //if there is a planet with ground forces of both players add it to the list for the next next phase to use
@@ -90,6 +81,7 @@ public class PlayerTurnController : MonoBehaviour
                 break;
 
             case Phase.SpaceCombat:
+                UnitController.Instance.DropAllSelections();
                 //create a combat feature
                 activePlayer.GetSpaceCombatPhase().DoSpaceCombatPhase();
                 turnInfoUI.UpdateValues();
@@ -134,6 +126,16 @@ public class PlayerTurnController : MonoBehaviour
                 UnitController.Instance.SpawnDock(gridPosition, playerDatas[i].playerType);
             }
 
+
+            playersArray[i] = newPlayer.GetComponent<Player>();
+        }
+    }
+
+    public void InitializePlayersFleets()
+    {
+        for(int i = 0; i < playerDatas.Length; i++)
+        {
+            GridPosition gridPosition = new GridPosition(playerDatas[i].gridX, playerDatas[i].gridZ);
             foreach(var ship in playerDatas[i].startingFleet)
             {
                 UnitController.Instance.SpawnShip(ship, gridPosition, playerDatas[i].playerType);
@@ -143,12 +145,10 @@ public class PlayerTurnController : MonoBehaviour
             {
                 UnitController.Instance.SpawnGroundForce(gridPosition, playerDatas[i].playerType);
             }
-
-
-            
-            playersArray[i] = newPlayer.GetComponent<Player>();
         }
+        
     }
+    
     public void InitializeFirstPlayer()
     {
         activePlayerIndex = 0;
@@ -157,7 +157,16 @@ public class PlayerTurnController : MonoBehaviour
         turnInfoUI.UpdateValues();
         //Debug.Log(activePlayerIndex);
     }
-
+    public Player GetSpecificPlayer(PlayerType playerType)
+    {
+        Player temp = new Player();
+        foreach(var player in playersArray)
+        {
+            if (player.GetPlayerType() == playerType)
+            temp = player;
+        }
+        return temp;
+    }
     public Player GetActivePlayer()
     {
         return activePlayer;
@@ -167,7 +176,7 @@ public class PlayerTurnController : MonoBehaviour
     {
         return turnStateMachine.currentPhase;
     }
-
+    
     public void StartPhase()
     {
         if(activePlayer != null)

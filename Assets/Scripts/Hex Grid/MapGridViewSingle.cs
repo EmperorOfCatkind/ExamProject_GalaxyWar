@@ -34,7 +34,7 @@ public class MapGridViewSingle : MonoBehaviour
         meshRenderer.enabled = false;
     }
 
-    public void OnClicked() //TODO - make material change work
+    public void OnClicked() 
     {
         meshRenderer.material = materialOnClick;
         Invoke(nameof(OnClickedAfter), 0.5f);
