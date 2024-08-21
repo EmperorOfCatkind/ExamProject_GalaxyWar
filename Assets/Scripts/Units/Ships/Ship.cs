@@ -176,6 +176,6 @@ public class Ship : MonoBehaviour
         int count = embarkedForces.Count;
         embarkedCounter.text = count.ToString();
 
-        Destroy(groundForce);
+        Destroy(groundForce.GameObject());
     }
 }

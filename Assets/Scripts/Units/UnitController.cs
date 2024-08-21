@@ -55,14 +55,14 @@ public class UnitController : MonoBehaviour
             case Phase.Move:
             if(Input.GetMouseButtonDown(0))
             {
-                if(TrySelectShip()) return;
-                if(TrySelectDock()) return;
-                if(TrySelectGroundForce()) return;
+                if(TrySelectShip(PlayerTurnController.Instance.GetActivePlayer().GetPlayerType())) return;
+                if(TrySelectDock(PlayerTurnController.Instance.GetActivePlayer().GetPlayerType())) return;
+                if(TrySelectGroundForce(PlayerTurnController.Instance.GetActivePlayer().GetPlayerType())) return;
                 MoveShip();
             }
             if(Input.GetMouseButtonDown(1) && selectedShip != null)
             {
-                if(TrySelectGroundForce())
+                if(TrySelectGroundForce(PlayerTurnController.Instance.GetActivePlayer().GetPlayerType()))
                 {
                     Embark();
                 }
@@ -160,7 +160,7 @@ public class UnitController : MonoBehaviour
 
     }
 
-    public bool TrySelectShip()
+    public bool TrySelectShip(PlayerType playerType)
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
@@ -183,6 +183,12 @@ public class UnitController : MonoBehaviour
             
             if(raycastHit.transform.TryGetComponent<Ship>(out Ship ship))
             {
+                //Debug.Log(ship.GetPlayerType());
+                if(ship.GetPlayerType() != playerType)
+                {
+                    return false;
+                }
+
                 if(ship == selectedShip)
                 {
                     selectedShip.Deselected();
@@ -198,7 +204,7 @@ public class UnitController : MonoBehaviour
 
         return false;
     }
-    public bool TrySelectDock()
+    public bool TrySelectDock(PlayerType playerType)
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
@@ -221,6 +227,11 @@ public class UnitController : MonoBehaviour
 
             if(raycastHit.transform.TryGetComponent<SpaceDock>(out SpaceDock spaceDock))
             {
+                if(spaceDock.GetPlayerType() != playerType)
+                {
+                    return false;
+                }
+
                 if(spaceDock == selectedDock)
                 {
                     selectedDock.Deselected();
@@ -235,7 +246,7 @@ public class UnitController : MonoBehaviour
         }
         return false;
     }
-    public bool TrySelectGroundForce()
+    public bool TrySelectGroundForce(PlayerType playerType)
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
@@ -258,6 +269,11 @@ public class UnitController : MonoBehaviour
 
             if(raycastHit.transform.TryGetComponent<GroundForce>(out GroundForce groundForce))
             {
+                if(groundForce.GetPlayerType() != playerType)
+                {
+                    return false;
+                }
+
                 if(groundForce == selectedGroundForce)
                 {
                     selectedGroundForce.Deselected();

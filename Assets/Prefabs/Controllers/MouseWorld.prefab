@@ -134,5 +134,14 @@ MonoBehaviour:
   shipLayerMask:
     serializedVersion: 2
     m_Bits: 128
+  dockLayerMask:
+    serializedVersion: 2
+    m_Bits: 256
+  groundForceLayerMask:
+    serializedVersion: 2
+    m_Bits: 512
+  UILayerMask:
+    serializedVersion: 2
+    m_Bits: 32
   mapController: {fileID: 0}
   visual: {fileID: 1747033701124814888}

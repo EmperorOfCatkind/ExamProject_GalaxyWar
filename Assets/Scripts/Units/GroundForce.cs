@@ -42,6 +42,10 @@ public class GroundForce : MonoBehaviour
         return planet;
     }
 
+    public PlayerType GetPlayerType()
+    {
+        return playerType;
+    }
     public void SetPlayerType(PlayerType playerType)
     {
         this.playerType = playerType;

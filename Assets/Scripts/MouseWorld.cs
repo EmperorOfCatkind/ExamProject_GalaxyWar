@@ -5,8 +5,15 @@ using UnityEngine;
 public class MouseWorld : MonoBehaviour
 {
     private static MouseWorld Instance;
+
+
     [SerializeField] private LayerMask hexGridLayerMask;
     [SerializeField] private LayerMask shipLayerMask;
+    [SerializeField] private LayerMask dockLayerMask;
+    [SerializeField] private LayerMask groundForceLayerMask;
+    [SerializeField] private LayerMask UILayerMask;
+
+
     [SerializeField] private MapController mapController;
 
     private MapGridViewSingle lastMapGridViewSingle;
@@ -27,11 +34,7 @@ public class MouseWorld : MonoBehaviour
     // Update is called once per frame
     void Update()
     {   
-        HighlightOnHover();
-        if(Input.GetMouseButtonDown(0))
-        {
-            SelectHex();
-        }
+        HighlightOnHover(GetLayerMask());
     }
 
     public static Vector3 GetMouseWorldPosition()
@@ -64,7 +67,7 @@ public class MouseWorld : MonoBehaviour
         }
         
     }
-    public void HighlightOnHover()
+    public void HighlightHex()
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         bool isOnGrid = Physics.Raycast(ray, out RaycastHit raycastHit, float.MaxValue, hexGridLayerMask);
@@ -99,5 +102,40 @@ public class MouseWorld : MonoBehaviour
             }
             visual.SetActive(false);
         }
+    }
+
+
+    public void HighlightOnHover(LayerMask layerMask)
+    {
+        if(layerMask != hexGridLayerMask || layerMask == UILayerMask)
+        {
+            if(lastMapGridViewSingle != null)
+            {
+                lastMapGridViewSingle.Hide();
+            }
+        }
+        else if(layerMask == hexGridLayerMask && layerMask != UILayerMask)
+        {
+            HighlightHex();
+            if(Input.GetMouseButtonDown(0))
+            {
+                SelectHex();
+            }
+        }
+    }
+
+    public LayerMask GetLayerMask()
+    {
+        LayerMask hitLayerMask = default;
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
+
+        if (Physics.Raycast(ray, out hit))
+        {
+            int layer = hit.collider.gameObject.layer;
+            hitLayerMask = 1 << layer;
+        }
+
+        return hitLayerMask;
     }
 }

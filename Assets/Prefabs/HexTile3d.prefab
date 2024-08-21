@@ -12,7 +12,8 @@ GameObject:
   - component: {fileID: 8820325858436532827}
   - component: {fileID: 4549589171671509695}
   - component: {fileID: 2030635438342152516}
-  m_Layer: 0
+  - component: {fileID: 6742930210310071325}
+  m_Layer: 6
   m_Name: Planet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -115,6 +116,28 @@ MonoBehaviour:
   - {fileID: 4900223768025525092}
   - {fileID: 6033501603658817487}
   - {fileID: 3845793398993379238}
+--- !u!64 &6742930210310071325
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1486594063895615218}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &4812278770476859046
 GameObject:
   m_ObjectHideFlags: 0
@@ -289,7 +312,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8495670299436218467}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: GroundForceWaypoints
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -330,7 +353,7 @@ GameObject:
   - component: {fileID: 709770900209410721}
   - component: {fileID: 5346462786739314894}
   - component: {fileID: 3281829434198440001}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Fuel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -501,7 +524,7 @@ GameObject:
   - component: {fileID: 5259853185759476340}
   - component: {fileID: 3118705487739322102}
   - component: {fileID: 3244727004188277770}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Ore
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -799,6 +822,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: GroundForceWaypoint (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 170416365923737007, guid: c3bd66e582de65349a1030fb30ed1297, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 3376611344181351315, guid: c3bd66e582de65349a1030fb30ed1297, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.2
@@ -839,6 +866,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5629656359352613821, guid: c3bd66e582de65349a1030fb30ed1297, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -871,6 +902,10 @@ PrefabInstance:
     - target: {fileID: 170416365923737007, guid: c3bd66e582de65349a1030fb30ed1297, type: 3}
       propertyPath: m_Name
       value: GroundForceWaypoint (5)
+      objectReference: {fileID: 0}
+    - target: {fileID: 170416365923737007, guid: c3bd66e582de65349a1030fb30ed1297, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 3376611344181351315, guid: c3bd66e582de65349a1030fb30ed1297, type: 3}
       propertyPath: m_LocalScale.x
@@ -924,6 +959,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5629656359352613821, guid: c3bd66e582de65349a1030fb30ed1297, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -956,6 +995,10 @@ PrefabInstance:
     - target: {fileID: 170416365923737007, guid: c3bd66e582de65349a1030fb30ed1297, type: 3}
       propertyPath: m_Name
       value: GroundForceWaypoint (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 170416365923737007, guid: c3bd66e582de65349a1030fb30ed1297, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 3376611344181351315, guid: c3bd66e582de65349a1030fb30ed1297, type: 3}
       propertyPath: m_LocalPosition.x
@@ -997,6 +1040,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5629656359352613821, guid: c3bd66e582de65349a1030fb30ed1297, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1029,6 +1076,10 @@ PrefabInstance:
     - target: {fileID: 170416365923737007, guid: c3bd66e582de65349a1030fb30ed1297, type: 3}
       propertyPath: m_Name
       value: GroundForceWaypoint (6)
+      objectReference: {fileID: 0}
+    - target: {fileID: 170416365923737007, guid: c3bd66e582de65349a1030fb30ed1297, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 3376611344181351315, guid: c3bd66e582de65349a1030fb30ed1297, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1069,6 +1120,10 @@ PrefabInstance:
     - target: {fileID: 3376611344181351315, guid: c3bd66e582de65349a1030fb30ed1297, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5629656359352613821, guid: c3bd66e582de65349a1030fb30ed1297, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1362,6 +1417,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: GroundForceWaypoint
       objectReference: {fileID: 0}
+    - target: {fileID: 170416365923737007, guid: c3bd66e582de65349a1030fb30ed1297, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 3376611344181351315, guid: c3bd66e582de65349a1030fb30ed1297, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.3
@@ -1401,6 +1460,10 @@ PrefabInstance:
     - target: {fileID: 3376611344181351315, guid: c3bd66e582de65349a1030fb30ed1297, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5629656359352613821, guid: c3bd66e582de65349a1030fb30ed1297, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1649,9 +1712,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2196258275791087043, guid: 34552f93a32f845489f096127ce0a494, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 7119193369711972785, guid: 34552f93a32f845489f096127ce0a494, type: 3}
       propertyPath: m_Name
       value: SpaceDockWaypoint
+      objectReference: {fileID: 0}
+    - target: {fileID: 7119193369711972785, guid: 34552f93a32f845489f096127ce0a494, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1775,6 +1846,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: GroundForceWaypoint (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 170416365923737007, guid: c3bd66e582de65349a1030fb30ed1297, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 3376611344181351315, guid: c3bd66e582de65349a1030fb30ed1297, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.3
@@ -1814,6 +1889,10 @@ PrefabInstance:
     - target: {fileID: 3376611344181351315, guid: c3bd66e582de65349a1030fb30ed1297, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5629656359352613821, guid: c3bd66e582de65349a1030fb30ed1297, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1848,6 +1927,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: GroundForceWaypoint (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 170416365923737007, guid: c3bd66e582de65349a1030fb30ed1297, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 3376611344181351315, guid: c3bd66e582de65349a1030fb30ed1297, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.2
@@ -1887,6 +1970,10 @@ PrefabInstance:
     - target: {fileID: 3376611344181351315, guid: c3bd66e582de65349a1030fb30ed1297, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5629656359352613821, guid: c3bd66e582de65349a1030fb30ed1297, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1921,6 +2008,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: GroundForceWaypoint (7)
       objectReference: {fileID: 0}
+    - target: {fileID: 170416365923737007, guid: c3bd66e582de65349a1030fb30ed1297, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 3376611344181351315, guid: c3bd66e582de65349a1030fb30ed1297, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.2
@@ -1960,6 +2051,10 @@ PrefabInstance:
     - target: {fileID: 3376611344181351315, guid: c3bd66e582de65349a1030fb30ed1297, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5629656359352613821, guid: c3bd66e582de65349a1030fb30ed1297, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
