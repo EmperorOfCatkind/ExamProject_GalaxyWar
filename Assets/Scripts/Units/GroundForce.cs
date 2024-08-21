@@ -50,4 +50,5 @@ public class GroundForce : MonoBehaviour
     {
         this.playerType = playerType;
     }
+    
 }

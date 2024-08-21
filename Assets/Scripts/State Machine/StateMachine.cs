@@ -3,13 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TurnStateMachine <TPhase, TTrigger>
+public class StateMachine <TPhase, TTrigger>
 {
     public TPhase currentPhase  {get; private set;}
     public Dictionary<TPhase, Transition<TTrigger, TPhase>> phaseTransition;
     public Action<PhaseTransitionData<TPhase, TTrigger>> OnPhaseChanged;
 
-    public TurnStateMachine(TPhase initialPhase)
+    public StateMachine(TPhase initialPhase)
     {
         currentPhase = initialPhase;
         phaseTransition = new Dictionary<TPhase, Transition<TTrigger, TPhase>>();

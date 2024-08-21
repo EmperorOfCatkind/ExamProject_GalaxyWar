@@ -1716,6 +1716,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 2497908067459265125, guid: 34552f93a32f845489f096127ce0a494, type: 3}
+      propertyPath: meshRenderer
+      value: 
+      objectReference: {fileID: 1572274104041794929}
     - target: {fileID: 7119193369711972785, guid: 34552f93a32f845489f096127ce0a494, type: 3}
       propertyPath: m_Name
       value: SpaceDockWaypoint
@@ -1729,6 +1733,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 34552f93a32f845489f096127ce0a494, type: 3}
+--- !u!23 &1572274104041794929 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 6750438253106962827, guid: 34552f93a32f845489f096127ce0a494, type: 3}
+  m_PrefabInstance: {fileID: 5224044883946425594}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &4643016624607189547 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 581182201222338257, guid: 34552f93a32f845489f096127ce0a494, type: 3}

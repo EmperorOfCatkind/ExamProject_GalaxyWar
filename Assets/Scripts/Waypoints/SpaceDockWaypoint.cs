@@ -6,6 +6,7 @@ public class SpaceDockWaypoint : MonoBehaviour
 {
     private GridPosition gridPosition;
     private GridObject gridObject;
+    [SerializeField] private MeshRenderer meshRenderer;
     public bool hasDock;
     void Awake()
     {
@@ -22,5 +23,10 @@ public class SpaceDockWaypoint : MonoBehaviour
     void Update()
     {
         
+    }
+
+    public MeshRenderer GetMesh()
+    {
+        return meshRenderer;
     }
 }

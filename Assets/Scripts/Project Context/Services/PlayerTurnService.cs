@@ -8,7 +8,7 @@ public interface IPlayerTurnService
 {
     PlayerData[] players {get;}
 
-    TurnStateMachine<Phase, Trigger> turnStateMachine {get;}
+    StateMachine<Phase, Trigger> turnStateMachine {get;}
 
     public void IncrementTurnCounter(PlayerType playerType);
 
@@ -19,13 +19,13 @@ public class PlayerTurnService : IPlayerTurnService
     public PlayerData[] players {get; private set;}
     public Dictionary<PlayerType, int> turnCounter;
 
-    public TurnStateMachine<Phase, Trigger> turnStateMachine {get;}
+    public StateMachine<Phase, Trigger> turnStateMachine {get;}
 
     public PlayerTurnService(IConfigService configService)
     {
         players = configService.Players;
 
-        turnStateMachine = new TurnStateMachine<Phase, Trigger>(Phase.Start);
+        turnStateMachine = new StateMachine<Phase, Trigger>(Phase.Start);
 
         turnStateMachine.AddTransition(Phase.Start, Trigger.ToTurnCount, Phase.TurnCount);
 

@@ -14,8 +14,10 @@ public class MoveAction : BaseAction
     [SerializeField] Vector3 shipYOffset;
     
     [SerializeField] int shipMove;
+    int fuelCost;
 
     private Vector3 destination;
+    private Player activePlayer;
 
 
     protected override void Awake()
@@ -32,6 +34,7 @@ public class MoveAction : BaseAction
         shipYOffset = new Vector3(0,3,0);
 
         shipMove = ship.move;
+        fuelCost = 1;
     }
 
     // Update is called once per frame
@@ -49,6 +52,9 @@ public class MoveAction : BaseAction
         }
         else
         {
+            //ship.DecreaseMove();
+            activePlayer = PlayerTurnController.Instance.GetActivePlayer();
+            activePlayer.AddFuel(-fuelCost);
             isActive = false;
         }
         transform.forward = Vector3.Lerp(transform.forward, moveDirection, Time.deltaTime * rotatingSpeed);

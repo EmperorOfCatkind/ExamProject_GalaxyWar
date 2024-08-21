@@ -106,6 +106,20 @@ public class MapController : MonoBehaviour
         gridObject.AddShip(ship);
     }
 
+    public List<GridObject> GatherHexesForCombat()
+    {
+        List<GridObject> combatHexes = new List<GridObject>();
+
+        foreach (var gridObject in gridObjects)
+        {
+            if(gridObject.GetShipListByPlayerType().ContainsKey(PlayerType.PlayerOne) && gridObject.GetShipListByPlayerType().ContainsKey(PlayerType.PlayerTwo))
+            {
+                combatHexes.Add(gridObject);
+            }
+        }
+        return combatHexes;
+    }
+
     public Vector3 GetWorldPosition(GridPosition gridPosition) => gridSystem.GetWorldPosition(gridPosition);
     public GridPosition GetHexGridPosition(Vector3 worldPosition) => gridSystem.GetHexGridPosition(worldPosition);
     public bool IsInBounds(GridPosition gridPosition) => gridSystem.IsInBounds(gridPosition);

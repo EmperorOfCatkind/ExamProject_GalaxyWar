@@ -96,7 +96,7 @@ public class UnitController : MonoBehaviour
 
         Instantiate(ship, availableWaypoint.transform.position + shipYOffset, Quaternion.identity);
         availableWaypoint.hasShip = true;
-        PlayerTurnController.Instance.GetSpecificPlayer(playerType).AddShip(ship);
+        PlayerTurnController.Instance.GetSpecificPlayer(playerType).AddShip(ship.GetComponent<Ship>());
     }
 
     public void SpawnDock(GridPosition gridPosition, PlayerType playerType)
@@ -291,7 +291,8 @@ public class UnitController : MonoBehaviour
 
     public void MoveShip()
     {
-        if(selectedShip == null /*|| selectedShip.hasMoved*/)
+        Player player = PlayerTurnController.Instance.GetActivePlayer();
+        if(selectedShip == null || /*selectedShip.GetCurrentMove() == 0 ||*/ player.GetFuel() == 0)
         {
             return;
         }

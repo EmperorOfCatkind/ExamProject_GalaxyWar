@@ -13,7 +13,7 @@ public class Player : MonoBehaviour
     private int fuelAmount = 0;
     private List<Planet> playersPlanets;
 
-    private List<GameObject> playersShips;
+    private List<Ship> playersShips;
 
     public PlayerUI playerUI;
 
@@ -37,7 +37,7 @@ public class Player : MonoBehaviour
         groundCombatPhase = GetComponent<GroundCombatPhase>();
         buildingPhase = GetComponent<BuildingPhase>();
 
-        playersShips = new List<GameObject>();
+        playersShips = new List<Ship>();
         playersPlanets = new List<Planet>();
 
         playerUI.Hide();
@@ -89,11 +89,11 @@ public class Player : MonoBehaviour
         return fuelAmount;
     }
 
-    public void AddShip(GameObject ship)
+    public void AddShip(Ship ship)
     {
         playersShips.Add(ship);
     }
-    public List<GameObject> GetPlayersShips()
+    public List<Ship> GetPlayersShips()
     {
         return playersShips;
     }

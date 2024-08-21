@@ -28,6 +28,7 @@ public class Ship : MonoBehaviour
     public bool isSelected;
     private List<GroundForce> embarkedForces;
     //Temporary Stats//
+
     private MoveAction moveAction;
     private EmbarkAction embarkAction;
     private DisembarkAction disembarkAction;
@@ -51,13 +52,12 @@ public class Ship : MonoBehaviour
         embarkedForces = new List<GroundForce>();
 
         //tempMove = move;
-        //hasMoved = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-        /*if(hasMoved)
+        /*if(tempMove == 0)
         {
             selectedVisual.meshRenderer.material = spentSelectedVisual;
         }
@@ -76,16 +76,24 @@ public class Ship : MonoBehaviour
     }
     public void RestoreMove()
     {
+        Debug.Log(tempMove);
         tempMove = move;
+        Debug.Log(tempMove);
     }*/
+
+    /*public void SetCurrentMove(int increment)
+    {
+        tempMove += increment;
+    }*/
+
     public void Selected()
     {
         isSelected = true;
         selectedVisual.Show();
-        //if(tempMove > 0)
-        //{
+        if(/*tempMove > 0 &&*/ PlayerTurnController.Instance.GetActivePlayer().GetFuel() > 0)
+        {
             ShowHexesForMove();
-        //}
+        }
         
     }
     public void Deselected()

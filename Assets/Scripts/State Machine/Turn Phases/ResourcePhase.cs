@@ -6,7 +6,7 @@ public class ResourcePhase : BasePhase
 {
     int count = 0;
     private List<Planet> playerPlanets;
-    private List<GameObject> playerShips;
+    private List<Ship> playerShips;
     protected override void Awake()
     {
         base.Awake();
@@ -37,15 +37,18 @@ public class ResourcePhase : BasePhase
         {
             player.AddOre(planet.GetOreAmount());
             player.AddFuel(planet.GetFuelAmount());
-            //add ore value to SpaceDok building capacity
+            //add ore value to SpaceDock building capacity
         }
 
         playerShips = player.GetPlayersShips();
 
         /*foreach(var ship in playerShips)
         {
-            ship.GetComponent<Ship>().hasMoved = false;
-        }*/
-        //isActive = true;
+            while(ship.GetCurrentMove() != ship.move)   //if this will work when other ways have failed, I'm gonna scream
+            {                                           //it didn't
+                ship.SetCurrentMove(1);
+            }
+        }
+        isActive = true;*/
     }
 }

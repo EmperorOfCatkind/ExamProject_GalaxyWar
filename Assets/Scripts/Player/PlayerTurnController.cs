@@ -10,7 +10,7 @@ public class PlayerTurnController : MonoBehaviour
 
     private IPlayerTurnService playerTurnService;
     private PlayerData[] playerDatas;
-    public TurnStateMachine<Phase, Trigger> turnStateMachine;
+    public StateMachine<Phase, Trigger> turnStateMachine;
     public PhaseTransitionData<Phase, Trigger> phaseTransitionData;
 
 
@@ -21,6 +21,12 @@ public class PlayerTurnController : MonoBehaviour
     private Player activePlayer;
 
     private TurnInfoUI turnInfoUI;
+
+    private Dictionary<PlayerType, Material> playerMaterials;
+    
+    [SerializeField] private Material playerOneMaterial;
+    [SerializeField] private Material playerTwoMaterial;
+    [SerializeField] private CameraController cameraController;
 
     void Awake()
     {
@@ -35,6 +41,12 @@ public class PlayerTurnController : MonoBehaviour
         playerDatas = playerTurnService.players;
         turnStateMachine = playerTurnService.turnStateMachine;
         turnInfoUI = GetComponent<TurnInfoUI>();
+
+        playerMaterials = new Dictionary<PlayerType, Material>
+        {
+            {PlayerType.PlayerOne, playerOneMaterial},
+            {PlayerType.PlayerTwo, playerTwoMaterial},
+        };
 
     }
     // Start is called before the first frame update
@@ -82,8 +94,9 @@ public class PlayerTurnController : MonoBehaviour
 
             case Phase.SpaceCombat:
                 UnitController.Instance.DropAllSelections();
+                SpaceCombatPhase();
                 //create a combat feature
-                activePlayer.GetSpaceCombatPhase().DoSpaceCombatPhase();
+                
                 turnInfoUI.UpdateValues();
                 break;
                 
@@ -124,6 +137,7 @@ public class PlayerTurnController : MonoBehaviour
             {
                 newPlayer.GetComponent<Player>().AddPlanet(planet);
                 UnitController.Instance.SpawnDock(gridPosition, playerDatas[i].playerType);
+                planet.GetSpaceDockWaypoint().GetMesh().material = playerMaterials[playerDatas[i].playerType];
             }
 
 
@@ -209,5 +223,15 @@ public class PlayerTurnController : MonoBehaviour
     public void ReplenishPhase()
     {
         activePlayer.GetResourcePhase().DoResourcePhase();
+    }
+
+    public void SpaceCombatPhase()
+    {
+        foreach(var gridObject in MapController.Instance.GatherHexesForCombat())
+        {
+            Debug.Log(gridObject.ToString());
+        }
+        
+        activePlayer.GetSpaceCombatPhase().DoSpaceCombatPhase();
     }
 }
