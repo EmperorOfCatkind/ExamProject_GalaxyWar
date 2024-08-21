@@ -61,7 +61,10 @@ public class SpaceCombatPhase : BasePhase
             Debug.Log(kvp.Key + " " + kvp.Value);
         }
     }
-
+    public Dictionary<PlayerType, int> GetCounters()
+    {
+        return hitsProduced;
+    }
     public void ResetCounters()
     {
         hitsProduced = new Dictionary<PlayerType, int>
@@ -69,5 +72,9 @@ public class SpaceCombatPhase : BasePhase
             {PlayerType.PlayerOne, 0},
             {PlayerType.PlayerTwo, 0}
         };
+    }
+    public void DecreaseCounter(PlayerType playerType)
+    {
+        hitsProduced[playerType]--;
     }
 }

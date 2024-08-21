@@ -941,6 +941,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3648991469273453194, guid: 5b5b5df923be01748b1bbf5820ac2e98, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8123057324932060402, guid: 5b5b5df923be01748b1bbf5820ac2e98, type: 3}
       propertyPath: combatUI
       value: 

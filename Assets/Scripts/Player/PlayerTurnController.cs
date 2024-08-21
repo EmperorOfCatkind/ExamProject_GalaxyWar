@@ -145,14 +145,47 @@ public class PlayerTurnController : MonoBehaviour
             break;
 
             case CombatPhase.Roll:
-            SetCombatTrigger(CombatTrigger.ToAssign);
-            break;
-
-            case CombatPhase.Assign:
             foreach(var ships in combatGridObject.GetShipListByPlayerType())
             {
                 activePlayer.GetSpaceCombatPhase().MakeCombatRolls(ships.Value);
             }
+            combatUI.UpdateHits(activePlayer.GetSpaceCombatPhase().GetCounters()[PlayerType.PlayerOne], activePlayer.GetSpaceCombatPhase().GetCounters()[PlayerType.PlayerTwo]);
+            SetCombatTrigger(CombatTrigger.ToAssign);
+            break;
+
+            case CombatPhase.Assign:
+            Player initialActivePlayer = activePlayer;
+            foreach(var player in playersArray)
+            {
+                activePlayer = player;
+                Player oppositePlayer = null;
+
+                if(activePlayer.GetSpaceCombatPhase().GetCounters()[activePlayer.GetPlayerType()] == 0)
+                {
+                    continue;
+                }
+
+                for (int i = 0; i < playersArray.Length; i++)
+                {
+                    if(playersArray[i].GetPlayerType() != activePlayer.GetPlayerType())
+                    {
+                        oppositePlayer = playersArray[i];
+                    }
+                }
+                if(UnitController.Instance.TrySelectShip(oppositePlayer.GetPlayerType()))
+                {
+                    while(activePlayer.GetSpaceCombatPhase().GetCounters()[activePlayer.GetPlayerType()] != 0)
+                    {
+                        combatGridObject.RemoveShip(UnitController.Instance.GetSelectedShip());
+                        oppositePlayer.RemoveShip(UnitController.Instance.GetSelectedShip());
+                        activePlayer.GetSpaceCombatPhase().DecreaseCounter(activePlayer.GetPlayerType());
+                        Destroy(UnitController.Instance.GetSelectedShip());
+                        combatUI.UpdateHits(activePlayer.GetSpaceCombatPhase().GetCounters()[PlayerType.PlayerOne], activePlayer.GetSpaceCombatPhase().GetCounters()[PlayerType.PlayerTwo]);
+                        break;
+                    }
+                }         
+            }
+            activePlayer = initialActivePlayer;
             SetCombatTrigger(CombatTrigger.ToDestroy);
             break;
 

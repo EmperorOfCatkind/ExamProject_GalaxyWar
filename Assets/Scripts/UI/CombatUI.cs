@@ -9,6 +9,8 @@ public class CombatUI : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI phaseText;
     [SerializeField] Button nextPhaseButton;
+    [SerializeField] TextMeshProUGUI hitsByPlayerOne;
+    [SerializeField] TextMeshProUGUI hitsByPlayerTwo;
     // Start is called before the first frame update
     void Start()
     {
@@ -25,10 +27,21 @@ public class CombatUI : MonoBehaviour
     {
         phaseText.enabled = false;
         nextPhaseButton.gameObject.SetActive(false);
+        hitsByPlayerOne.enabled = false;
+        hitsByPlayerTwo.enabled = false;
     }
     public void Show()
     {
         phaseText.enabled = true;
         nextPhaseButton.gameObject.SetActive(true);
+        hitsByPlayerOne.enabled = true;
+        hitsByPlayerTwo.enabled = true;
     }
+    
+    public void UpdateHits(int p1_hits, int p2_hits)
+    {
+        hitsByPlayerOne.text = "Unassigned hits from Jim  " + p1_hits.ToString();
+        hitsByPlayerTwo.text = "Unassigned hits from Arkturus " + p2_hits.ToString();
+    }
+
 }

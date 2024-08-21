@@ -344,6 +344,11 @@ public class UnitController : MonoBehaviour
     {
         selectedGroundForce = groundForce;
     }
+    public Ship GetSelectedShip()
+    {
+        return selectedShip;
+    }
+
     public GroundForce GetSelectedGroundForce()
     {
         return selectedGroundForce;

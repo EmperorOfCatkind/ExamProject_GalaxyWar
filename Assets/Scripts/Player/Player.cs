@@ -93,6 +93,10 @@ public class Player : MonoBehaviour
     {
         playersShips.Add(ship);
     }
+    public void RemoveShip(Ship ship)
+    {
+        playersShips.Remove(ship);
+    }
     public List<Ship> GetPlayersShips()
     {
         return playersShips;
