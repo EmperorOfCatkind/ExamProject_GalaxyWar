@@ -21,12 +21,12 @@ public class NextPhaseTrigger : MonoBehaviour
 
     public void Trigger()
     {
-        trigger = PlayerTurnController.Instance.turnStateMachine.phaseTransition[PlayerTurnController.Instance.GetCurrentPhase()].Trigger;
+        trigger = PlayerTurnController.Instance.GetTrigger();
         PlayerTurnController.Instance.turnStateMachine.SetOffTrigger(trigger);
     }
     public void CombatTrigger()
     {
-        combatTrigger = PlayerTurnController.Instance.combatStateMachine.phaseTransition[PlayerTurnController.Instance.GetCurrentCombatPhase()].Trigger;
+        combatTrigger = PlayerTurnController.Instance.GetCombatTrigger();
         PlayerTurnController.Instance.combatStateMachine.SetOffTrigger(combatTrigger);
     }
 }

@@ -15,6 +15,9 @@ public class PlayerTurnController : MonoBehaviour
     public PhaseTransitionData<Phase, Trigger> phaseTransitionData;
     public PhaseTransitionData<CombatPhase, CombatTrigger> combatPhaseTransitionData;
 
+    private Trigger phaseTrigger;
+    private CombatTrigger combatPhaseTrigger;
+
 
     [SerializeField] private Transform player;
     private Player[] playersArray;
@@ -23,6 +26,7 @@ public class PlayerTurnController : MonoBehaviour
     private Player activePlayer;
 
     private TurnInfoUI turnInfoUI;
+    [SerializeField] CombatUI combatUI;
 
     private Dictionary<PlayerType, Material> playerMaterials;
     
@@ -77,16 +81,19 @@ public class PlayerTurnController : MonoBehaviour
             case Phase.Start:   //if Start is the next phase, change the active player
                 StartPhase();
                 turnInfoUI.UpdateValues();
+                SetTrigger(Trigger.ToTurnCount);
                 break;
 
             case Phase.TurnCount:
                 TurnCountPhase();
                 turnInfoUI.UpdateValues();
+                SetTrigger(Trigger.ToReplenish);
                 break;
 
             case Phase.Replenish:
                 ReplenishPhase();
                 turnInfoUI.UpdateValues();
+                SetTrigger(Trigger.ToMove);
                 break;
 
             case Phase.Move:
@@ -96,20 +103,23 @@ public class PlayerTurnController : MonoBehaviour
                 //if there is a planet with ground forces of both players add it to the list for the next next phase to use
                 activePlayer.GetMovePhase().DoMovePhase();
                 turnInfoUI.UpdateValues();
+                SetTrigger(Trigger.ToSpaceCombat);
                 break;
 
             case Phase.SpaceCombat:
                 UnitController.Instance.DropAllSelections();
-                SpaceCombatPhase();
+                InitializeSpaceCombat();
                 //create a combat feature
                 
                 turnInfoUI.UpdateValues();
+                SetTrigger(Trigger.ToGroundCombat);
                 break;
                 
             case Phase.GroundCombat:
                 //create a combat feature
                 activePlayer.GetGroundCombatPhase().DoGroundCombatPhase();
                 turnInfoUI.UpdateValues();
+                SetTrigger(Trigger.ToBuilding);
                 break;
 
             case Phase.Building:
@@ -117,6 +127,7 @@ public class PlayerTurnController : MonoBehaviour
                 //button to build a new dock (one per turn)
                 activePlayer.GetBuildingPhase().DoBuildingPhase();
                 turnInfoUI.UpdateValues();
+                SetTrigger(Trigger.EndTurn);
                 break;
         }
     }
@@ -127,18 +138,35 @@ public class PlayerTurnController : MonoBehaviour
         switch(phaseTransitionData.NextPhase)
         {
             case CombatPhase.Start:
+            turnInfoUI.Hide();
+            combatUI.Show();
+            SpaceCombatPhase();
+            SetCombatTrigger(CombatTrigger.ToRoll);
             break;
 
             case CombatPhase.Roll:
+            SetCombatTrigger(CombatTrigger.ToAssign);
             break;
 
             case CombatPhase.Assign:
+            foreach(var ships in combatGridObject.GetShipListByPlayerType())
+            {
+                activePlayer.GetSpaceCombatPhase().MakeCombatRolls(ships.Value);
+            }
+            SetCombatTrigger(CombatTrigger.ToDestroy);
             break;
 
             case CombatPhase.Destroy:
+            SetCombatTrigger(CombatTrigger.ToEnd);
             break;
 
-            case CombatPhase.End:
+            case CombatPhase.End: //add set trigger to start condition
+            cameraController.EndCombatMode();
+            turnInfoUI.Show();
+            combatUI.Hide();
+            activePlayer.GetSpaceCombatPhase().ResetCounters();
+            turnStateMachine.SetOffTrigger(Trigger.ToGroundCombat);                       
+            SetCombatTrigger(CombatTrigger.Finish);
             break;
         }
     }
@@ -213,7 +241,23 @@ public class PlayerTurnController : MonoBehaviour
     {
         return activePlayer;
     }
-    
+    public Trigger GetTrigger()
+    {
+        return phaseTrigger;
+    }
+    public void SetTrigger(Trigger trigger)
+    {
+        phaseTrigger = trigger;
+    }
+    public CombatTrigger GetCombatTrigger()
+    {
+        return combatPhaseTrigger;
+    }
+    public void SetCombatTrigger(CombatTrigger combatTrigger)
+    {
+        combatPhaseTrigger = combatTrigger;
+    }
+
     public Phase GetCurrentPhase()
     {
         return turnStateMachine.currentPhase;
@@ -260,24 +304,19 @@ public class PlayerTurnController : MonoBehaviour
         activePlayer.GetResourcePhase().DoResourcePhase();
     }
 
+    public void InitializeSpaceCombat()
+    {
+        if(MapController.Instance.GatherHexesForCombat().Count > 0)
+        {
+            combatStateMachine.SetOffTrigger(CombatTrigger.ToNextRound);
+        }
+    }
     public void SpaceCombatPhase()
     {
         foreach(var gridObject in MapController.Instance.GatherHexesForCombat())
         {
             combatGridObject = gridObject;
-            while(combatGridObject.GetShipListByPlayerType().ContainsKey(PlayerType.PlayerOne) && combatGridObject.GetShipListByPlayerType().ContainsKey(PlayerType.PlayerTwo))
-            {
-                
-            }
-            //activePlayer.GetSpaceCombatPhase().DoSpaceCombatPhase();
-        }
-        
-        
-    }
-
-    public void StartCombat()
-    {
-        cameraController.transform.position = MapController.Instance.GetWorldPosition(combatGridObject.GetGridPosition());
-        cameraController.CombatMode();
+            activePlayer.GetSpaceCombatPhase().LaunchSpaceCombatPhase();
+        }        
     }
 }

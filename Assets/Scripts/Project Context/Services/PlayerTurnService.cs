@@ -41,11 +41,14 @@ public class PlayerTurnService : IPlayerTurnService
             turnCounter.Add(playerData.playerType, 0);
         }
 
-        combatStateMachine = new StateMachine<CombatPhase, CombatTrigger>(CombatPhase.Start);
+        combatStateMachine = new StateMachine<CombatPhase, CombatTrigger>(CombatPhase.Off);
+        combatStateMachine.AddTransition(CombatPhase.Off, CombatTrigger.ToNextRound, CombatPhase.Start);
         combatStateMachine.AddTransition(CombatPhase.Start, CombatTrigger.ToRoll, CombatPhase.Roll);
         combatStateMachine.AddTransition(CombatPhase.Roll, CombatTrigger.ToAssign, CombatPhase.Assign);
         combatStateMachine.AddTransition(CombatPhase.Assign, CombatTrigger.ToDestroy, CombatPhase.Destroy);
         combatStateMachine.AddTransition(CombatPhase.Destroy, CombatTrigger.ToEnd, CombatPhase.End);
+        combatStateMachine.AddTransition(CombatPhase.End, CombatTrigger.ToNextRound, CombatPhase.Start);
+        combatStateMachine.AddTransition(CombatPhase.End, CombatTrigger.Finish, CombatPhase.Off);
     }
 
     public void IncrementTurnCounter(PlayerType playerType)

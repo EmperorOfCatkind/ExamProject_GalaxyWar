@@ -14,6 +14,7 @@ public class SpaceCombatPhase : BasePhase
     void Start()
     {
         phaseName = "Space Combat";
+
         hitsProduced = new Dictionary<PlayerType, int>
         {
             {PlayerType.PlayerOne, 0},
@@ -28,12 +29,6 @@ public class SpaceCombatPhase : BasePhase
         {
             combatGridObject = PlayerTurnController.Instance.GetCombatGridObject();
             
-            /*if(!(combatGridObject.GetShipListByPlayerType().ContainsKey(PlayerType.PlayerOne) && combatGridObject.GetShipListByPlayerType().ContainsKey(PlayerType.PlayerTwo)))
-            {
-                isActive = false;
-                return;
-            }*/
-            
             PlayerTurnController.Instance.cameraController.transform.position = MapController.Instance.GetWorldPosition(combatGridObject.GetGridPosition());
             PlayerTurnController.Instance.cameraController.CombatMode();
             isActive = false;
@@ -41,19 +36,38 @@ public class SpaceCombatPhase : BasePhase
     }
 
     //void Trigger from state machine - isActive = true
-    public void DoSpaceCombatPhase()
+    public void LaunchSpaceCombatPhase()
     {
         debugString = "This is " + phaseName + " of player " + player.GetName();
         isActive = true;
     }
 
-    public int RollCombat(Ship ship)
+    public void MakeCombatRolls(List<Ship> ships)
     {
-        int attack = Random.Range(1,11);
-        if(attack >= ship.combat)
+        
+        foreach(var ship in ships)
         {
-            hitsProduced[ship.GetPlayerType()]++;
+            int roll = Random.Range(1,11);
+            ship.SetRollText(roll);
+
+            if(roll >= ship.combat)
+            {
+                hitsProduced[ship.GetPlayerType()]++;
+            }
         }
-        return attack;
+
+        foreach (var kvp in hitsProduced)
+        {
+            Debug.Log(kvp.Key + " " + kvp.Value);
+        }
+    }
+
+    public void ResetCounters()
+    {
+        hitsProduced = new Dictionary<PlayerType, int>
+        {
+            {PlayerType.PlayerOne, 0},
+            {PlayerType.PlayerTwo, 0}
+        };
     }
 }

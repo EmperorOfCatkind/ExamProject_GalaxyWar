@@ -71,10 +71,7 @@ public class CameraController : MonoBehaviour
     }
 
     void Zoom(){
-        if(!outOfCombat)
-        {
-            return;
-        }
+
         float zoomAmount = 1f;
 
         if(Input.mouseScrollDelta.y > 0){

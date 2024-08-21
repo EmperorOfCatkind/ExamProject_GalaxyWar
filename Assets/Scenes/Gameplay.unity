@@ -707,6 +707,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: UnitController
       objectReference: {fileID: 0}
+    - target: {fileID: 5281638158301965671, guid: 6b350085eb8874148a1d66645674e154, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7223208539861179051, guid: 6b350085eb8874148a1d66645674e154, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -937,10 +941,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3648991469273453194, guid: 5b5b5df923be01748b1bbf5820ac2e98, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
+    - target: {fileID: 8123057324932060402, guid: 5b5b5df923be01748b1bbf5820ac2e98, type: 3}
+      propertyPath: combatUI
+      value: 
+      objectReference: {fileID: 7475367992495325902}
     - target: {fileID: 8123057324932060402, guid: 5b5b5df923be01748b1bbf5820ac2e98, type: 3}
       propertyPath: cameraController
       value: 
@@ -1047,6 +1051,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 57384fd55d3391440b56fd06367a474a, type: 3}
+--- !u!114 &7475367992495325902 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6832670016743314910, guid: 57384fd55d3391440b56fd06367a474a, type: 3}
+  m_PrefabInstance: {fileID: 7475367992495325901}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c9e6168f200ed649a3f9253ee758d65, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

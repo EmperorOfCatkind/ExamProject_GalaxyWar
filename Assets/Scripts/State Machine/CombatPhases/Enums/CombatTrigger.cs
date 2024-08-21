@@ -7,5 +7,7 @@ public enum CombatTrigger
     ToRoll,
     ToAssign,
     ToDestroy,
-    ToEnd
+    ToEnd,
+    ToNextRound,
+    Finish
 }

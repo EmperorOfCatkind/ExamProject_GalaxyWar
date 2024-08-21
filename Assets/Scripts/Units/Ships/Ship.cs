@@ -15,6 +15,7 @@ public class Ship : MonoBehaviour
     [SerializeField] private SpaceWaypoint currentWaypoint;
     [SerializeField] private PlayerType playerType;
     [SerializeField] private TextMeshPro embarkedCounter;
+    [SerializeField] private TextMeshPro combatRoll;
 
     //Default Stats//
     [SerializeField] public int cost;
@@ -34,6 +35,9 @@ public class Ship : MonoBehaviour
     private DisembarkAction disembarkAction;
     private List<GridPosition> availablePostionsToMove;
 
+    [SerializeField] private MeshRenderer monitor;
+    [SerializeField] private Material monitorMaterial;
+
 
     void Awake()
     {
@@ -52,6 +56,8 @@ public class Ship : MonoBehaviour
         embarkedForces = new List<GroundForce>();
 
         //tempMove = move;
+        combatRoll.text = "";
+        monitor.material = monitorMaterial;
     }
 
     // Update is called once per frame
@@ -185,5 +191,19 @@ public class Ship : MonoBehaviour
         embarkedCounter.text = count.ToString();
 
         Destroy(groundForce.GameObject());
+    }
+
+    public void SetRollText(int roll)
+    {
+        if(roll < combat)
+        {
+            combatRoll.color = Color.red;
+        }
+        else if(roll >= combat)
+        {
+            combatRoll.color = Color.green;
+        }
+        
+        combatRoll.text = roll.ToString();
     }
 }

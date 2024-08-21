@@ -4,6 +4,7 @@ using UnityEngine;
 
 public enum CombatPhase
 {
+    Off,
     Start,
     Roll,
     Assign,

@@ -11,7 +11,6 @@ public class GameMaster : MonoBehaviour
     private UnitController unitController;
 
 
-
     void Awake()
     {
         if(Instance != null)

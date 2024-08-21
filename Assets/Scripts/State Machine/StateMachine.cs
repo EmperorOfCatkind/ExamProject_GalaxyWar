@@ -6,41 +6,48 @@ using UnityEngine;
 public class StateMachine <TPhase, TTrigger>
 {
     public TPhase currentPhase  {get; private set;}
-    public Dictionary<TPhase, Transition<TTrigger, TPhase>> phaseTransition;
+    public Dictionary<TPhase, List<Transition<TTrigger, TPhase>>> phaseTransitions;
     public Action<PhaseTransitionData<TPhase, TTrigger>> OnPhaseChanged;
 
     public StateMachine(TPhase initialPhase)
     {
         currentPhase = initialPhase;
-        phaseTransition = new Dictionary<TPhase, Transition<TTrigger, TPhase>>();
+        phaseTransitions = new Dictionary<TPhase, List<Transition<TTrigger, TPhase>>>();
     }
 
     public void AddTransition(TPhase phase, TTrigger trigger, TPhase nextPhase)
     {
-        if(!phaseTransition.ContainsKey(phase))
+        if(!phaseTransitions.ContainsKey(phase))
         {
-            phaseTransition.Add(phase, new Transition<TTrigger, TPhase>());
+            phaseTransitions.Add(phase, new List<Transition<TTrigger, TPhase>>());
         }
 
-        /*var transition = phaseTransition[phase];
-        if(transition.Trigger.Equals(trigger))
+        var transitions = phaseTransitions[phase];
+        for (int i = 0; i < transitions.Count; i++)
         {
-            Debug.LogAssertion($"Trigger: {transition.Trigger.ToString()} is already used to transition to {transition.NextPhase.ToString()}");
-            return;
-        }*/
-        phaseTransition[phase] = new Transition<TTrigger, TPhase>(trigger, nextPhase);
-
-        //Debug.Log($"State Machine now contains the following transition: form {phase.ToString()} through {phaseTransition[phase].Trigger.ToString()} to {phaseTransition[phase].NextPhase.ToString()}");
+            if(transitions[i].Trigger.Equals(trigger))
+            {
+                Debug.LogAssertion($"Trigger: {transitions[i].Trigger.ToString()} is already used to transition to {transitions[i].NextPhase.ToString()}");
+                return;
+            }
+        }
+        transitions.Add(new Transition<TTrigger, TPhase>(trigger, nextPhase));
     }
 
     public void SetOffTrigger(TTrigger trigger)
     {
-        var transition = phaseTransition[currentPhase];
+       var transitions = phaseTransitions[currentPhase];
 
-        var previousPhase = currentPhase;
-        currentPhase = transition.NextPhase;
-        OnPhaseChanged?.Invoke(new PhaseTransitionData<TPhase, TTrigger>(previousPhase, currentPhase, trigger));
-        return;
+        foreach (var transition in transitions)
+        {
+            if(transition.Trigger.Equals(trigger))
+            {
+                var previousPhase = currentPhase;
+                currentPhase = transition.NextPhase;
+                OnPhaseChanged?.Invoke(new PhaseTransitionData<TPhase, TTrigger>(previousPhase, currentPhase, trigger));
+                return;
+            }
+        }
     }
     
 }

@@ -18,7 +18,7 @@ public class CombatUI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        phaseText.text = "Combat step " + PlayerTurnController.Instance.GetCurrentCombatPhase().ToString();
     }
 
      public void Hide()
