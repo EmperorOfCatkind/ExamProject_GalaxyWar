@@ -11,7 +11,9 @@ public class PlayerTurnController : MonoBehaviour
     private IPlayerTurnService playerTurnService;
     private PlayerData[] playerDatas;
     public StateMachine<Phase, Trigger> turnStateMachine;
+    public StateMachine<CombatPhase, CombatTrigger> combatStateMachine;
     public PhaseTransitionData<Phase, Trigger> phaseTransitionData;
+    public PhaseTransitionData<CombatPhase, CombatTrigger> combatPhaseTransitionData;
 
 
     [SerializeField] private Transform player;
@@ -26,7 +28,9 @@ public class PlayerTurnController : MonoBehaviour
     
     [SerializeField] private Material playerOneMaterial;
     [SerializeField] private Material playerTwoMaterial;
-    [SerializeField] private CameraController cameraController;
+    [SerializeField] public CameraController cameraController;
+
+    private GridObject combatGridObject;
 
     void Awake()
     {
@@ -40,6 +44,8 @@ public class PlayerTurnController : MonoBehaviour
         playerTurnService = ProjectContext.Instance.PlayerTurnService;
         playerDatas = playerTurnService.players;
         turnStateMachine = playerTurnService.turnStateMachine;
+        combatStateMachine = playerTurnService.combatStateMachine;
+
         turnInfoUI = GetComponent<TurnInfoUI>();
 
         playerMaterials = new Dictionary<PlayerType, Material>
@@ -112,6 +118,28 @@ public class PlayerTurnController : MonoBehaviour
                 activePlayer.GetBuildingPhase().DoBuildingPhase();
                 turnInfoUI.UpdateValues();
                 break;
+        }
+    }
+
+    public void OnCombatPhaseChanged(PhaseTransitionData<CombatPhase, CombatTrigger> phaseTransitionData)
+    {
+        combatPhaseTransitionData = phaseTransitionData;
+        switch(phaseTransitionData.NextPhase)
+        {
+            case CombatPhase.Start:
+            break;
+
+            case CombatPhase.Roll:
+            break;
+
+            case CombatPhase.Assign:
+            break;
+
+            case CombatPhase.Destroy:
+            break;
+
+            case CombatPhase.End:
+            break;
         }
     }
 
@@ -190,7 +218,14 @@ public class PlayerTurnController : MonoBehaviour
     {
         return turnStateMachine.currentPhase;
     }
-    
+    public CombatPhase GetCurrentCombatPhase()
+    {
+        return combatStateMachine.currentPhase;
+    }
+    public GridObject GetCombatGridObject()
+    {
+        return combatGridObject;
+    }
     public void StartPhase()
     {
         if(activePlayer != null)
@@ -229,9 +264,20 @@ public class PlayerTurnController : MonoBehaviour
     {
         foreach(var gridObject in MapController.Instance.GatherHexesForCombat())
         {
-            Debug.Log(gridObject.ToString());
+            combatGridObject = gridObject;
+            while(combatGridObject.GetShipListByPlayerType().ContainsKey(PlayerType.PlayerOne) && combatGridObject.GetShipListByPlayerType().ContainsKey(PlayerType.PlayerTwo))
+            {
+                
+            }
+            //activePlayer.GetSpaceCombatPhase().DoSpaceCombatPhase();
         }
         
-        activePlayer.GetSpaceCombatPhase().DoSpaceCombatPhase();
+        
+    }
+
+    public void StartCombat()
+    {
+        cameraController.transform.position = MapController.Instance.GetWorldPosition(combatGridObject.GetGridPosition());
+        cameraController.CombatMode();
     }
 }

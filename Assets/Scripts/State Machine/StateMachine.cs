@@ -42,6 +42,7 @@ public class StateMachine <TPhase, TTrigger>
         OnPhaseChanged?.Invoke(new PhaseTransitionData<TPhase, TTrigger>(previousPhase, currentPhase, trigger));
         return;
     }
+    
 }
 
 public struct Transition<TTrigger, TPhase>

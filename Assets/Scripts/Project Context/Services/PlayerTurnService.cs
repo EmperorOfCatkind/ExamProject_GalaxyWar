@@ -9,9 +9,9 @@ public interface IPlayerTurnService
     PlayerData[] players {get;}
 
     StateMachine<Phase, Trigger> turnStateMachine {get;}
+    StateMachine<CombatPhase, CombatTrigger> combatStateMachine {get;}
 
     public void IncrementTurnCounter(PlayerType playerType);
-
     public int GetTurnCounter(PlayerType playerType);
 }
 public class PlayerTurnService : IPlayerTurnService
@@ -20,25 +20,19 @@ public class PlayerTurnService : IPlayerTurnService
     public Dictionary<PlayerType, int> turnCounter;
 
     public StateMachine<Phase, Trigger> turnStateMachine {get;}
+    public StateMachine<CombatPhase, CombatTrigger> combatStateMachine {get;}
 
     public PlayerTurnService(IConfigService configService)
     {
         players = configService.Players;
 
         turnStateMachine = new StateMachine<Phase, Trigger>(Phase.Start);
-
         turnStateMachine.AddTransition(Phase.Start, Trigger.ToTurnCount, Phase.TurnCount);
-
         turnStateMachine.AddTransition(Phase.TurnCount, Trigger.ToReplenish, Phase.Replenish);
-
         turnStateMachine.AddTransition(Phase.Replenish, Trigger.ToMove, Phase.Move);
-
         turnStateMachine.AddTransition(Phase.Move, Trigger.ToSpaceCombat, Phase.SpaceCombat);
-
         turnStateMachine.AddTransition(Phase.SpaceCombat, Trigger.ToGroundCombat, Phase.GroundCombat);
-
         turnStateMachine.AddTransition(Phase.GroundCombat, Trigger.ToBuilding, Phase.Building);
-
         turnStateMachine.AddTransition(Phase.Building, Trigger.EndTurn, Phase.Start);
 
         turnCounter = new Dictionary<PlayerType, int>();
@@ -46,6 +40,12 @@ public class PlayerTurnService : IPlayerTurnService
         {
             turnCounter.Add(playerData.playerType, 0);
         }
+
+        combatStateMachine = new StateMachine<CombatPhase, CombatTrigger>(CombatPhase.Start);
+        combatStateMachine.AddTransition(CombatPhase.Start, CombatTrigger.ToRoll, CombatPhase.Roll);
+        combatStateMachine.AddTransition(CombatPhase.Roll, CombatTrigger.ToAssign, CombatPhase.Assign);
+        combatStateMachine.AddTransition(CombatPhase.Assign, CombatTrigger.ToDestroy, CombatPhase.Destroy);
+        combatStateMachine.AddTransition(CombatPhase.Destroy, CombatTrigger.ToEnd, CombatPhase.End);
     }
 
     public void IncrementTurnCounter(PlayerType playerType)

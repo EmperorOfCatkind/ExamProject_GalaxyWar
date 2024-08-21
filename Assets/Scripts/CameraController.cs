@@ -12,12 +12,16 @@ public class CameraController : MonoBehaviour
     private CinemachineTransposer cinemachineTransposer;
     private Vector3 targetFollowOffset;
 
+    public bool outOfCombat;
+
     // Start is called before the first frame update
     void Start()
     {
         cinemachineTransposer = cinemachineVirtualCamera.GetCinemachineComponent<CinemachineTransposer>();
         targetFollowOffset = cinemachineTransposer.m_FollowOffset;
         targetFollowOffset.y = MAX_FOLLOW_Y_OFFSET;
+
+        outOfCombat = true;
     }
 
     // Update is called once per frame
@@ -29,6 +33,10 @@ public class CameraController : MonoBehaviour
     }
 
     void Move(){
+        if(!outOfCombat)
+        {
+            return;
+        }
         Vector3 inputMoveDirection = new Vector3(0, 0, 0);
         
         if (Input.GetKey(KeyCode.W)){
@@ -49,6 +57,7 @@ public class CameraController : MonoBehaviour
     }
 
     void Rotate(){
+        
         Vector3 rotationVector = new Vector3(0, 0, 0);
         if (Input.GetKey(KeyCode.E)){
             rotationVector.y = -1f;
@@ -62,6 +71,10 @@ public class CameraController : MonoBehaviour
     }
 
     void Zoom(){
+        if(!outOfCombat)
+        {
+            return;
+        }
         float zoomAmount = 1f;
 
         if(Input.mouseScrollDelta.y > 0){
@@ -74,5 +87,17 @@ public class CameraController : MonoBehaviour
         float zoomSpeed = 5f;
         targetFollowOffset.y = Mathf.Clamp(targetFollowOffset.y, MIN_FOLLOW_Y_OFFSET, MAX_FOLLOW_Y_OFFSET);
         cinemachineTransposer.m_FollowOffset = Vector3.Lerp(cinemachineTransposer.m_FollowOffset, targetFollowOffset, Time.deltaTime * zoomSpeed);
+    }
+
+    public void CombatMode()
+    {
+        cinemachineTransposer.m_FollowOffset.y = 6f;
+        outOfCombat = false;
+    }
+
+    public void EndCombatMode()
+    {
+        cinemachineTransposer.m_FollowOffset.y = 10f;
+        outOfCombat = true;
     }
 }

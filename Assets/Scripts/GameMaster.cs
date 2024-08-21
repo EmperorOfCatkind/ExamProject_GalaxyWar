@@ -32,6 +32,7 @@ public class GameMaster : MonoBehaviour
 
         playerTurnController.InitializePlayers();
         playerTurnController.turnStateMachine.OnPhaseChanged += playerTurnController.OnPhaseChanged;
+        playerTurnController.combatStateMachine.OnPhaseChanged += playerTurnController.OnCombatPhaseChanged;
         playerTurnController.InitializePlayersFleets();
         playerTurnController.InitializeFirstPlayer();
 

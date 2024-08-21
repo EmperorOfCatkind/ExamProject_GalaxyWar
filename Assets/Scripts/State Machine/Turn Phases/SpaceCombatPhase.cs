@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class SpaceCombatPhase : BasePhase
 {
-    int count = 0;
+    private GridObject combatGridObject;
+    private Dictionary<PlayerType, int> hitsProduced;
     protected override void Awake()
     {
         base.Awake();
@@ -13,6 +14,11 @@ public class SpaceCombatPhase : BasePhase
     void Start()
     {
         phaseName = "Space Combat";
+        hitsProduced = new Dictionary<PlayerType, int>
+        {
+            {PlayerType.PlayerOne, 0},
+            {PlayerType.PlayerTwo, 0}
+        };
     }
 
     // Update is called once per frame
@@ -20,16 +26,17 @@ public class SpaceCombatPhase : BasePhase
     {
         while(isActive)
         {
-            if(count < 3)
+            combatGridObject = PlayerTurnController.Instance.GetCombatGridObject();
+            
+            /*if(!(combatGridObject.GetShipListByPlayerType().ContainsKey(PlayerType.PlayerOne) && combatGridObject.GetShipListByPlayerType().ContainsKey(PlayerType.PlayerTwo)))
             {
-                DoSpaceCombatPhase();
-                count++;
-                //Debug.Log(debugString);   
-            }
-            else{
-                count = 0;
                 isActive = false;
-            }
+                return;
+            }*/
+            
+            PlayerTurnController.Instance.cameraController.transform.position = MapController.Instance.GetWorldPosition(combatGridObject.GetGridPosition());
+            PlayerTurnController.Instance.cameraController.CombatMode();
+            isActive = false;
         }
     }
 
@@ -38,5 +45,15 @@ public class SpaceCombatPhase : BasePhase
     {
         debugString = "This is " + phaseName + " of player " + player.GetName();
         isActive = true;
+    }
+
+    public int RollCombat(Ship ship)
+    {
+        int attack = Random.Range(1,11);
+        if(attack >= ship.combat)
+        {
+            hitsProduced[ship.GetPlayerType()]++;
+        }
+        return attack;
     }
 }
