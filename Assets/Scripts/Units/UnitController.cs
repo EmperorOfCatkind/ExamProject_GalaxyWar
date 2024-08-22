@@ -154,9 +154,8 @@ public class UnitController : MonoBehaviour
         SetMaterialForSpawn(playerType, dockPrefab);
 
         SpaceDockWaypoint spaceDockWaypoint = availablePlanet.GetSpaceDockWaypoint();
-        availablePlanet.SetSpaceDock(dockPrefab.GetComponent<SpaceDock>());
 
-        Instantiate(dockPrefab, spaceDockWaypoint.transform.position + shipYOffset, Quaternion.identity);
+        availablePlanet.SetSpaceDock(Instantiate(dockPrefab, spaceDockWaypoint.transform.position + shipYOffset, Quaternion.identity).GetComponent<SpaceDock>());
         spaceDockWaypoint.hasDock = true;
     }
 

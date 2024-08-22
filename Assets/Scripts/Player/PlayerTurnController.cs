@@ -126,17 +126,16 @@ public class PlayerTurnController : MonoBehaviour
                 
             case Phase.GroundCombat:
                 //create a combat feature
-                /*foreach(var gridObject in MapController.Instance.GetAllGridObjects())
+                foreach(var gridObject in MapController.Instance.GetAllGridObjects())
                 {
                     if(!gridObject.GetShipListByPlayerType().ContainsKey(activePlayer.GetPlayerType()))
                     {
-                        SetTrigger(Trigger.ToBuilding);
-                        return;
+                        continue;
                     }
 
                     foreach(var planet in gridObject.GetPlanets())
                     {
-                        /*if(planet.GetSpaceDock() != null && planet.GetSpaceDock().GetPlayerType() != activePlayer.GetPlayerType())
+                        if(planet.GetSpaceDock() != null && planet.GetSpaceDock().GetPlayerType() != activePlayer.GetPlayerType())
                         {
                             SpaceDock spaceDockToDestroy = planet.GetSpaceDock();
                             planet.RemoveSpaceDock();
@@ -148,7 +147,7 @@ public class PlayerTurnController : MonoBehaviour
                             CaptureHex(gridObject, activePlayer.GetPlayerType());
                         }
                     }
-                }*/
+                }
                 turnInfoUI.UpdateValues();
                 SetTrigger(Trigger.ToBuilding);
                 break;
