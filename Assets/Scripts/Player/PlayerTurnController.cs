@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerTurnController : MonoBehaviour
@@ -35,6 +36,7 @@ public class PlayerTurnController : MonoBehaviour
     [SerializeField] public CameraController cameraController;
 
     private GridObject combatGridObject;
+    private List<Ship> shipsToDestroy;
 
     void Awake()
     {
@@ -57,6 +59,8 @@ public class PlayerTurnController : MonoBehaviour
             {PlayerType.PlayerOne, playerOneMaterial},
             {PlayerType.PlayerTwo, playerTwoMaterial},
         };
+
+        shipsToDestroy = new List<Ship>();
 
     }
     // Start is called before the first frame update
@@ -131,6 +135,7 @@ public class PlayerTurnController : MonoBehaviour
                 break;
         }
     }
+    
 
     public void OnCombatPhaseChanged(PhaseTransitionData<CombatPhase, CombatTrigger> phaseTransitionData)
     {
@@ -149,57 +154,51 @@ public class PlayerTurnController : MonoBehaviour
             {
                 activePlayer.GetSpaceCombatPhase().MakeCombatRolls(ships.Value);
             }
-            combatUI.UpdateHits(activePlayer.GetSpaceCombatPhase().GetCounters()[PlayerType.PlayerOne], activePlayer.GetSpaceCombatPhase().GetCounters()[PlayerType.PlayerTwo]);
+            combatUI.UpdateHits(activePlayer.GetSpaceCombatPhase().GetHits()[PlayerType.PlayerOne], activePlayer.GetSpaceCombatPhase().GetHits()[PlayerType.PlayerTwo]);
             SetCombatTrigger(CombatTrigger.ToAssign);
             break;
 
             case CombatPhase.Assign:
-            Player initialActivePlayer = activePlayer;
-            foreach(var player in playersArray)
-            {
-                activePlayer = player;
-                Player oppositePlayer = null;
-
-                if(activePlayer.GetSpaceCombatPhase().GetCounters()[activePlayer.GetPlayerType()] == 0)
-                {
-                    continue;
-                }
-
-                for (int i = 0; i < playersArray.Length; i++)
-                {
-                    if(playersArray[i].GetPlayerType() != activePlayer.GetPlayerType())
-                    {
-                        oppositePlayer = playersArray[i];
-                    }
-                }
-                if(UnitController.Instance.TrySelectShip(oppositePlayer.GetPlayerType()))
-                {
-                    while(activePlayer.GetSpaceCombatPhase().GetCounters()[activePlayer.GetPlayerType()] != 0)
-                    {
-                        combatGridObject.RemoveShip(UnitController.Instance.GetSelectedShip());
-                        oppositePlayer.RemoveShip(UnitController.Instance.GetSelectedShip());
-                        activePlayer.GetSpaceCombatPhase().DecreaseCounter(activePlayer.GetPlayerType());
-                        Destroy(UnitController.Instance.GetSelectedShip());
-                        combatUI.UpdateHits(activePlayer.GetSpaceCombatPhase().GetCounters()[PlayerType.PlayerOne], activePlayer.GetSpaceCombatPhase().GetCounters()[PlayerType.PlayerTwo]);
-                        break;
-                    }
-                }         
-            }
-            activePlayer = initialActivePlayer;
+            AssignHits();
             SetCombatTrigger(CombatTrigger.ToDestroy);
             break;
 
             case CombatPhase.Destroy:
+            DestroyShips();
             SetCombatTrigger(CombatTrigger.ToEnd);
             break;
 
-            case CombatPhase.End: //add set trigger to start condition
-            cameraController.EndCombatMode();
-            turnInfoUI.Show();
-            combatUI.Hide();
-            activePlayer.GetSpaceCombatPhase().ResetCounters();
-            turnStateMachine.SetOffTrigger(Trigger.ToGroundCombat);                       
-            SetCombatTrigger(CombatTrigger.Finish);
+            case CombatPhase.End:
+            foreach(var ships in combatGridObject.GetShipListByPlayerType())
+            {
+                foreach(var ship in ships.Value)
+                {
+                    ship.ResetRollText();
+                }
+            } 
+            if(combatGridObject.GetShipListByPlayerType().ContainsKey(PlayerType.PlayerOne) && combatGridObject.GetShipListByPlayerType().ContainsKey(PlayerType.PlayerTwo))
+            {
+                SetCombatTrigger(CombatTrigger.ToNextRound);
+            }
+            else
+            {
+                cameraController.EndCombatMode();
+                turnInfoUI.Show();
+                combatUI.Hide();
+                activePlayer.GetSpaceCombatPhase().ResetCounters();
+                turnStateMachine.SetOffTrigger(Trigger.ToGroundCombat);                       
+                SetCombatTrigger(CombatTrigger.Finish);
+
+                if(DefineWinner(combatGridObject) != null)
+                {
+                    CaptureHex(combatGridObject, DefineWinner(combatGridObject).GetPlayerType());
+                }
+
+                if(MapController.Instance.GatherHexesForCombat().Count != 0)
+                {
+                    InitializeSpaceCombat();
+                }
+            }
             break;
         }
     }
@@ -346,10 +345,79 @@ public class PlayerTurnController : MonoBehaviour
     }
     public void SpaceCombatPhase()
     {
-        foreach(var gridObject in MapController.Instance.GatherHexesForCombat())
+        combatGridObject = MapController.Instance.GatherHexesForCombat()[0];
+        activePlayer.GetSpaceCombatPhase().LaunchSpaceCombatPhase();       
+    }
+    public void AssignHits()
+    {
+        Dictionary<PlayerType, int> hits = activePlayer.GetSpaceCombatPhase().GetHits();
+
+        foreach(var player in playersArray)
         {
-            combatGridObject = gridObject;
-            activePlayer.GetSpaceCombatPhase().LaunchSpaceCombatPhase();
-        }        
+            Player oppositePlayer = null;
+            
+            for(int i = 0; i < playersArray.Length; i++)
+            {
+                if(playersArray[i].GetPlayerType() != player.GetPlayerType())
+                {
+                    oppositePlayer = playersArray[i];
+                }
+            }
+            
+            List<Ship> oppositePlayerShips = combatGridObject.GetShipListByPlayerType()[oppositePlayer.GetPlayerType()];
+            if(hits[player.GetPlayerType()] > 0)
+            {
+                foreach(var ship in oppositePlayerShips)
+                {
+                    if(ship.isSelected == false)
+                    {
+                        ship.SelectedToDestroy();
+                        shipsToDestroy.Add(ship);
+                        hits[player.GetPlayerType()]--;
+                        if(hits[player.GetPlayerType()] == 0)
+                        {
+                            break;
+                        }
+                    }
+                }
+            }   
+        }
+    }
+
+    public void DestroyShips()
+    {
+        foreach(var ship in shipsToDestroy)
+        {
+            Player owner = GetSpecificPlayer(ship.GetPlayerType());
+            owner.RemoveShip(ship);
+            combatGridObject.RemoveShip(ship);
+            Destroy(ship.GameObject());
+        }
+        shipsToDestroy.Clear();
+    }
+
+    public Player DefineWinner(GridObject gridObject)
+    {
+        if (gridObject.GetShipListByPlayerType().ContainsKey(PlayerType.PlayerOne))
+        {
+            return GetSpecificPlayer(PlayerType.PlayerOne);
+        }
+        else if (gridObject.GetShipListByPlayerType().ContainsKey(PlayerType.PlayerTwo))
+        {
+            return GetSpecificPlayer(PlayerType.PlayerTwo);
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    public void CaptureHex(GridObject gridObject, PlayerType playerType)
+    {
+        foreach(var planet in gridObject.GetPlanets())
+        {
+            DefineWinner(gridObject).AddPlanet(planet);
+            planet.GetSpaceDockWaypoint().GetMesh().material = playerMaterials[playerType];
+        }
     }
 }

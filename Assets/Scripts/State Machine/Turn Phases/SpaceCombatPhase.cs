@@ -56,12 +56,12 @@ public class SpaceCombatPhase : BasePhase
             }
         }
 
-        foreach (var kvp in hitsProduced)
+        /*foreach (var kvp in hitsProduced)
         {
             Debug.Log(kvp.Key + " " + kvp.Value);
-        }
+        }*/
     }
-    public Dictionary<PlayerType, int> GetCounters()
+    public Dictionary<PlayerType, int> GetHits()
     {
         return hitsProduced;
     }

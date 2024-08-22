@@ -40,8 +40,8 @@ public class CombatUI : MonoBehaviour
     
     public void UpdateHits(int p1_hits, int p2_hits)
     {
-        hitsByPlayerOne.text = "Unassigned hits from Jim  " + p1_hits.ToString();
-        hitsByPlayerTwo.text = "Unassigned hits from Arkturus " + p2_hits.ToString();
+        hitsByPlayerOne.text = "Hits from Jim  " + p1_hits.ToString();
+        hitsByPlayerTwo.text = "Hits from Mengsk " + p2_hits.ToString();
     }
 
 }

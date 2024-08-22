@@ -91,7 +91,11 @@ public class Ship : MonoBehaviour
     {
         tempMove += increment;
     }*/
-
+    public void SelectedToDestroy()
+    {
+        isSelected = true;
+        selectedVisual.Show();
+    }
     public void Selected()
     {
         isSelected = true;
@@ -205,5 +209,10 @@ public class Ship : MonoBehaviour
         }
         
         combatRoll.text = roll.ToString();
+    }
+
+    public void ResetRollText()
+    {
+        combatRoll.text = "";
     }
 }
