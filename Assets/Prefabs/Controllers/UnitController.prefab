@@ -45,6 +45,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shipPrefab: {fileID: 1909258143715327506, guid: 10e879463fa822b48b0e0a36f05f5f5e, type: 3}
+  frigatePrefab: {fileID: 1909258143715327506, guid: 8bfd0a55268da8148a809ab4d0be3777, type: 3}
   dockPrefab: {fileID: 2726220770705831172, guid: 5b3d19d7e5744e44cb68cfa960ea3897, type: 3}
   groundForcePrefab: {fileID: 4951829331103478802, guid: 9a5e4bce35c73bb43af8560b5238870c, type: 3}
   shipLayerMask:
@@ -58,3 +59,4 @@ MonoBehaviour:
     m_Bits: 512
   playerOneMaterial: {fileID: 2100000, guid: 06833426c26125c4fad8c8a853ed95d4, type: 2}
   playerTwoMaterial: {fileID: 2100000, guid: 2319a1e5500249648a68ec62f12cc3d5, type: 2}
+  isBuilding: 0

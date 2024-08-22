@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 323b11fc25ab8a94fa205b71b1b7b62e, type: 3}
   m_Name: PlayerConfig
   m_EditorClassIdentifier: 
-  players:
+  Players:
   - Name: Jim Raynor
     playerType: 0
     gridX: 0
@@ -22,8 +22,8 @@ MonoBehaviour:
     - {fileID: 1909258143715327506, guid: 10e879463fa822b48b0e0a36f05f5f5e, type: 3}
     - {fileID: 1909258143715327506, guid: 10e879463fa822b48b0e0a36f05f5f5e, type: 3}
     startingGroundForces: 0
-    oreAmount: 2
-    fuelAmount: 2
+    oreAmount: 0
+    fuelAmount: 0
   - Name: Arkturus Mengsk
     playerType: 1
     gridX: 3
@@ -33,5 +33,5 @@ MonoBehaviour:
     - {fileID: 1909258143715327506, guid: 10e879463fa822b48b0e0a36f05f5f5e, type: 3}
     - {fileID: 1909258143715327506, guid: 10e879463fa822b48b0e0a36f05f5f5e, type: 3}
     startingGroundForces: 0
-    oreAmount: 2
-    fuelAmount: 2
+    oreAmount: 0
+    fuelAmount: 0

@@ -35,21 +35,13 @@ public class GameMaster : MonoBehaviour
         playerTurnController.InitializePlayersFleets();
         playerTurnController.InitializeFirstPlayer();
 
-        unitController.SpawnShip(unitController.shipPrefab, new GridPosition(0,1), PlayerType.PlayerOne); //debug purposes
-        unitController.SpawnShip(unitController.shipPrefab, new GridPosition(0,1), PlayerType.PlayerOne); //debug purposes
-        unitController.SpawnShip(unitController.shipPrefab, new GridPosition(0,1), PlayerType.PlayerOne); //debug purposes
+        unitController.SpawnShip(unitController.frigatePrefab, new GridPosition(1,0), PlayerType.PlayerOne); //debug purposes
+        unitController.SpawnShip(unitController.frigatePrefab, new GridPosition(1,0), PlayerType.PlayerOne); //debug purposes
+        unitController.SpawnShip(unitController.frigatePrefab, new GridPosition(1,0), PlayerType.PlayerOne); //debug purposes
 
-        unitController.SpawnShip(unitController.shipPrefab, new GridPosition(0,1), PlayerType.PlayerTwo); //debug purposes
-        unitController.SpawnShip(unitController.shipPrefab, new GridPosition(0,1), PlayerType.PlayerTwo); //debug purposes
-        unitController.SpawnShip(unitController.shipPrefab, new GridPosition(0,1), PlayerType.PlayerTwo); //debug purposes
-
-        unitController.SpawnShip(unitController.shipPrefab, new GridPosition(0,2), PlayerType.PlayerOne); //debug purposes
-        unitController.SpawnShip(unitController.shipPrefab, new GridPosition(0,2), PlayerType.PlayerOne); //debug purposes
-        unitController.SpawnShip(unitController.shipPrefab, new GridPosition(0,2), PlayerType.PlayerOne); //debug purposes
-
-        unitController.SpawnShip(unitController.shipPrefab, new GridPosition(0,2), PlayerType.PlayerTwo); //debug purposes
-        unitController.SpawnShip(unitController.shipPrefab, new GridPosition(0,2), PlayerType.PlayerTwo); //debug purposes
-        unitController.SpawnShip(unitController.shipPrefab, new GridPosition(0,2), PlayerType.PlayerTwo); //debug purposes
+        unitController.SpawnShip(unitController.frigatePrefab, new GridPosition(2,3), PlayerType.PlayerTwo); //debug purposes
+        unitController.SpawnShip(unitController.frigatePrefab, new GridPosition(2,3), PlayerType.PlayerTwo); //debug purposes
+        unitController.SpawnShip(unitController.frigatePrefab, new GridPosition(2,3), PlayerType.PlayerTwo); //debug purposes
     }
 
     // Update is called once per frame

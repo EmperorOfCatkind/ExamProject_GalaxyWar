@@ -154,7 +154,7 @@ public class PlayerTurnController : MonoBehaviour
 
             case Phase.Building:
                 //Space Dock UI where player can choose a ship or ground force to build
-                buildDockButton.gameObject.SetActive(true);
+                //buildDockButton.gameObject.SetActive(true);
                 
                 
                 turnInfoUI.UpdateValues();

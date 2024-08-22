@@ -26,9 +26,9 @@ public class ProjectContext
 
     }
 
-    public void Initialize(MapConfig mapConfig, PlayerConfig playerConfig)    //TODO - pass the configs through here
+    public void Initialize(MapConfig mapConfig, PlayerConfig playerConfig, UnitConfig unitConfig)    //TODO - pass the configs through here
     {
-        ConfigService = new ConfigService(mapConfig, playerConfig);
+        ConfigService = new ConfigService(mapConfig, playerConfig, unitConfig);
 
         MapFunctionalService = new MapFunctionalService(ConfigService);
         MapVisualService = new MapVisualService(MapFunctionalService);

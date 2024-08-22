@@ -5,14 +5,15 @@ using UnityEngine.SceneManagement;
 
 public class Boot : MonoBehaviour
 {
-    //TODO - Add Configs
+    
     [SerializeField] private MapConfig MapConfig;
     [SerializeField] private PlayerConfig PlayerConfig;
-    //TODO - Add Configs
+    [SerializeField] private UnitConfig UnitConfig;
+    
 
     void Awake()
     {
-        ProjectContext.Instance.Initialize(MapConfig, PlayerConfig);
+        ProjectContext.Instance.Initialize(MapConfig, PlayerConfig, UnitConfig);
     }
 
     private IEnumerator Start()

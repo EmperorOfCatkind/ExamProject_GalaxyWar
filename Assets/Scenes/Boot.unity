@@ -153,6 +153,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MapConfig: {fileID: 11400000, guid: 9c6a17252aee51f48af664ea9db19e3d, type: 2}
   PlayerConfig: {fileID: 11400000, guid: d50b086699c68d245b828ac681d0ddd1, type: 2}
+  UnitConfig: {fileID: 11400000, guid: af844c7c12b2d134a9408fc478385dc0, type: 2}
 --- !u!4 &819726074
 Transform:
   m_ObjectHideFlags: 0

@@ -7,6 +7,7 @@ public class UnitController : MonoBehaviour
     public static UnitController Instance;
 
     [SerializeField] public GameObject shipPrefab; //debug purposes
+    [SerializeField] public GameObject frigatePrefab;
     [SerializeField] private GameObject dockPrefab;
     [SerializeField] private GameObject groundForcePrefab;
     [SerializeField] private LayerMask shipLayerMask;

@@ -707,10 +707,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: UnitController
       objectReference: {fileID: 0}
-    - target: {fileID: 5281638158301965671, guid: 6b350085eb8874148a1d66645674e154, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 7223208539861179051, guid: 6b350085eb8874148a1d66645674e154, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

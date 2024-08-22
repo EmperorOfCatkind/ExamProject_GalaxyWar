@@ -6,7 +6,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "PlayerConfig", menuName = "MyConfigs/PlayerConfig")]
 public class PlayerConfig : ScriptableObject
 {
-    public PlayerData[] players;
+    public PlayerData[] Players;
 }
 
 
