@@ -22,6 +22,10 @@ public class UnitController : MonoBehaviour
     private Vector3 shipYOffset;
     private Vector3 groundForceYOffset;
 
+    public bool isBuilding;
+
+    private int dockCost;
+
     void Awake()
     {
         if(Instance != null)
@@ -33,6 +37,8 @@ public class UnitController : MonoBehaviour
 
         shipYOffset = new Vector3(0, 3, 0);
         groundForceYOffset = new Vector3(0, .3f, 0);
+
+        isBuilding = false;
     }
     // Start is called before the first frame update
     void Start()
@@ -45,6 +51,7 @@ public class UnitController : MonoBehaviour
         SpawnShip(shipPrefab, new GridPosition(0,1), PlayerType.PlayerTwo); //debug purposes
         SpawnShip(shipPrefab, new GridPosition(0,1), PlayerType.PlayerTwo); //debug purposes
         SpawnShip(shipPrefab, new GridPosition(0,1), PlayerType.PlayerTwo); //debug purposes*/
+        dockCost = 10;
     }
 
     // Update is called once per frame
@@ -65,6 +72,31 @@ public class UnitController : MonoBehaviour
                 if(TrySelectGroundForce(PlayerTurnController.Instance.GetActivePlayer().GetPlayerType()))
                 {
                     Embark();
+                }
+            }
+            break;
+
+            case Phase.Building:
+            if(Input.GetMouseButtonDown(0) && isBuilding == true)
+            {
+                GridPosition positionToSpawn = MapController.Instance.GetHexGridPosition(MouseWorld.GetMouseWorldPosition());
+                GridObject gridObjectToSpawn = MapController.Instance.GetGridObject(positionToSpawn);
+
+                foreach(var planet in gridObjectToSpawn.GetPlanets())
+                {
+                    if(planet.GetOwner() != PlayerTurnController.Instance.GetActivePlayer().GetPlayerType() || planet.GetSpaceDockWaypoint().hasDock == true || PlayerTurnController.Instance.GetActivePlayer().GetOre() < dockCost)
+                    {
+                        MouseWorld.Instance.Reset();
+                        isBuilding = false;
+                        return;
+                    }
+                    else
+                    {
+                        PlayerTurnController.Instance.GetActivePlayer().GetComponent<Player>().AddOre(-dockCost);
+                        SpawnDock(positionToSpawn, PlayerTurnController.Instance.GetActivePlayer().GetPlayerType());
+                        isBuilding = false;
+                        PlayerTurnController.Instance.buildDockButton.gameObject.SetActive(false);
+                    }
                 }
             }
             break;
@@ -122,6 +154,7 @@ public class UnitController : MonoBehaviour
         SetMaterialForSpawn(playerType, dockPrefab);
 
         SpaceDockWaypoint spaceDockWaypoint = availablePlanet.GetSpaceDockWaypoint();
+        availablePlanet.SetSpaceDock(dockPrefab.GetComponent<SpaceDock>());
 
         Instantiate(dockPrefab, spaceDockWaypoint.transform.position + shipYOffset, Quaternion.identity);
         spaceDockWaypoint.hasDock = true;

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Planet : MonoBehaviour
@@ -17,6 +18,8 @@ public class Planet : MonoBehaviour
 
     [SerializeField] private SpaceDockWaypoint spaceDockWaypoint;
     [SerializeField] private GroundForceWaypoint[] groundForceWaypoints;
+
+    private SpaceDock spaceDock;
     
     void Awake()
     {
@@ -72,6 +75,10 @@ public class Planet : MonoBehaviour
     {
         this.playerType = playerType;
     }
+    public PlayerType GetOwner()
+    {
+        return playerType;
+    }
 
     public int GetOreAmount()
     {
@@ -80,5 +87,20 @@ public class Planet : MonoBehaviour
     public int GetFuelAmount()
     {
         return fuelValue;
+    }
+
+    public void SetSpaceDock(SpaceDock spaceDock)
+    {
+        this.spaceDock = spaceDock;
+    }
+
+    public SpaceDock GetSpaceDock()
+    {
+        return spaceDock;
+    }
+
+    public void RemoveSpaceDock()
+    {
+        spaceDockWaypoint.hasDock = true;
     }
 }

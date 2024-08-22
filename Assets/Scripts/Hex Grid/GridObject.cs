@@ -61,6 +61,7 @@ public class GridObject : MonoBehaviour
     }
     public void RemoveShip(Ship ship)
     {
+        ship.GetCurrentWaypoint().hasShip = false;
         shipListByPlayerType[ship.GetPlayerType()].Remove(ship);
         if(shipListByPlayerType[ship.GetPlayerType()].Count == 0)
         {

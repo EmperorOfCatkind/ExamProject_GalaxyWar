@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class PlayerTurnController : MonoBehaviour
 {
@@ -28,6 +30,7 @@ public class PlayerTurnController : MonoBehaviour
 
     private TurnInfoUI turnInfoUI;
     [SerializeField] CombatUI combatUI;
+    [SerializeField] public Button buildDockButton;
 
     private Dictionary<PlayerType, Material> playerMaterials;
     
@@ -61,6 +64,7 @@ public class PlayerTurnController : MonoBehaviour
         };
 
         shipsToDestroy = new List<Ship>();
+        buildDockButton.gameObject.SetActive(false);
 
     }
     // Start is called before the first frame update
@@ -83,6 +87,7 @@ public class PlayerTurnController : MonoBehaviour
         switch(phaseTransitionData.NextPhase)
         {
             case Phase.Start:   //if Start is the next phase, change the active player
+                buildDockButton.gameObject.SetActive(false);
                 StartPhase();
                 turnInfoUI.UpdateValues();
                 SetTrigger(Trigger.ToTurnCount);
@@ -113,7 +118,7 @@ public class PlayerTurnController : MonoBehaviour
             case Phase.SpaceCombat:
                 UnitController.Instance.DropAllSelections();
                 InitializeSpaceCombat();
-                //create a combat feature
+                
                 
                 turnInfoUI.UpdateValues();
                 SetTrigger(Trigger.ToGroundCombat);
@@ -121,18 +126,53 @@ public class PlayerTurnController : MonoBehaviour
                 
             case Phase.GroundCombat:
                 //create a combat feature
-                activePlayer.GetGroundCombatPhase().DoGroundCombatPhase();
+                /*foreach(var gridObject in MapController.Instance.GetAllGridObjects())
+                {
+                    if(!gridObject.GetShipListByPlayerType().ContainsKey(activePlayer.GetPlayerType()))
+                    {
+                        SetTrigger(Trigger.ToBuilding);
+                        return;
+                    }
+
+                    foreach(var planet in gridObject.GetPlanets())
+                    {
+                        /*if(planet.GetSpaceDock() != null && planet.GetSpaceDock().GetPlayerType() != activePlayer.GetPlayerType())
+                        {
+                            SpaceDock spaceDockToDestroy = planet.GetSpaceDock();
+                            planet.RemoveSpaceDock();
+                            Destroy(spaceDockToDestroy.GameObject());
+                            planet.SetSpaceDock(null);
+                        }
+                        if(planet.GetOwner() != activePlayer.GetPlayerType())
+                        {
+                            CaptureHex(gridObject, activePlayer.GetPlayerType());
+                        }
+                    }
+                }*/
                 turnInfoUI.UpdateValues();
                 SetTrigger(Trigger.ToBuilding);
                 break;
 
             case Phase.Building:
                 //Space Dock UI where player can choose a ship or ground force to build
-                //button to build a new dock (one per turn)
-                activePlayer.GetBuildingPhase().DoBuildingPhase();
+                buildDockButton.gameObject.SetActive(true);
+                
+                
                 turnInfoUI.UpdateValues();
-                SetTrigger(Trigger.EndTurn);
+                if(CheckWinCondition())
+                {
+                    playerTurnService.SetWinner(activePlayer);
+                    SetTrigger(Trigger.EndGame);
+                }
+                else
+                {
+                    SetTrigger(Trigger.ToStart);
+                }
                 break;
+
+            case Phase.EndScreen:
+                SceneManager.LoadScene("EndGame");
+                break;    
         }
     }
     
@@ -419,5 +459,34 @@ public class PlayerTurnController : MonoBehaviour
             DefineWinner(gridObject).AddPlanet(planet);
             planet.GetSpaceDockWaypoint().GetMesh().material = playerMaterials[playerType];
         }
+    }
+
+    public bool CheckWinCondition()
+    {
+        bool activePlayerWon = false;
+        Player oppositePlayer = null;
+
+        foreach(var player in playersArray)
+        {
+            if(activePlayer.GetPlayerType() != player.GetPlayerType())
+            {
+                oppositePlayer = player;
+            }
+        }
+
+        foreach(var planet in oppositePlayer.GetHomeSystem().GetPlanets())
+        {
+            if(planet.GetOwner() == activePlayer.GetPlayerType())
+            {
+                activePlayerWon = true;
+            }
+
+            else if (planet.GetOwner() == oppositePlayer.GetPlayerType())
+            {
+                activePlayerWon = false;
+                break;
+            }
+        }
+        return activePlayerWon;
     }
 }

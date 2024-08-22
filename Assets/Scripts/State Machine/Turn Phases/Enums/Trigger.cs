@@ -10,6 +10,7 @@ public enum Trigger
     ToSpaceCombat,
     ToGroundCombat,
     ToBuilding,
-    EndTurn,
+    ToStart,
+    EndGame
 
 }

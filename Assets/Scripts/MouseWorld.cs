@@ -1,10 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class MouseWorld : MonoBehaviour
 {
-    private static MouseWorld Instance;
+    public static MouseWorld Instance;
 
 
     [SerializeField] private LayerMask hexGridLayerMask;
@@ -13,13 +14,12 @@ public class MouseWorld : MonoBehaviour
     [SerializeField] private LayerMask groundForceLayerMask;
     [SerializeField] private LayerMask UILayerMask;
 
-
     [SerializeField] private MapController mapController;
 
     private MapGridViewSingle lastMapGridViewSingle;
     //private MapGridView mapGridView;
     private GridSystem gridSystem;
-    [SerializeField] GameObject visual;
+    [SerializeField] public GameObject visual;
 
     void Awake()
     {
@@ -34,6 +34,11 @@ public class MouseWorld : MonoBehaviour
     // Update is called once per frame
     void Update()
     {   
+        if(EventSystem.current.IsPointerOverGameObject())
+        {
+            return;
+        }
+
         HighlightOnHover(GetLayerMask());
     }
 
@@ -137,5 +142,10 @@ public class MouseWorld : MonoBehaviour
         }
 
         return hitLayerMask;
+    }
+
+    public void Reset()
+    {
+        visual.GetComponent<Renderer>().material.color = Color.green;
     }
 }

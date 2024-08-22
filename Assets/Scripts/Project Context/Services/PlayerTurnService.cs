@@ -11,13 +11,18 @@ public interface IPlayerTurnService
     StateMachine<Phase, Trigger> turnStateMachine {get;}
     StateMachine<CombatPhase, CombatTrigger> combatStateMachine {get;}
 
+    Player winner {get; set;}
+
     public void IncrementTurnCounter(PlayerType playerType);
     public int GetTurnCounter(PlayerType playerType);
+    public void SetWinner(Player player);
 }
 public class PlayerTurnService : IPlayerTurnService
 {
     public PlayerData[] players {get; private set;}
     public Dictionary<PlayerType, int> turnCounter;
+
+    public Player winner {get; set;}
 
     public StateMachine<Phase, Trigger> turnStateMachine {get;}
     public StateMachine<CombatPhase, CombatTrigger> combatStateMachine {get;}
@@ -33,7 +38,10 @@ public class PlayerTurnService : IPlayerTurnService
         turnStateMachine.AddTransition(Phase.Move, Trigger.ToSpaceCombat, Phase.SpaceCombat);
         turnStateMachine.AddTransition(Phase.SpaceCombat, Trigger.ToGroundCombat, Phase.GroundCombat);
         turnStateMachine.AddTransition(Phase.GroundCombat, Trigger.ToBuilding, Phase.Building);
-        turnStateMachine.AddTransition(Phase.Building, Trigger.EndTurn, Phase.Start);
+        turnStateMachine.AddTransition(Phase.Building, Trigger.ToStart, Phase.Start);
+        turnStateMachine.AddTransition(Phase.Building, Trigger.EndGame, Phase.EndScreen);
+        turnStateMachine.AddTransition(Phase.EndScreen, Trigger.ToStart, Phase.Start);
+
 
         turnCounter = new Dictionary<PlayerType, int>();
         foreach(var playerData in players)
@@ -59,6 +67,11 @@ public class PlayerTurnService : IPlayerTurnService
     public int GetTurnCounter(PlayerType playerType)
     {
         return turnCounter[playerType];
+    }
+
+    public void SetWinner(Player player)
+    {
+        winner = player;
     }
 }
 

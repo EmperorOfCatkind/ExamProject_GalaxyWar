@@ -10,5 +10,6 @@ public enum Phase
     Move,
     SpaceCombat,
     GroundCombat,
-    Building
+    Building,
+    EndScreen
 }

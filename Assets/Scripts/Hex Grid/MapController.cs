@@ -105,6 +105,10 @@ public class MapController : MonoBehaviour
         GridObject gridObject = gridSystem.GetGridObject(gridPosition);
         gridObject.AddShip(ship);
     }
+    public GridObject[,] GetAllGridObjects()
+    {
+        return gridObjects;
+    }
 
     public List<GridObject> GatherHexesForCombat()
     {

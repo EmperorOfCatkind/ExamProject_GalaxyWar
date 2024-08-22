@@ -805,6 +805,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6235121426045170542, guid: 73547136e2140fa45bf45cc30f33e70b, type: 3}
+      propertyPath: pointer
+      value: 
+      objectReference: {fileID: 3495426447908551635}
+    - target: {fileID: 6235121426045170542, guid: 73547136e2140fa45bf45cc30f33e70b, type: 3}
       propertyPath: mapController
       value: 
       objectReference: {fileID: 2041101405}
@@ -817,6 +821,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 73547136e2140fa45bf45cc30f33e70b, type: 3}
+--- !u!23 &3495426447908551635 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 5570982780960778835, guid: 73547136e2140fa45bf45cc30f33e70b, type: 3}
+  m_PrefabInstance: {fileID: 3495426447908551634}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &5620380179362655070
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -940,10 +949,6 @@ PrefabInstance:
     - target: {fileID: 2161183062503466579, guid: 5b5b5df923be01748b1bbf5820ac2e98, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3648991469273453194, guid: 5b5b5df923be01748b1bbf5820ac2e98, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8123057324932060402, guid: 5b5b5df923be01748b1bbf5820ac2e98, type: 3}
       propertyPath: combatUI
