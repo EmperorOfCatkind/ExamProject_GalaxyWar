@@ -42,6 +42,14 @@ public class GameMaster : MonoBehaviour
         unitController.SpawnShip(unitController.shipPrefab, new GridPosition(0,1), PlayerType.PlayerTwo); //debug purposes
         unitController.SpawnShip(unitController.shipPrefab, new GridPosition(0,1), PlayerType.PlayerTwo); //debug purposes
         unitController.SpawnShip(unitController.shipPrefab, new GridPosition(0,1), PlayerType.PlayerTwo); //debug purposes
+
+        unitController.SpawnShip(unitController.shipPrefab, new GridPosition(0,2), PlayerType.PlayerOne); //debug purposes
+        unitController.SpawnShip(unitController.shipPrefab, new GridPosition(0,2), PlayerType.PlayerOne); //debug purposes
+        unitController.SpawnShip(unitController.shipPrefab, new GridPosition(0,2), PlayerType.PlayerOne); //debug purposes
+
+        unitController.SpawnShip(unitController.shipPrefab, new GridPosition(0,2), PlayerType.PlayerTwo); //debug purposes
+        unitController.SpawnShip(unitController.shipPrefab, new GridPosition(0,2), PlayerType.PlayerTwo); //debug purposes
+        unitController.SpawnShip(unitController.shipPrefab, new GridPosition(0,2), PlayerType.PlayerTwo); //debug purposes
     }
 
     // Update is called once per frame
