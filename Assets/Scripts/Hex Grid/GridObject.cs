@@ -6,8 +6,6 @@ public class GridObject : MonoBehaviour
 {
     private GridSystem gridSystem;
     private GridPosition gridPosition;
-
-    //private List<Ship> shipList;
     private Dictionary<PlayerType, List<Ship>> shipListByPlayerType;
     private List<SpaceDock> spaceDocks;
 
@@ -108,7 +106,6 @@ public class GridObject : MonoBehaviour
             return true;
         }
         
-        //Debug.LogAssertion("Max 3 ship per player on Hex!");
         return false;
     }
     public SpaceWaypoint GetAvailableSpaceWaypoint()
@@ -126,7 +123,7 @@ public class GridObject : MonoBehaviour
 
     public Planet GetAvailablePlanetForSpaceDock()
     {
-        foreach(var key in spaceDockWaypoints)  //check all planets to see if any of them has free dock point
+        foreach(var key in spaceDockWaypoints)  
         {
             if (key.Key.GetSpaceDockWaypoint().hasDock == false)
             {
@@ -142,7 +139,7 @@ public class GridObject : MonoBehaviour
     {
         foreach(var planet in groundForceWaypoints)
         {
-            foreach(var waypoint in planet.Key.GetGroundForceWaypoints())  //check all planets to see if any of them has place for more ground force
+            foreach(var waypoint in planet.Key.GetGroundForceWaypoints()) 
             {
                 if(waypoint.hasGroundForce == false)
                 {

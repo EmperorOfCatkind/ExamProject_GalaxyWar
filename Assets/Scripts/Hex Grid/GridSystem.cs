@@ -35,8 +35,6 @@ public class GridSystem
                 GridPosition gridPosition = new GridPosition(x, z);
                 gridObjectArray[x,z] = new GridObject(this, gridPosition);
                 gridPositionsList.Add(gridPosition);
-                //gridPosition.SetGridSystem(this);
-                //gridPosition.neighbours = gridPosition.GetNeighbours();
             }
         }
     }
@@ -47,13 +45,6 @@ public class GridSystem
             new Vector3(gridPosition.x, 0, 0) * hexSize +
             new Vector3(0, 0, gridPosition.z) * hexSize * HEX_Z_OFFSET_MULTIPLIER +
             ((gridPosition.z % 2) == 1 ? new Vector3(1, 0, 0) * hexSize * HEX_X_OFFSET_MULTIPLIER : Vector3.zero);
-    }
-
-    public GridPosition GetGridPosition(Vector3 worldPosition)  //TODO - remove after updating to GetHexGridPosition
-    {
-        int x = Mathf.RoundToInt(worldPosition.x / hexSize);
-        int z = Mathf.RoundToInt(worldPosition.z / hexSize);
-        return new GridPosition(x, z);
     }
 
     public GridObject GetGridObject(GridPosition gridPosition)
@@ -81,7 +72,7 @@ public class GridSystem
         return neighbourHexesList;
     }
     
-    public void DisplayCoordinates(Transform coordinatesPrefab)     //Debug Purposes
+    public void DisplayCoordinates(Transform coordinatesPrefab)
     {
         for (int x = 0; x < width; x++){
             for (int z = 0; z < height; z++){
@@ -115,14 +106,10 @@ public class GridSystem
             roughXZ + new Vector3Int(+0, 0, -1),    
         };
 
-        //Debug.Log("XXXXXXXXX");
-        //Debug.Log(roughXZ);
-
         Vector3Int closestGridPosition = roughXZ;
 
         foreach (Vector3Int neighbourHex in neighbourHexesList)
         {
-            //Debug.Log(neighbourHex);
             if(Vector3.Distance(worldPosition, GetWorldPosition(new GridPosition(neighbourHex.x, neighbourHex.z))) < 
                Vector3.Distance(worldPosition, GetWorldPosition(new GridPosition(closestGridPosition.x, closestGridPosition.z))))
                {

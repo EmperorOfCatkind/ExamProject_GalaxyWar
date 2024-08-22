@@ -16,7 +16,6 @@ public class SpaceWaypoint : MonoBehaviour
     void Start()
     {
         gridPosition = gridObject.GetGridPosition();
-        //Debug.Log(gridObject.ToString());
     }
 
     // Update is called once per frame

@@ -35,9 +35,6 @@ public class MapVisualService : IMapVisualService
             for (int j = 0; j < z; j++){
                 GridPosition gridPosition = new GridPosition(i, j);
                 GridPositions[i,j] = gridPosition;
-
-                
-                //Instantiate in Monobehavior
             }
         }
     }

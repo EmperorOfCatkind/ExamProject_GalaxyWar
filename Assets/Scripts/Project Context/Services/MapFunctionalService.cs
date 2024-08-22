@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 
 
-public interface IMapFunctionalService      //This Interface sets the Grid Functionalities
+public interface IMapFunctionalService
 {
     GridSystem GridSystem {get;}
 }

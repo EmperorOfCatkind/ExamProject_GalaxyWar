@@ -25,7 +25,6 @@ public class Ship : MonoBehaviour
     //Default Stats//
 
     //Temporary Stats//
-    //private int tempMove;
     public bool isSelected;
     private List<GroundForce> embarkedForces;
     //Temporary Stats//
@@ -55,7 +54,6 @@ public class Ship : MonoBehaviour
         availablePostionsToMove = new List<GridPosition>();
         embarkedForces = new List<GroundForce>();
 
-        //tempMove = move;
         combatRoll.text = "";
         monitor.material = monitorMaterial;
     }
@@ -63,34 +61,10 @@ public class Ship : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        /*if(tempMove == 0)
-        {
-            selectedVisual.meshRenderer.material = spentSelectedVisual;
-        }
-        else{
-            selectedVisual.meshRenderer.material = selectedVisual.selectedMaterial;
-        }*/
+
     }
 
-    /*public int GetCurrentMove()
-    {
-        return tempMove;
-    }
-    public void DecreaseMove()
-    {
-        tempMove--;
-    }
-    public void RestoreMove()
-    {
-        Debug.Log(tempMove);
-        tempMove = move;
-        Debug.Log(tempMove);
-    }*/
-
-    /*public void SetCurrentMove(int increment)
-    {
-        tempMove += increment;
-    }*/
+   
     public void SelectedToDestroy()
     {
         isSelected = true;
@@ -100,7 +74,7 @@ public class Ship : MonoBehaviour
     {
         isSelected = true;
         selectedVisual.Show();
-        if(/*tempMove > 0 &&*/ PlayerTurnController.Instance.GetActivePlayer().GetFuel() > 0)
+        if(PlayerTurnController.Instance.GetActivePlayer().GetFuel() > 0)
         {
             ShowHexesForMove();
         }
@@ -166,7 +140,7 @@ public class Ship : MonoBehaviour
         foreach(var gridPosition in availablePostionsToMove)
         {
             MapController.Instance.GetMapGridViewSingle(gridPosition).ShowAsAvailable();
-            //Debug.Log(gridPosition.ToString());
+            
         }
     }
 
@@ -177,7 +151,7 @@ public class Ship : MonoBehaviour
             MapController.Instance.GetMapGridViewSingle(gridPosition).HideAsAvailable();
         }
         availablePostionsToMove.Clear();
-        //Debug.Log(availablePostionsToMove);
+        
     }
 
     public void Embark(GroundForce groundForce)

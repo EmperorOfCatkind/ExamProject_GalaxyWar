@@ -4,7 +4,7 @@ using UnityEngine;
 
 public enum Phase
 {
-    Start,      //initial state, big button on the game scene to start a game and launch it all, no state leads back to it
+    Start,      
     TurnCount,
     Replenish,
     Move,

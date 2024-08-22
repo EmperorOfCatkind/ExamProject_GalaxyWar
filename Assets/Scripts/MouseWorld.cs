@@ -17,7 +17,6 @@ public class MouseWorld : MonoBehaviour
     [SerializeField] private MapController mapController;
 
     private MapGridViewSingle lastMapGridViewSingle;
-    //private MapGridView mapGridView;
     private GridSystem gridSystem;
     [SerializeField] public GameObject visual;
 
@@ -65,10 +64,6 @@ public class MouseWorld : MonoBehaviour
         if(lastMapGridViewSingle != null)
         {
             lastMapGridViewSingle.OnClicked();
-            /*foreach(var neighbour in currentGridPosition.neighbours)
-            {
-                Debug.Log("GridPosition " + currentGridPosition + "has thses neighbours: " + neighbour.ToString());
-            }*/
         }
         
     }

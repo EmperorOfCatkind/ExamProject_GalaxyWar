@@ -26,7 +26,7 @@ public class ProjectContext
 
     }
 
-    public void Initialize(MapConfig mapConfig, PlayerConfig playerConfig, UnitConfig unitConfig)    //TODO - pass the configs through here
+    public void Initialize(MapConfig mapConfig, PlayerConfig playerConfig, UnitConfig unitConfig)
     {
         ConfigService = new ConfigService(mapConfig, playerConfig, unitConfig);
 

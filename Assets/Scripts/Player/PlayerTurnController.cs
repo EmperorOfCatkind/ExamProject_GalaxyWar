@@ -70,9 +70,7 @@ public class PlayerTurnController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        /*InitializePlayers();
-        turnStateMachine.OnPhaseChanged += OnPhaseChanged;
-        InitializeFirstPlayer();*/     
+    
     }
 
     // Update is called once per frame
@@ -81,12 +79,12 @@ public class PlayerTurnController : MonoBehaviour
         
     }
 
-    public void OnPhaseChanged(PhaseTransitionData<Phase, Trigger> phaseTransitionData)        //Get a phase class from an active player, activate it and go through it.
+    public void OnPhaseChanged(PhaseTransitionData<Phase, Trigger> phaseTransitionData)       
     {
         this.phaseTransitionData = phaseTransitionData;
         switch(phaseTransitionData.NextPhase)
         {
-            case Phase.Start:   //if Start is the next phase, change the active player
+            case Phase.Start:  
                 buildDockButton.gameObject.SetActive(false);
                 StartPhase();
                 turnInfoUI.UpdateValues();
@@ -106,10 +104,6 @@ public class PlayerTurnController : MonoBehaviour
                 break;
 
             case Phase.Move:
-                //get ships move only once per turn
-                //get ground forces to embark and disembark
-                //by the end if there is a Hex (gridObject) ships belonging to both players add it to the List for the next phase to use
-                //if there is a planet with ground forces of both players add it to the list for the next next phase to use
                 activePlayer.GetMovePhase().DoMovePhase();
                 turnInfoUI.UpdateValues();
                 SetTrigger(Trigger.ToSpaceCombat);
@@ -125,7 +119,6 @@ public class PlayerTurnController : MonoBehaviour
                 break;
                 
             case Phase.GroundCombat:
-                //create a combat feature
                 foreach(var gridObject in MapController.Instance.GetAllGridObjects())
                 {
                     if(!gridObject.GetShipListByPlayerType().ContainsKey(activePlayer.GetPlayerType()))
@@ -153,10 +146,6 @@ public class PlayerTurnController : MonoBehaviour
                 break;
 
             case Phase.Building:
-                //Space Dock UI where player can choose a ship or ground force to build
-                //buildDockButton.gameObject.SetActive(true);
-                
-                
                 turnInfoUI.UpdateValues();
                 if(CheckWinCondition())
                 {
@@ -296,7 +285,6 @@ public class PlayerTurnController : MonoBehaviour
         activePlayer = playersArray[activePlayerIndex];
         activePlayer.playerUI.Show();
         turnInfoUI.UpdateValues();
-        //Debug.Log(activePlayerIndex);
     }
     public Player GetSpecificPlayer(PlayerType playerType)
     {

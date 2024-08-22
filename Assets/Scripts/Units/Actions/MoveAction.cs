@@ -52,7 +52,6 @@ public class MoveAction : BaseAction
         }
         else
         {
-            //ship.DecreaseMove();
             activePlayer = PlayerTurnController.Instance.GetActivePlayer();
             activePlayer.AddFuel(-fuelCost);
             isActive = false;
@@ -88,7 +87,6 @@ public class MoveAction : BaseAction
         GetComponent<Ship>().SetCurrentWaypoint(newWaypoint);
         newWaypoint.hasShip = true;
 
-        //GetComponent<Ship>().DecreaseMove();
         GetComponent<Ship>().HideHexesForMove();
 
         destination = newWaypoint.transform.position + shipYOffset;
@@ -104,13 +102,13 @@ public class MoveAction : BaseAction
         
         foreach (var testGridPosition in MapController.Instance.GetNeighboursOfGridPosition(currentPosition))
         {
-            if(!MapController.Instance.IsInBounds(testGridPosition))        //probably unnecessary, since neighbours List will only contain positions within gridSystem
+            if(!MapController.Instance.IsInBounds(testGridPosition))
             {
                 //gridPosition is not in grid system
                 continue;
             }
 
-            if(currentPosition == testGridPosition)     //probably unnecessary - list of neighbours of position will not include itself
+            if(currentPosition == testGridPosition)
             {
                 //it is the current position of the unit
                 continue;
